@@ -6,7 +6,7 @@ import mkcert from 'vite-plugin-mkcert'
 // vite.config.js
 export default defineConfig(
 {
-    base: 'https://domain.vercel.app/',
+    base: 'https://basis-52q.pages.dev/',
     resolve:
     {
         alias:
@@ -34,12 +34,12 @@ export default defineConfig(
                 format: 'es', // output format (ES modules)
                 chunkFileNames: '[name]-[hash].js',
                 entryFileNames: 'app.js',
-                assetFileNames: 'main-style.[ext]',
+                assetFileNames: '[name].[ext]',
                 esModule: true,
                 compact: true,
                 dynamicImportVars: true,
                 makeAbsoluteExternalsRelative: true,
-            }
+            },
         }
     },
     plugins:
@@ -61,6 +61,7 @@ export default defineConfig(
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization']
         },
+        allowedHosts: ['stabondar.ngrok.app'],
     },
     preview:
     {
