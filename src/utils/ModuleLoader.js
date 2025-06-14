@@ -22,7 +22,7 @@ export default class ModuleLoader
                 for(const value of values)
                 {
                     const module = await import(`@modules/${value}.js`)
-                        .then(module => new module.default(element, main, this.app))
+                        .then(module => new module.default(element, this.app, main))
                 }
             })
         } catch (error)

@@ -45,10 +45,10 @@ export default defineConfig(
     plugins:
     [
         glsl(),
-        mkcert(
-        {
+        // mkcert(
+        // {
 
-        })
+        // })
     ],
     server:
     {

@@ -7,3 +7,8 @@
 @import './modules/accordion.scss';
 
 @import './editor.scss';
+
+a:is(.w-webflow-badge)
+{
+    display: none !important;
+}

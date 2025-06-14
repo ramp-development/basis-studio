@@ -79,21 +79,18 @@ export default class app extends EventEmitter
         [
             Scroll,
             Sizes,
-            GSAP,
             Time,
             ModuleLoader
         ] = await Promise.all(
         [
             import('@utils/Scroll.js'),
             import('@utils/Sizes.js'),
-            import('@utils/GSAP.js'),
             import('@utils/Tick.js'),
             import('@utils/ModuleLoader.js')
         ])
 
         app.scroll = new Scroll.default()
         app.sizes = new Sizes.default()
-        new GSAP.default()
         app.tick = new Time.default()
         app.moduleLoader = new ModuleLoader.default(app)
 
