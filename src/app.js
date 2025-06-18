@@ -80,22 +80,31 @@ export default class app extends EventEmitter
             Scroll,
             Sizes,
             Time,
-            ModuleLoader
+            ModuleLoader,
+            Observer,
+            Debug,
+            GL,
         ] = await Promise.all(
         [
             import('@utils/Scroll.js'),
             import('@utils/Sizes.js'),
             import('@utils/Tick.js'),
-            import('@utils/ModuleLoader.js')
+            import('@utils/ModuleLoader.js'),
+            import('@utils/Observer.js'),
+            import('@utils/Debug.js'),
+            import('@gl/GL.js'),
         ])
 
         app.scroll = new Scroll.default()
         app.sizes = new Sizes.default()
         app.tick = new Time.default()
         app.moduleLoader = new ModuleLoader.default(app)
+        app.observer = new Observer.default()
+        app.debug = new Debug.default()
 
         await CheckPages(app, main)
         await app.moduleLoader.loadModules(main)
+        app.gl = new GL.default(document.querySelector('.canvas'), app, main)
 
         app.sizes.on('resize', () => app.trigger('resize'))
         app.tick.on('tick', () => app.trigger('tick'))

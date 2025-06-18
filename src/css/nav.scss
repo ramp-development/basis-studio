@@ -1,0 +1,60 @@
+.nav
+{
+    &:hover
+    {
+        .nav_dots
+        {
+            transform: rotate(90deg);
+
+            .nav_dot
+            {
+                transform: translate3d(-50%, -50%, 0);
+                transition: transform 0.8s var(--expoInOut), top 0.8s var(--expoInOut) 0.6s;
+
+                &:nth-child(1),
+                &:nth-child(2)
+                {
+                    top: 10%;
+                }
+
+                &:nth-child(3),
+                &:nth-child(4)
+                {
+                    top: 90%;
+                }
+            }
+        }
+    }
+}
+
+.nav_dots
+{
+    transition: transform 0.8s var(--expoInOut);
+
+    .nav_dot
+    {
+        transition: transform 0.8s var(--expoInOut), top 0.8s var(--expoInOut) 0s;
+        left: 50%;
+        top: 50%;
+
+        &:nth-child(1)
+        {
+            transform: translate3d(calc(-100% - 1px - 50%), calc(-100% - 1px - 50%), 0);
+        }
+
+        &:nth-child(2)
+        {
+            transform: translate3d(calc(100% + 1px - 50%), calc(-100% - 1px - 50%), 0);
+        }
+
+        &:nth-child(3)
+        {
+            transform: translate3d(calc(-100% - 1px - 50%), calc(100% + 1px - 50%), 0);
+        }
+
+        &:nth-child(4)
+        {
+            transform: translate3d(calc(100% + 1px - 50%), calc(100% + 1px - 50%), 0);
+        }
+    }
+}
