@@ -1,0 +1,4 @@
+.footer_clock-lines
+{
+    transform: rotate(calc(var(--time) * 1deg));
+}
