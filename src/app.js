@@ -84,6 +84,7 @@ export default class app extends EventEmitter
             Observer,
             Debug,
             GL,
+            Nav
         ] = await Promise.all(
         [
             import('@utils/Scroll.js'),
@@ -93,6 +94,7 @@ export default class app extends EventEmitter
             import('@utils/Observer.js'),
             import('@utils/Debug.js'),
             import('@gl/GL.js'),
+            import('@utils/Nav.js'),
         ])
 
         app.scroll = new Scroll.default()
@@ -101,6 +103,7 @@ export default class app extends EventEmitter
         app.moduleLoader = new ModuleLoader.default(app)
         app.observer = new Observer.default()
         app.debug = new Debug.default()
+        app.nav = new Nav.default(app)
 
         await CheckPages(app, main)
         await app.moduleLoader.loadModules(main)
