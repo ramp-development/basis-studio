@@ -1,5 +1,5 @@
-import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, VideoTexture } from 'three'
-import gsap from 'gsap'
+import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, VideoTexture, Color } from 'three'
+import { gsap, ScrollTrigger } from '@utils/GSAP.js'
 
 import vertex from './vertex.glsl'
 import fragment from './fragment.glsl'
@@ -27,7 +27,45 @@ export default class index
     {
         this.setMaterial()
         this.setMesh()
-        // this.debug()
+        this.debug()
+    }
+
+    debug()
+    {
+        if(!this.app.debug.active) return
+
+        const gui = this.app.debug.gui
+        const folder = gui.addFolder('Home/Video')
+
+        folder.add(this.material.uniforms.uReveal, 'value', 0, 1, 0.01).name('uReveal').onChange((value) =>
+        {
+            this.meshs.forEach(({material}) => material.uniforms.uReveal.value = value)
+        })
+
+        folder.add(this.material.uniforms.uRotate, 'value', 0, 2, 0.01).name('uRotate').onChange((value) =>
+        {
+            this.meshs.forEach(({material}) => material.uniforms.uRotate.value = value)
+        })
+
+        folder.add(this.material.uniforms.uRadius, 'value', 0, 1, 0.01).name('uRadius').onChange((value) =>
+        {
+            this.meshs.forEach(({material}) => material.uniforms.uRadius.value = value)
+        })
+
+        folder.add(this.material.uniforms.uRotateX, 'value', -1, 1, 0.01).name('uRotateX').onChange((value) =>
+        {
+            this.meshs.forEach(({material}) => material.uniforms.uRotateX.value = value)
+        })
+
+        folder.add(this.material.uniforms.uRotateY, 'value', -1, 1, 0.01).name('uRotateY').onChange((value) =>
+        {
+            this.meshs.forEach(({material}) => material.uniforms.uRotateY.value = value)
+        })
+
+        folder.add(this.material.uniforms.uZoom, 'value', -1, 1, 0.01).name('uZoom').onChange((value) =>
+        {
+            this.meshs.forEach(({material}) => material.uniforms.uZoom.value = value)
+        })
     }
 
     setMaterial()
@@ -45,6 +83,15 @@ export default class index
                 uAspect: new Uniform(new Vector2(16, 9)),
                 uSize: new Uniform(new Vector2(0, 0)),
                 uBorder: new Uniform(0),
+                uReveal: new Uniform(0),
+                uRotate: new Uniform(0),
+                uRotateX: new Uniform(0),
+                uRotateY: new Uniform(0),
+                uRadius: new Uniform(0.02),
+                uZoom: new Uniform(0.55),
+                uTime: new Uniform(0),
+                uFluid: new Uniform(null),
+                uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
             },
         })
     }
@@ -74,9 +121,30 @@ export default class index
                 })
             }
 
+            let revealed = false
+
             this.scene.add(mesh)
 
             this.app.observer.instance.observe(item)
+
+            const tl = gsap.timeline({paused: true, defaults: {duration: 1, ease: 'power2.in'}})
+            tl.to(material.uniforms.uReveal, {value: 1.5})
+            .fromTo(material.uniforms.uRotate, {value: -0.2}, {value: Math.PI / 3}, '<')
+            .to(material.uniforms.uRotateX, {value: 0.7, duration: 0.3}, '<')
+            .fromTo(material.uniforms.uRadius, {value: 0}, {value: 0.02, duration: 0.2}, '<')
+            .to(material.uniforms.uRotateY, {value: -0.3, duration: 0.3}, '<0.2')
+
+            ScrollTrigger.create(
+            {
+                trigger: item,
+                start: 'top 80%',
+                onEnter: () =>
+                {
+                    if(revealed) return
+                    revealed = true
+                    tl.play()
+                }
+            })
 
             return {mesh, item, material}
         })
@@ -116,10 +184,11 @@ export default class index
 
     update()
     {
-        // this.meshs.forEach(({mesh, material}) =>
-        // {
-        //     // material.uniforms.uTexture.value = this.gl.gradientTexture
-        // })
+        this.meshs.forEach(({mesh, material}) =>
+        {
+            material.uniforms.uFluid.value = this.gl.fluidTexture
+            // material.uniforms.uTexture.value = this.gl.gradientTexture
+        })
     }
 
     destroy()

@@ -5,6 +5,7 @@ import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import EventEmitter from '@utils/EventEmitter.js'
 
+import FluidSimulation from './fluid'
 import Displacement from './utils/displacement/index.js'
 
 export default class GL extends EventEmitter
@@ -46,7 +47,8 @@ export default class GL extends EventEmitter
         this.app.on('resize', () => this.resize())
         this.app.on('destroy', () => this.destroy())
 
-        this.displacement = new Displacement(this.app, this)
+        this.fluid = new FluidSimulation(this.app, this)
+        // this.displacement = new Displacement(this.app, this)
 
         this.mouse = new Vector2()
         window.addEventListener('mousemove', (e) => this.onMouseMove(e))
@@ -60,6 +62,7 @@ export default class GL extends EventEmitter
         this.mouse.y = ((e.clientY / window.innerHeight) * -2 + 1)
 
         this.displacement?.onMouseMove(e, this.mouse)
+        this.fluid?.getMouse(e, this.mouse)
 
         if(this.world && this.loaded) this.world.onMouseMove(e, this.mouse)
     }
@@ -74,6 +77,8 @@ export default class GL extends EventEmitter
         this.camera.resize()
         this.renderer.resize()
 
+        this.fluid?.resize()
+
         if(this.world && this.loaded) setTimeout(() => this.world.resize(), 10)
     }
 
@@ -81,6 +86,8 @@ export default class GL extends EventEmitter
     {
         this.camera.update()
         this.displacement?.update()
+        this.fluid?.update()
+
         if(this.world && this.loaded) this.world.update()
 
         this.renderer.update()
