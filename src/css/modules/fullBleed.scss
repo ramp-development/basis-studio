@@ -1,0 +1,25 @@
+.full_item
+{
+    .f-64,
+    .full_line-parent
+    {
+        overflow: clip;
+    }
+
+    .full_char,
+    .full_line
+    {
+        transition: transform 0.5s var(--expoInOut) 0s;
+        transform: translateY(110%);
+    }
+
+    &.active
+    {
+        .full_char,
+        .full_line
+        {
+            transition: transform 0.8s var(--expoInOut) var(--delay);
+            transform: translateY(0);
+        }
+    }
+}

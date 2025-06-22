@@ -4,6 +4,7 @@ import gsap from 'gsap'
 
 import Video from './meshs/video/index.js'
 import Full from './meshs/full/index.js'
+import Hero from './meshs/hero/index.js'
 
 export default class World
 {
@@ -24,7 +25,18 @@ export default class World
 
     load()
     {
-        this.init()
+        this.count = 0
+        this.items = this.main.querySelectorAll('.hero_image')
+        this.sources = [...this.items].map((item, index) =>
+        {
+            const image = item.querySelector('img')
+            const url = image.getAttribute('src')
+
+            return { type: 'textureLoader', url, name: index }
+        })
+
+        this.resources = new Resources(this.sources)
+        this.resources.on('ready', () => this.init())
     }
 
     init()
@@ -33,18 +45,23 @@ export default class World
 
         this.video = new Video(this.app, this.gl, this.scene, this.main)
         this.full = new Full(this.app, this.gl, this.scene, this.main)
+        this.hero = new Hero(this.app, this.gl, this.scene, this.main, this.resources)
+
+        this.app.page.triggerLoad()
     }
 
     setScroll(e)
     {
         this.video?.setPosition()
         this.full?.setPosition()
+        this.hero?.setPosition()
     }
 
     update()
     {
         this.video?.update()
         this.full?.update()
+        this.hero?.update()
     }
 
     createTexture(target)
@@ -60,6 +77,7 @@ export default class World
     {
         this.video?.resize()
         this.full?.resize()
+        this.hero?.resize()
     }
 
     onMouseMove(e, mouse)

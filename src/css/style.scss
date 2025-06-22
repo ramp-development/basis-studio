@@ -2,8 +2,11 @@
 
 @import './nav.scss';
 
+@import './modules/fullBleed.scss';
 @import './modules/accordion.scss';
 @import './modules/footer.scss';
+
+@import './pages/home/index.scss';
 
 @import './editor.scss';
 

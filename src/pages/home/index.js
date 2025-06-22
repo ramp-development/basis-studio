@@ -1,4 +1,5 @@
-import Something from './Something.js'
+import Loader from './Loader.js'
+import Hero from './Hero.js'
 
 export default class index
 {
@@ -12,6 +13,7 @@ export default class index
 
     load()
     {
-        this.something = new Something(this.main, this.app)
+        this.loader = new Loader(this.main, this.app)
+        this.hero = new Hero(this.main, this.app)
     }
 }

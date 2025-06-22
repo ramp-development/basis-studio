@@ -7,6 +7,7 @@ export default class GlobalLoader
         this.app = app
         this.toLoad = toLoad
         this.main = container.container
+        this.container = container
 
         // this.loader = document.querySelector('.loader')
 
@@ -23,6 +24,9 @@ export default class GlobalLoader
     async load()
     {
         await this.toLoad(this.main, this.app)
-        await this.app.page.triggerLoad()
+        if(this.container.namespace != 'home')
+        {
+            await this.app.page.triggerLoad()
+        }
     }
 }
