@@ -77,6 +77,8 @@ export default class app extends EventEmitter
 
     async loadMainComponentsOnce(main, app)
     {
+        app.onceLoaded = false
+
         const
         [
             Scroll,

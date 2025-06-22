@@ -1,0 +1,15 @@
+.btn
+{
+    .btn_text
+    {
+        overflow: clip;
+
+        & > div:nth-child(2)
+        {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: max-content;
+        }
+    }
+}

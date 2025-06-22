@@ -1,0 +1,34 @@
+.loader
+{
+    clip-path: inset(0 0 0 calc(var(--clip, 0) * 1%));
+
+    .loader_layer
+    {
+        &:nth-child(1)
+        {
+            color: var(--color--black);
+
+            .loader_layer-bg
+            {
+                background-color: var(--color--white);
+            }
+        }
+
+        &:nth-child(2)
+        {
+            color: var(--color--white);
+            z-index: 2;
+            clip-path: inset(0 0 0 calc(var(--clip, 0) * 1%));
+
+            .loader_layer-bg
+            {
+                background-color: var(--color--black);
+            }
+        }
+    }
+
+    &.loaded
+    {
+        display: none;
+    }
+}

@@ -116,6 +116,7 @@
 .nav_dots
 {
     transition: transform 0.8s var(--expoInOut);
+    opacity: 0;
 
     .nav_dot
     {

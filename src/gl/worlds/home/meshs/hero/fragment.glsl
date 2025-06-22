@@ -4,11 +4,6 @@ uniform vec3 uColor;
 uniform vec2 uRes;
 uniform vec2 uSize;
 uniform vec2 uAspect;
-uniform float uReveal;
-uniform float uRotate;
-uniform float uRotateX;
-uniform float uRotateY;
-uniform float uRadius;
 uniform float uBorder;
 uniform float uHovered;
 
@@ -39,5 +34,4 @@ void main()
     color.rgb = mix(color.rgb, fakeBlurColor, uHovered);
 
     gl_FragColor = color;
-    // gl_FragColor = vec4(uHovered, 0.0, 0.0, 1.0);
 }

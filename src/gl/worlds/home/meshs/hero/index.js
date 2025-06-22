@@ -19,6 +19,15 @@ export default class index
         this.time = this.app.time
 
         this.items = this.main.querySelectorAll('.hero_image')
+        this.mouse = new Vector2(0, 0)
+        this.offset = new Vector2(0, 0)
+        this.outputOffset = new Vector2(0, 0)
+
+        this.offsetQuicks =
+        {
+            x: gsap.quickTo(this.outputOffset, 'x', { duration: 0.4, ease: 'power2', onUpdate: () => this.meshs.forEach(({material}) => material.uniforms.uMouse.value.set(this.outputOffset.x, this.outputOffset.y))}),
+            y: gsap.quickTo(this.outputOffset, 'y', { duration: 0.4, ease: 'power2' })
+        }
 
         this.init()
     }
@@ -27,7 +36,20 @@ export default class index
     {
         this.setMaterial()
         this.setMesh()
-        // this.debug()
+        this.debug()
+    }
+
+    debug()
+    {
+        if(!this.app.debug.active) return
+
+        const gui = this.app.debug.gui
+        const folder = gui.addFolder('Home/Hero')
+
+        // folder.add(this.material.uniforms.uOffset, 'value', -100, 100, 1).name('uOffset').onChange((value) =>
+        // {
+        //     this.meshs.forEach(({material}) => material.uniforms.uOffset.value = value)
+        // })
     }
 
     setMaterial()
@@ -49,6 +71,7 @@ export default class index
                 uFluid: new Uniform(null),
                 uHovered: new Uniform(0),
                 uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
+                uMouse: new Uniform(this.mouse),
             },
         })
     }
@@ -123,6 +146,18 @@ export default class index
         })
     }
 
+    onMouseMove(e)
+    {
+        this.mouse.x = e.clientX - window.innerWidth / 2
+        this.mouse.y = e.clientY - window.innerHeight / 2
+
+        this.offset.x = this.lerp(this.offset.x, this.mouse.x, 0.1)
+        this.offset.y = this.lerp(this.offset.y, this.mouse.y, 0.1)
+
+        this.offsetQuicks.x(-(this.mouse.x - this.offset.x) * 0.15)
+        this.offsetQuicks.y((this.mouse.y - this.offset.y) * 0.09)
+    }
+
     resize()
     {
         this.meshs.forEach(({mesh, item}) =>
@@ -152,5 +187,10 @@ export default class index
             mesh.geometry.dispose()
             this.scene.remove(mesh)
         })
+    }
+
+    lerp(start, end, t)
+    {
+        return start * ( 1 - t ) + end * t;
     }
 }

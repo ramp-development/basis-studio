@@ -48,6 +48,7 @@ export default class World
         this.hero = new Hero(this.app, this.gl, this.scene, this.main, this.resources)
 
         this.app.page.triggerLoad()
+        if(!this.app.onceLoaded) this.app.globalLoader.tl.play()
     }
 
     setScroll(e)
@@ -82,7 +83,7 @@ export default class World
 
     onMouseMove(e, mouse)
     {
-
+        this.hero?.onMouseMove(e, mouse)
     }
 
     destroy()
