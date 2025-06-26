@@ -110,6 +110,10 @@ export default class GL extends EventEmitter
                 await import('@gl/worlds/home/World.js').then(module => this.world = new module.default(this, this.app, this.scene, main))
                 break
 
+            case 'cases':
+                await import('@gl/worlds/cases/World.js').then(module => this.world = new module.default(this, this.app, this.scene, main))
+                break
+
             default: setTimeout(() => this.trigger('loaded'), 10)
         }
     }

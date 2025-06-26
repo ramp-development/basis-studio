@@ -10,5 +10,11 @@ export const CheckPages = async (app, main) =>
             const mod = await import('@pages/home')
             return app.page = new mod.default(main, app)
         }
+
+        case 'cases':
+        {
+            const mod = await import('@pages/cases')
+            return app.page = new mod.default(main, app)
+        }
     }
 }

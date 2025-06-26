@@ -28,7 +28,7 @@ void main()
     float tintAmount = smoothstep(0.0, 1.0, cursor) * 0.1;
 
     color.rgb = applyOverlayTint(color.rgb, uColor, tintAmount);
-    vec3 blurColor = fastGaussianBlur(uTexture, coverUv, cursor).rgb;
+    vec3 blurColor = fastGaussianBlur(uTexture, coverUv, cursor * 5.).rgb;
     color.rgb = mix(color.rgb, blurColor, cursor);
     vec3 fakeBlurColor = fakeBlur(uTexture, coverUv, uHovered * 10.).rgb;
     color.rgb = mix(color.rgb, fakeBlurColor, uHovered);
