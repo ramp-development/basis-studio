@@ -8,6 +8,7 @@ export default class Hero
         this.app = app
 
         this.hero = this.main.querySelector('.cases')
+        this.sticky = this.hero.querySelector('.cases_sticky')
         this.wrapper = this.hero.querySelector('.cases_wrapper')
         this.list = this.hero.querySelector('.cases_list')
         this.items = this.hero.querySelectorAll('.cases_item')
@@ -29,6 +30,13 @@ export default class Hero
         //     return {x, y, random}
         // })
 
+        this.quicks = [...this.items].map((item, index) =>
+        {
+            const mesh = this.app.gl.world.items.meshs[index].mesh
+
+            return gsap.quickTo(mesh.material.uniforms.uParallax, 'value', {duration: 0.3, ease: 'power2'})
+        })
+
         this.init()
         this.app.on('resize', () => this.resize())
         this.app.on('destroy', () => this.destroy())
@@ -47,7 +55,7 @@ export default class Hero
 
         })
 
-        this.tl.fromTo(this.list, {x: 0}, {x: -end, ease: 'none', duration: 1.5})
+        this.tl.fromTo(this.sticky, {x: 0}, {x: -end, ease: 'none', duration: 1.5})
 
         this.srcoll = ScrollTrigger.create(
         {
@@ -57,11 +65,38 @@ export default class Hero
             scrub: true,
             animation: this.tl,
         })
+
+        this.scrolls = []
+
+        this.items.forEach((item, index) =>
+        {
+            const mesh = this.app.gl.world.items.meshs[index].mesh
+
+            this.scrolls[index] = ScrollTrigger.create(
+            {
+                trigger: item,
+                containerAnimation: this.tl,
+                start: 'left right',
+                end: 'right left',
+                onUpdate: (self) =>
+                {
+                    const progress = gsap.utils.mapRange(0, 1, -0.05, 0.05, self.progress)
+                    this.quicks[index](progress)
+                    // mesh.material.uniforms.uParallax.value = progress
+                }
+            })
+        })
     }
 
     resize()
     {
         if(this.destroyed) return
+
+        this.tl?.kill()
+        this.srcoll?.kill()
+        this.scrolls.forEach(scroll => scroll?.kill())
+
+        this.init()
     }
 
     destroy()

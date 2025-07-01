@@ -11,7 +11,8 @@ export default class FullBleed
         this.world = this.app.gl.world
         this.destroyed = false
 
-        this.items = this.main.querySelectorAll('.full_item')
+        this.wrapper = this.instance.querySelector('.full_wrapper')
+        this.items = this.instance.querySelectorAll('.full_item')
 
         this.init()
         this.app.on('resize', () => this.resize())
@@ -22,6 +23,9 @@ export default class FullBleed
     {
         this.splits = []
         this.scrolls = []
+
+        gsap.set(this.wrapper, {height: this.items.length * 100 + 'vh'})
+        ScrollTrigger.refresh()
 
         this.height = this.instance.getBoundingClientRect().height
         this.itemPart = this.height / (this.items.length + 1)

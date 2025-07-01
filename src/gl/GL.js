@@ -6,7 +6,6 @@ import Renderer from './Renderer.js'
 import EventEmitter from '@utils/EventEmitter.js'
 
 import FluidSimulation from './fluid'
-import Displacement from './utils/displacement/index.js'
 
 export default class GL extends EventEmitter
 {
@@ -48,7 +47,6 @@ export default class GL extends EventEmitter
         this.app.on('destroy', () => this.destroy())
 
         this.fluid = new FluidSimulation(this.app, this)
-        // this.displacement = new Displacement(this.app, this)
 
         this.mouse = new Vector2()
         window.addEventListener('mousemove', (e) => this.onMouseMove(e))

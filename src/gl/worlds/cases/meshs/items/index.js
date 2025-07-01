@@ -94,6 +94,7 @@ export default class index
                 uTime: new Uniform(0),
                 uFluid: new Uniform(null),
                 uOffset: new Uniform(null),
+                uParallax: new Uniform(0),
                 uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
             },
         })
@@ -164,7 +165,7 @@ export default class index
 
         if(e)
         {
-            this.quick(-e.velocity)
+            this.quick(-e.velocity * 1.5)
             this.meshs.forEach(({material}) => material.uniforms.uOffset.value = this.velocity.value)
         }
     }

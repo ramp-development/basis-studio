@@ -36,10 +36,10 @@ export default class Loader
 
         this.meshs.forEach(({mesh}, index) =>
         {
-            this.tl.fromTo(mesh.position, {z: 1500}, {z: 0, duration: 1.5}, index * 0.1)
+            this.tl.fromTo(mesh.position, {z: 1500}, {z: 0, duration: 3.5}, index * 0.1 + 0.4)
         })
 
-        this.tl.fromTo(this.titleSplit.chars, {yPercent: 110}, {yPercent: 0, stagger: 0.01}, 0.2)
+        this.tl.fromTo(this.titleSplit.chars, {yPercent: 110}, {yPercent: 0, stagger: 0.01}, 0.5)
         .fromTo(this.descrSplit.words, {yPercent: 110}, {yPercent: 0, stagger: 0.05}, '<0.2')
         .fromTo(this.btn, {yPercent: 20, autoAlpha: 0}, {yPercent: 0, autoAlpha: 1}, '<0.2')
     }
