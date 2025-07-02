@@ -33,6 +33,7 @@
     "jquery-validation": "^1.21.0",
     "lenis": "^1.1.14",
     "lil-gui": "^0.20.0",
+    "smooothy": "^0.0.18",
     "stats-gl": "^3.6.0",
     "tempus": "^1.0.0-dev.10",
     "three": "^0.173.0",

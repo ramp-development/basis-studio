@@ -1,0 +1,32 @@
+.h-cta
+{
+    height: calc(var(--length) * 80vh);
+}
+
+.h-cta_sticky
+{
+    height: 100vh;
+}
+
+.h-cta_item
+{
+    &:not(:first-child)
+    {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: max-content;
+        height: max-content;
+    }
+
+    .custom-heading
+    {
+        width: calc(var(--max-w) + 2ch);
+        max-width: none;
+    }
+
+    .line
+    {
+        overflow: clip;
+    }
+}

@@ -1,0 +1,22 @@
+uniform vec3 uColor;
+uniform vec3 uHoverColor;
+uniform vec2 uRes;
+uniform vec2 uSize;
+uniform float uBorder;
+uniform float uHovered;
+uniform vec2 uOffset;
+
+varying vec2 vUv;
+varying vec2 screenUv;
+
+#include ../../../../math/getAlpha.glsl
+
+void main()
+{
+    vec2 uv = vUv;
+    float border = getAlpha(uSize, uBorder, uv);
+
+    vec4 color = vec4(mix(uColor, uHoverColor, uHovered), border);
+
+    gl_FragColor = color;
+}
