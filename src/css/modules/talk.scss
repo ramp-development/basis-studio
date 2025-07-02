@@ -1,0 +1,23 @@
+.talk_item
+{
+    .f-96
+    {
+        overflow: clip;
+
+        &:first-child
+        {
+            color: var(--color--pink)
+        }
+
+        &:not(:first-child)
+        {
+            opacity: 0.3;
+
+            &.active,
+            &:hover
+            {
+                opacity: 1;
+            }
+        }
+    }
+}

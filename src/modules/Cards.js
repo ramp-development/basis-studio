@@ -1,6 +1,5 @@
-import { gsap, ScrollTrigger } from 'gsap/all'
-
-gsap.registerPlugin(ScrollTrigger)
+import Core from 'smooothy'
+import Tempus from "tempus"
 
 export default class Cards
 {
@@ -9,15 +8,22 @@ export default class Cards
         this.instance = instance
         this.app = app
 
+        this.wrapper = this.instance.querySelector('[wrapper]')
         this.cards = this.instance.querySelectorAll('.card')
-
-        this.rotations = [...this.cards].map(item => gsap.quickTo(item, 'rotation', {duration: 0.4, ease: 'power2'}))
-        this.yMove = [...this.cards].map(item => gsap.quickTo(item, 'yPercent', {duration: 0.4, ease: 'power2'}))
-
-        this.cards.forEach((item, index) =>
+        this.clones = [...this.cards].map(item =>
         {
-            this.setRotation(item, index)
+            const clone = item.cloneNode(true)
+            this.wrapper.appendChild(clone)
+            return clone
         })
+
+        // this.rotations = [...this.cards].map(item => gsap.quickTo(item, 'rotation', {duration: 0.4, ease: 'power2'}))
+        // this.yMove = [...this.cards].map(item => gsap.quickTo(item, 'yPercent', {duration: 0.4, ease: 'power2'}))
+
+        // this.cards.forEach((item, index) =>
+        // {
+        //     // this.setRotation(item, index)
+        // })
 
         this.destroyed = false
 
@@ -28,7 +34,20 @@ export default class Cards
 
     init()
     {
-
+        this.slider = new Core(this.wrapper,
+        {
+            infinite: true,
+            snap: true,
+            onUpdate: e =>
+            {
+                if(this.destroyed) return
+                if(this.app.gl.world.cards)
+                {
+                    this.app.gl.world.cards.setCarouselPosition(e.speed)
+                }
+            }
+        })
+        Tempus.add(() => this.slider.update())
     }
 
     setRotation(item, index)

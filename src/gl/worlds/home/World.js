@@ -6,6 +6,7 @@ import Video from './meshs/video/index.js'
 import Full from './meshs/full/index.js'
 import Hero from './meshs/hero/index.js'
 import FluidMask from '@gl/utils/fluidMask/index.js'
+import Cards from './meshs/testimonials/index.js'
 
 export default class World
 {
@@ -21,7 +22,8 @@ export default class World
         this.camera = this.gl.camera.instance
         this.scene = scene
 
-        this.load()
+        if(this.app.moduleLoaded) this.load()
+        else this.app.on('modulesLoaded', () => this.load())
     }
 
     load()
@@ -30,6 +32,8 @@ export default class World
         this.items = this.main.querySelectorAll('.hero_image')
         this.footerLogo = this.main.querySelector('.footer_logo')
         this.nowText = this.main.querySelector('.now_texture')
+        this.testimonials = this.main.querySelector('.testimonials')
+
         this.sources = [...this.items].map((item, index) =>
         {
             const image = item.querySelector('img')
@@ -73,6 +77,11 @@ export default class World
             this.nowFluid = new FluidMask(this.app, this.gl, this.scene, this.nowText, this.resources.items.nowText)
         }
 
+        if(this.testimonials)
+        {
+            this.cards = new Cards(this.app, this.gl, this.scene, this.main, this.testimonials)
+        }
+
         this.app.page.triggerLoad()
         if(!this.app.onceLoaded) this.app.globalLoader.tl.play()
     }
@@ -84,6 +93,7 @@ export default class World
         this.hero?.setPosition()
         this.footerFluid?.setPosition()
         this.nowFluid?.setPosition()
+        this.cards?.setPosition(e)
     }
 
     update()
@@ -93,6 +103,7 @@ export default class World
         this.hero?.update()
         this.footerFluid?.update()
         this.nowFluid?.update()
+        this.cards?.update()
     }
 
     createTexture(target)
@@ -111,6 +122,7 @@ export default class World
         this.hero?.resize()
         this.footerFluid?.resize()
         this.nowFluid?.resize()
+        this.cards?.resize()
     }
 
     onMouseMove(e, mouse)
@@ -125,5 +137,6 @@ export default class World
         this.hero?.destroy()
         this.footerFluid?.destroy()
         this.nowFluid?.destroy()
+        this.cards?.destroy()
     }
 }

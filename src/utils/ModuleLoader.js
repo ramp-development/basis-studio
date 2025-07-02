@@ -1,7 +1,11 @@
-export default class ModuleLoader
+import EventEmitter from './EventEmitter.js'
+
+export default class ModuleLoader extends EventEmitter
 {
     constructor(app)
     {
+        super()
+
         this.app = app
     }
 
@@ -14,6 +18,8 @@ export default class ModuleLoader
             const elements = main.querySelectorAll('[data-module]')
 
             if(elements.length < 1) return
+            let count = 0
+            let loaded = false
 
             elements.forEach(async (element) =>
             {
@@ -21,8 +27,18 @@ export default class ModuleLoader
                 const values = moduleName.split(' ')
                 for(const value of values)
                 {
-                    const module = await import(`@modules/${value}.js`)
-                        .then(module => new module.default(element, this.app, main))
+                    const module = await import(`@modules/${value}.js`).then(module =>
+                    {
+                        new module.default(element, this.app, main)
+
+                        count++
+                        if(count === elements.length && !loaded)
+                        {
+                            loaded = true
+                            this.trigger('loaded')
+                        }
+                    })
+
                 }
             })
         } catch (error)

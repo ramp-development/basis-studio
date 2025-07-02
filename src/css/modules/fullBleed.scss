@@ -9,7 +9,7 @@
     .full_char,
     .full_line
     {
-        transition: transform 0.5s var(--expoInOut) 0s;
+        transition: transform 0.5s var(--expoOut) 0s;
         transform: translateY(110%);
     }
 
@@ -18,7 +18,7 @@
         .full_char,
         .full_line
         {
-            transition: transform 0.8s var(--expoInOut) var(--delay);
+            transition: transform 0.8s var(--expoOut) var(--delay);
             transform: translateY(0);
         }
     }

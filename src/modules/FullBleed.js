@@ -49,7 +49,7 @@ export default class FullBleed
 
             splitTitle.chars.forEach((char, index) =>
             {
-                const delay = index * 0.05 + 0.1
+                const delay = Math.abs(index - splitTitle.chars.length / 2) * 0.02 + 0.1
                 char.style.setProperty('--delay', delay + 's')
             })
 

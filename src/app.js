@@ -78,6 +78,7 @@ export default class app extends EventEmitter
     async loadMainComponentsOnce(main, app)
     {
         app.onceLoaded = false
+        app.moduleLoaded = false
 
         const
         [
@@ -110,9 +111,14 @@ export default class app extends EventEmitter
         app.nav = new Nav.default(app)
 
         await CheckPages(app, main)
-        await app.moduleLoader.loadModules(main)
         app.gl = new GL.default(document.querySelector('.canvas'), app, main)
+        await app.moduleLoader.loadModules(main)
 
+        app.moduleLoader.on('loaded', () =>
+        {
+            app.trigger('modulesLoaded')
+            app.moduleLoaded = true
+        })
         app.sizes.on('resize', () => app.trigger('resize'))
         app.tick.on('tick', () => app.trigger('tick'))
     }
