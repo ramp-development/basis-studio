@@ -7,7 +7,7 @@ export default class TextAnimation
         this.instance = instance
         this.app = app
 
-        // this.
+        this.text = this.instance.children.length > 0 ? this.instance.children : this.instance
 
         this.destroyed = false
 
@@ -19,11 +19,35 @@ export default class TextAnimation
     init()
     {
         if(this.instance.dataset.scroll === 'false') return
+
+        this.split = new SplitText(this.text, { type: 'words, lines'})
+        this.tl = gsap.timeline({paused: true, defaults: {ease: def.ease, duration: def.duration}})
+
+        this.tl.fromTo(this.split.words,
+            { yPercent: -30, autoAlpha: 0, filter: 'blur(10px)', scale: 0.8 },
+            { yPercent: 0, autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, scale: 1, }, '<0.1')
+
+        this.scroll = ScrollTrigger.create(
+        {
+            trigger: this.instance,
+            start: 'top 80%',
+            onEnter: () =>
+            {
+                if(this.played) return
+                this.played = true
+
+                this.tl.play()
+            }
+        })
     }
 
     resize()
     {
         if(this.destroyed) return
+
+        this.split?.revert()
+        this.tl?.kill()
+        this.scroll?.kill()
 
         this.init()
     }

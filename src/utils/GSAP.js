@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText, Flip)
 const def =
 {
     duration: 0.8,
-    ease: 'expo.out',
+    ease: 'power3',
     stagger: 0.05,
 }
 

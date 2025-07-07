@@ -1,6 +1,5 @@
 import { gsap, SplitText, ScrollTrigger } from 'gsap/all'
 import { def } from '@utils/GSAP.js'
-import Snap from 'lenis/snap'
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
@@ -26,8 +25,6 @@ export default class HomeCta
 
     init()
     {
-        this.snap = new Snap(this.scroll, { duration: 2,})
-
         this.splits = [...this.items].map(item =>
         {
             const text = item.querySelector('.heading_span')
@@ -41,58 +38,25 @@ export default class HomeCta
         {
             const split = this.splits[index]
 
-            const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3', duration: def.duration, stagger: { from: 'center', each: def.stagger } } })
+            const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3', duration: 1} })
 
             if(index > 0)
             {
-                this.splits[index - 1].lines.forEach((line, lineIndex) =>
-                {
-                    const chars = line.querySelectorAll('.char')
-                    chars.forEach((char, charIndex) =>
-                    {
-                        const position = Math.abs(charIndex - chars.length / 2) * 0.04 + lineIndex * 0.08
-                        tl.to(char, { yPercent: 110, overwrite: 'auto' }, position)
-                    })
-                })
+                tl.to(this.splits[index - 1].chars,
+                    // {yPercent: 0, opacity: 1, filter: 'blur(0px)', scale: 1},
+                    { yPercent: 30, autoAlpha: 0, filter: 'blur(10px)', overwrite: 'all', stagger: {each: 0.01, from: 'start'}, scale: 0.8, duration: 0.6 }, 0)
             }
-            split.lines.forEach((line, lineIndex) =>
-            {
-                const chars = line.querySelectorAll('.char')
-                chars.forEach((char, charIndex) =>
-                {
-                    const start = index > 0 ? 0.1 : 0
-                    const position = Math.abs(charIndex - chars.length / 2) * 0.04 + lineIndex * 0.08 + start
-                    tl.fromTo(char, { yPercent: -110 }, { yPercent: 0, overwrite: 'auto'}, position)
-                })
-            })
-
-            const top = this.getTop(this.section) + (this.itemPart - 100) * (index + 1)
-            if(window.innerWidth > 992) this.snap.add(top)
+            tl.fromTo(split.chars,
+                { yPercent: -30, autoAlpha: 0, filter: 'blur(10px)', scale: 0.8 },
+                { yPercent: 0, autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'start'}, scale: 1, overwrite: 'all', }, '<90%' )
 
             const scroll = ScrollTrigger.create(
             {
                 trigger: this.section,
                 start: `top top-=${index * this.itemPart}`,
-                end: `+=${this.itemPart - 100}`,
+                end: `+=${this.itemPart - this.itemPart * 0.3}`,
                 animation: tl,
                 scrub: true,
-                // toggleActions: 'play none none reverse',
-                onLeave: () =>
-                {
-                    if(index === this.items.length - 1) this.snap.stop()
-                },
-                onLeaveBack: () =>
-                {
-                    if(index === 0) this.snap.stop()
-                },
-                onEnter: () =>
-                {
-                    if(index === 0) this.snap.start()
-                },
-                onEnterBack: () =>
-                {
-                    if(index === this.items.length - 1) this.snap.start()
-                }
             })
 
             return { tl, scroll }
@@ -121,8 +85,6 @@ export default class HomeCta
             scroll.kill()
         })
 
-        this.snap.destroy()
-
         this.init()
     }
 
@@ -130,6 +92,5 @@ export default class HomeCta
     {
         if(this.destroyed) return
         this.destroyed = true
-        this.snap.destroy()
     }
 }

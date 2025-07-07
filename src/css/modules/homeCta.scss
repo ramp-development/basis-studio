@@ -1,6 +1,6 @@
 .h-cta
 {
-    height: calc(var(--length) * 80vh);
+    height: calc(var(--length) * 100vh);
 }
 
 .h-cta_sticky
@@ -37,12 +37,12 @@
         }
     }
 
-    .line
-    {
-        & > div
-        {
-            overflow: clip;
-        }
-        overflow: clip;
-    }
+    // .line
+    // {
+    //     & > div
+    //     {
+    //         overflow: clip;
+    //     }
+    //     overflow: clip;
+    // }
 }

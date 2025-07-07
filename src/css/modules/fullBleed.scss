@@ -9,8 +9,10 @@
     .full_char,
     .full_line
     {
-        transition: transform 0.5s var(--expoOut) 0s;
-        transform: translateY(110%);
+        transition: transform 0.5s var(--expoOut) 0s, filter 0.5s var(--expoOut) 0s, opacity 0.5s var(--expoOut) 0s;
+        transform: translateY(30%) scale(0.8);
+        filter: blur(10px);
+        opacity: 0;
     }
 
     &.active
@@ -18,8 +20,10 @@
         .full_char,
         .full_line
         {
-            transition: transform 0.8s var(--expoOut) var(--delay);
-            transform: translateY(0);
+            transition: transform 1s var(--expoOut) var(--delay), filter 1s var(--expoOut) var(--delay), opacity 1s var(--expoOut) var(--delay);
+            transform: translateY(0%) scale(1);
+            filter: blur(0px);
+            opacity: 1;
         }
     }
 

@@ -1,21 +1,15 @@
-import { gsap, SplitText, ScrollTrigger } from 'gsap/all'
-import { def } from '@utils/GSAP.js'
+import { gsap, ScrollTrigger, SplitText, def } from '@utils/GSAP.js'
 
-gsap.registerPlugin(SplitText, ScrollTrigger)
-
-export default class SectionHeading
+export default class CharAnimation
 {
     constructor(instance, app)
     {
         this.instance = instance
         this.app = app
 
-        this.divider = this.instance.querySelector('.section-heading_line')
-        this.dot = this.instance.querySelector('.section-heading_circle')
-        this.title = this.instance.querySelector('h3')
+        this.text = this.instance.children.length > 0 ? this.instance.children : this.instance
 
         this.destroyed = false
-        this.played = false
 
         this.init()
         this.app.on('resize', () => this.resize())
@@ -24,12 +18,12 @@ export default class SectionHeading
 
     init()
     {
-        this.split = new SplitText(this.title, { type: 'words, lines'})
+        if(this.instance.dataset.scroll === 'false') return
+
+        this.split = new SplitText(this.text, { type: 'chars, lines'})
         this.tl = gsap.timeline({paused: true, defaults: {ease: def.ease, duration: def.duration}})
 
-        this.tl.fromTo(this.divider, {transformOrigin: 'left', scaleX: 0}, {scaleX: 1})
-        .fromTo(this.dot, {scale: 0}, {scale: 1}, '<0.1')
-        .fromTo(this.split.words,
+        this.tl.fromTo(this.split.chars,
             { yPercent: -30, autoAlpha: 0, filter: 'blur(10px)', scale: 0.8 },
             { yPercent: 0, autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, scale: 1, }, '<0.1')
 

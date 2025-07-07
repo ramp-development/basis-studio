@@ -30,41 +30,41 @@
         max-width: none;
     }
 
-    .line
-    {
-        overflow: clip;
-    }
+    // .line
+    // {
+    //     overflow: clip;
+    // }
 
-    .char,
-    .word
-    {
-        transition: transform 0.8s var(--expoOut) var(--delay);
-        transform: translate3d(0, -110%, 0);
-    }
+    // .char,
+    // .word
+    // {
+    //     transition: transform 0.8s var(--expoOut) var(--delay);
+    //     transform: translate3d(0, -110%, 0);
+    // }
 
-    .goals_number
-    {
-        transition: transform 0.8s var(--expoOut);
-        transform: translate3d(0, -110%, 0);
-    }
+    // .goals_number
+    // {
+    //     transition: transform 0.8s var(--expoOut);
+    //     transform: translate3d(0, -110%, 0);
+    // }
 
-    &.active
-    {
-        .char,
-        .word,
-        .goals_number
-        {
-            transform: translate3d(0, 0%, 0);
-        }
-    }
+    // &.active
+    // {
+    //     .char,
+    //     .word,
+    //     .goals_number
+    //     {
+    //         transform: translate3d(0, 0%, 0);
+    //     }
+    // }
 
-    &.past
-    {
-        .char,
-        .word,
-        .goals_number
-        {
-            transform: translate3d(0, 110%, 0);
-        }
-    }
+    // &.past
+    // {
+    //     .char,
+    //     .word,
+    //     .goals_number
+    //     {
+    //         transform: translate3d(0, 110%, 0);
+    //     }
+    // }
 }

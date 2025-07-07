@@ -1,5 +1,7 @@
-import gsap from 'gsap'
-import { SplitText, def } from '@utils/GSAP.js'
+import { gsap, SplitText } from 'gsap/all'
+import { def } from '@utils/GSAP.js'
+
+gsap.registerPlugin(SplitText)
 
 export default class Loader
 {
@@ -17,8 +19,8 @@ export default class Loader
         this.titleSplit = new SplitText(this.title, { type: 'chars, words'})
         this.descrSplit = new SplitText(this.descr, { type: 'words' })
 
-        gsap.set([this.titleSplit.words, this.descr], {overflow: 'clip'})
-        gsap.set(this.titleSplit.words, {paddingBottom: '0.1em', marginBottom: '-0.1em'})
+        // gsap.set([this.titleSplit.words, this.descr], {overflow: 'clip'})
+        // gsap.set(this.titleSplit.words, {paddingBottom: '0.1em', marginBottom: '-0.1em'})
 
         this.destroyed = false
 
@@ -39,9 +41,13 @@ export default class Loader
             this.tl.fromTo(mesh.position, {z: 1500}, {z: 0, duration: 3.5}, index * 0.1 + 0.4)
         })
 
-        this.tl.fromTo(this.titleSplit.chars, {yPercent: 110}, {yPercent: 0, stagger: 0.01}, 0.5)
-        .fromTo(this.descrSplit.words, {yPercent: 110}, {yPercent: 0, stagger: 0.05}, '<0.2')
-        .fromTo(this.btn, {yPercent: 20, autoAlpha: 0}, {yPercent: 0, autoAlpha: 1}, '<0.2')
+        this.tl.fromTo(this.titleSplit.chars,
+            {yPercent: 20, opacity: 0, filter: 'blur(10px)', scale: 0.8},
+            {yPercent: 0, opacity: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, scale: 1, duration: 1.1}, 0.8)
+        .fromTo(this.descrSplit.words,
+            {yPercent: 20, opacity: 0, filter: 'blur(10px)', scale: 0.8},
+            {yPercent: 0, opacity: 1, filter: 'blur(0px)', stagger: {each: 0.05, from: 'random'}, scale: 1, duration: 1.1}, '<0.2')
+        .fromTo(this.btn, { opacity: 0, yPercent: 20, filter: 'blur(10px)', scale: 0.8 }, { opacity: 1, yPercent: 0, filter: 'blur(0px)', scale: 1 }, '<0.3')
     }
 
     resize()
