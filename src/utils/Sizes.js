@@ -13,12 +13,14 @@ export default class Sizes extends EventEmitter
         this.pixelRatio = Math.min(window.devicePixelRatio, 2)
         this.aspect = this.width / this.height
         this.aspectV = this.height / this.width
+        this.initWidth = this.width
 
         let windowWidth = this.canvasContainer ? this.canvasContainer.offsetWidth : window.innerWidth
         let windowHeight = this.canvasContainer ? this.canvasContainer.offsetHeight : window.innerHeight
         let initWidth = windowWidth
         const checkWidth = () =>
         {
+            if((this.initWidth >= 991 && window.innerWidth < 991) || (this.initWidth < 991 && window.innerWidth >= 991)) window.location.reload()
             let afterWidth = this.canvasContainer ? this.canvasContainer.offsetWidth : window.innerWidth
             let afterHeight = this.canvasContainer ? this.canvasContainer.offsetHeight : window.innerHeight
             if (windowWidth !== afterWidth || (initWidth >= 991 && windowHeight !== afterHeight))

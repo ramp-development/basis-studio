@@ -1,5 +1,4 @@
 import Loader from './Loader.js'
-import Hero from './Hero.js'
 
 export default class index
 {
@@ -7,6 +6,7 @@ export default class index
     {
         this.main = main
         this.app = app
+
         this.once = false
 
         this.triggerLoad = async () => this.load()
@@ -16,7 +16,6 @@ export default class index
     {
         if(this.once) return
         this.loader = new Loader(this.main, this.app)
-        this.hero = new Hero(this.main, this.app)
 
         this.once = true
     }

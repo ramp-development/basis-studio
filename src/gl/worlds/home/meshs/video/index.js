@@ -105,7 +105,7 @@ export default class index
             const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1)
             const material = this.material.clone()
             material.uniforms.uSize.value.set(rect.width, rect.height)
-            material.uniforms.uTexture.value = this.gl.gradientTexture
+            // material.uniforms.uTexture.value = this.gl.gradientTexture
             material.uniforms.uBorder.value = parseFloat(roots[0])
             const mesh = new Mesh(geometry, material)
 

@@ -1,4 +1,4 @@
-import { WebGLRenderTarget, Box3, VideoTexture } from 'three'
+import { WebGLRenderTarget, Box3, VideoTexture, TorusKnotGeometry } from 'three'
 import Resources from '@utils/Resources'
 import gsap from 'gsap'
 import VideoLoader from '@utils/VideoLoader.js'
@@ -81,6 +81,9 @@ export default class World
 
         this.app.page.triggerLoad()
         if(!this.app.onceLoaded) this.app.globalLoader.tl.play()
+        else this.app.enterPage.tl.play()
+
+        this.app.trigger('loadedWorld')
     }
 
     setScroll(e)
@@ -114,6 +117,7 @@ export default class World
 
     destroy()
     {
+        console.log('Destroying Cases World')
         this.items?.destroy()
     }
 }

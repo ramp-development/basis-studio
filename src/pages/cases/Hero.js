@@ -7,6 +7,8 @@ export default class Hero
         this.main = main
         this.app = app
 
+        if(window.innerWidth < 991) return
+
         this.hero = this.main.querySelector('.cases')
         this.sticky = this.hero.querySelector('.cases_sticky')
         this.wrapper = this.hero.querySelector('.cases_wrapper')
@@ -103,5 +105,9 @@ export default class Hero
     {
         if(this.destroyed) return
         this.destroyed = true
+
+        this.tl?.kill()
+        this.srcoll?.kill()
+        this.scrolls.forEach(scroll => scroll?.kill())
     }
 }

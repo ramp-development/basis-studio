@@ -7,13 +7,17 @@ export default class index
     {
         this.main = main
         this.app = app
+        this.once = false
 
         this.triggerLoad = async () => this.load()
     }
 
     load()
     {
+        if(this.once) return
         this.loader = new Loader(this.main, this.app)
         this.hero = new Hero(this.main, this.app)
+
+        this.once = true
     }
 }

@@ -41,7 +41,7 @@ export default class Cards
             onUpdate: e =>
             {
                 if(this.destroyed) return
-                if(this.app.gl.world.cards)
+                if(this.app.gl.world?.cards)
                 {
                     this.app.gl.world.cards.setCarouselPosition(e.speed)
                 }

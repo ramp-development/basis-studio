@@ -31,7 +31,7 @@ export default class HomeCta
         this.splits = [...this.items].map(item =>
         {
             const text = item.querySelector('.heading_span')
-            return new SplitText(text, { type: 'lines, chars', charsClass: 'char', linesClass: 'line' })
+            return new SplitText(text, { type: 'lines, chars, words', charsClass: 'char', linesClass: 'line' })
         })
 
         this.sectionHeight = this.section.offsetHeight - window.innerHeight * 0.8
@@ -67,7 +67,7 @@ export default class HomeCta
             })
 
             const top = this.getTop(this.section) + (this.itemPart - 100) * (index + 1)
-            this.snap.add(top)
+            if(window.innerWidth > 992) this.snap.add(top)
 
             const scroll = ScrollTrigger.create(
             {

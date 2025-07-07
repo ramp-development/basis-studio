@@ -2,3 +2,12 @@
 {
     pointer-events: all;
 }
+
+.hero_image
+{
+    &:nth-child(6),
+    &:nth-child(4)
+    {
+        opacity: 0.6;
+    }
+}

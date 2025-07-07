@@ -7,11 +7,23 @@ export default class Nav
         this.instance = document.querySelector('nav')
         this.top = this.instance.querySelector('.nav_top')
         this.items = this.instance.querySelectorAll('.nav_item')
+        this.navDots = this.instance.querySelector('.nav_dots')
 
         this.items.forEach((item, index) =>
         {
             const delay = 0.05 * index + 0.1
             item.style.setProperty('--delay', `${delay}s`)
+        })
+
+        this.navDots.addEventListener('click', (e) =>
+        {
+            if(this.instance.classList.contains('active'))
+            {
+                this.instance.classList.remove('active')
+            } else
+            {
+                this.instance.classList.add('active')
+            }
         })
 
         this.resize()

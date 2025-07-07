@@ -8,7 +8,7 @@ export default class FullBleed
         this.app = app
         this.main = main
 
-        this.world = this.app.gl.world
+        // this.world = this.app.gl.world
         this.destroyed = false
 
         this.wrapper = this.instance.querySelector('.full_wrapper')
@@ -35,7 +35,8 @@ export default class FullBleed
             const title = item.querySelector('.f-64')
             const descr = item.querySelector('p')
 
-            const splitTitle = new SplitText(title, { type: 'chars', charsClass: 'full_char' })
+            const splitTitle = new SplitText(title, { type: 'chars, words', charsClass: 'full_char' })
+            const splitTitleParent = new SplitText(title, { type: 'lines', linesClass: 'full_line-parent' })
             const splitDescr = new SplitText(descr, { type: 'lines', linesClass: 'full_line' })
             const splitDescrParent = new SplitText(descr, { type: 'lines', linesClass: 'full_line-parent' })
 
@@ -62,6 +63,8 @@ export default class FullBleed
                 {
                     this.items.forEach(el => el.classList.remove('active'))
                     item.classList.add('active')
+                    item.classList.add('show-bg')
+                    if(window.innerWidth < 991) return
                     this.app.gl.world.full.meshs[index].tl.play()
                 },
                 onEnterBack: () =>
@@ -69,7 +72,12 @@ export default class FullBleed
                     this.items.forEach(el => el.classList.remove('active'))
                     item.classList.add('active')
                 },
-                onLeaveBack: () => this.app.gl.world.full.meshs[index].tl.reverse(),
+                onLeaveBack: () =>
+                {
+                    item.classList.remove('show-bg')
+                    if(window.innerWidth < 991) return
+                    this.app.gl.world.full.meshs[index].tl.reverse()
+                },
             })
         })
     }

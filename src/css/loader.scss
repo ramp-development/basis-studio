@@ -1,6 +1,6 @@
 .loader
 {
-    clip-path: inset(0 0 0 calc(var(--clip, 0) * 1%));
+    clip-path: inset(0 calc(var(--leftClip, 0) * 1%) 0 calc(var(--clip, 0) * 1%));
 
     .loader_layer
     {
@@ -29,6 +29,14 @@
 
     &.loaded
     {
-        display: none;
+        .loader_counter
+        {
+            display: none;
+        }
+    }
+
+    &.hidden
+    {
+    display: none;
     }
 }

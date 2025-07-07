@@ -13,7 +13,7 @@ export default class ModuleLoader extends EventEmitter
     {
         try
         {
-            // const test = await import('./utils/Test.js').then(module => new module.default(this.app))
+            const test = await import('./PageScrollProgress.js').then(module => new module.default(main, this.app))
 
             const elements = main.querySelectorAll('[data-module]')
 

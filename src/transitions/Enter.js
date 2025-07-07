@@ -10,24 +10,59 @@ export default class Enter
         this.app = app
         this.container = data.next.container
         this.checkPages = checkPages
+        this.data = data
+        this.loader = document.querySelector('.loader')
+        this.once = false
+        gsap.set(this.loader, {'--clip': 0, '--leftClip': 0})
 
-        this.app.scroll.init()
+        this.tl = gsap.timeline({paused: true, defaults: {duration: 0.8 , ease: 'power2.inOut'}})
 
-        this.tl = gsap.timeline({defaults: {duration: 0.8 , ease: 'power2.inOut'}, onStart: () => this.start()})
+        this.app.enterPage = this
 
-        this.tl.fromTo(this.container, {autoAlpha: 0}, {autoAlpha: 1, onComplete: () => this.complete()})
-
+        this.tl.to(this.loader, {'--clip': 100, onComplete: () => this.complete()})
+        this.start()
     }
 
     complete()
     {
-        // this.loader.classList.add('hidden')
+        this.loader.classList.add('hidden')
     }
 
     start()
     {
-        this.app.moduleLoader.loadModules(this.container)
+        gsap.set(this.container, {autoAlpha: 1})
+
+        document.documentElement.style.scrollBehavior = 'instant'
+        window.scrollTo({top: 0, left: 0, behavior: 'instant'})
+
+        requestAnimationFrame(() =>
+        {
+            window.scrollTo({top: 0, left: 0, behavior: 'instant'})
+
+            requestAnimationFrame(() =>
+            {
+                window.scrollTo({top: 0, left: 0, behavior: 'instant'})
+                document.documentElement.style.scrollBehavior = ''
+            })
+        })
+
+        // setTimeout(async () =>
+        // {
+
+        // }, 200)
+
         this.checkPages(this.app, this.container)
+        this.app.gl.loadWorld(this.container)
+
+        this.app.on('loadedWorld', async () =>
+        {
+            if(this.once) return
+            this.app.moduleLoader.loadModules(this.container)
+            this.app.page.triggerLoad()
+            await this.app.scroll.init()
+
+            this.once = true
+        })
 
         ScrollTrigger.refresh()
     }

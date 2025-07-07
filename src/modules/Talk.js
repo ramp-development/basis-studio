@@ -24,7 +24,7 @@ export default class Talk
     {
         this.splits = [...this.items].map(item =>
         {
-            return new SplitText(item, { type: 'chars', charsClass: 'char' })
+            return new SplitText(item, { type: 'chars, words', charsClass: 'char', wordsClass: 'word' })
         })
 
         this.tls = [...this.items].map((item, index) =>

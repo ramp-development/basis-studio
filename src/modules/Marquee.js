@@ -13,8 +13,9 @@ export default class Marquee
 
         this.destroyed = false
 
-        this.direction = 1
-        this.prevDirection = 1
+        this.multiDirection = this.instance.dataset.direction === '1' ? 1 : -1
+        this.direction = 1 * this.multiDirection
+        this.prevDirection = this.direction
         this.velocity = { value: 0 }
         this.enter = { value: 1 }
         this.move = 0
@@ -30,7 +31,7 @@ export default class Marquee
             if(this.destroyed) return
             this.changeVelocity(Math.abs(e.velocity))
             if(this.prevDirection === e.direction) return
-            this.direction = e.direction
+            this.direction = e.direction * this.multiDirection
 
             this.prevDirection = e.direction
         })

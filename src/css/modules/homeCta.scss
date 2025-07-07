@@ -17,16 +17,32 @@
         top: 0;
         width: max-content;
         height: max-content;
+
+        @media screen and (max-width: 991px)
+        {
+            width: auto;
+            height: auto;
+            right: 0;
+        }
     }
 
     .custom-heading
     {
         width: calc(var(--max-w) + 2ch);
         max-width: none;
+
+        @media screen and (max-width: 991px)
+        {
+            width: 100%;
+        }
     }
 
     .line
     {
+        & > div
+        {
+            overflow: clip;
+        }
         overflow: clip;
     }
 }

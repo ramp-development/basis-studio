@@ -18,6 +18,14 @@ export default class GL extends EventEmitter
         this.scroll = this.app.scroll.lenis
         this.sizes = this.app.sizes
 
+        if(window.innerWidth < 991)
+        {
+            this.app.page.triggerLoad()
+            if(!this.app.onceLoaded) this.app.globalLoader.tl.play()
+
+            return
+        }
+
         // Canvas
         this.canvas = canvas
 
@@ -112,7 +120,15 @@ export default class GL extends EventEmitter
                 await import('@gl/worlds/cases/World.js').then(module => this.world = new module.default(this, this.app, this.scene, main))
                 break
 
-            default: setTimeout(() => this.trigger('loaded'), 10)
+            case 'services':
+                await import('@gl/worlds/services/World.js').then(module => this.world = new module.default(this, this.app, this.scene, main))
+                break
+
+            default: setTimeout(() =>
+            {
+                this.app.page.triggerLoad()
+                if(!this.app.onceLoaded) this.app.globalLoader.tl.play()
+            }, 10)
         }
     }
 }

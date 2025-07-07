@@ -82,8 +82,14 @@ export default class World
             this.cards = new Cards(this.app, this.gl, this.scene, this.main, this.testimonials)
         }
 
-        this.app.page.triggerLoad()
-        if(!this.app.onceLoaded) this.app.globalLoader.tl.play()
+        this.app.trigger('loadedWorld')
+
+        if(!this.app.onceLoaded)
+        {
+            this.app.globalLoader.tl.play()
+            this.app.page.triggerLoad()
+        }
+        else this.app.enterPage.tl.play()
     }
 
     setScroll(e)

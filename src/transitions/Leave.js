@@ -11,18 +11,27 @@ export default class Leave
         this.container = data.current.container
         this.scroll = this.app.scroll.lenis
 
+        this.loader = document.querySelector('.loader')
+        this.loader.classList.remove('hidden')
+        this.nav = document.querySelector('.nav')
+        this.nav.classList.remove('active')
+
+        gsap.set(this.loader, {'--clip': 0, '--leftClip': 100})
+
         this.scroll.stop()
 
-        gsap.to(this.container, {autoAlpha: 0, onComplete: () =>
+        gsap.to(this.loader, {'--leftClip': 0, onComplete: () =>
         {
             ScrollTrigger.killAll()
             done()
 
+            this.app.onceLoaded = true
             this.app.trigger('destroy')
-            this.app.onceCompleted = true
 
             this.app.scroll.destroy()
             window.scrollTo(0, 0)
         }})
+
+        this.app.gl.loaded = false
     }
 }

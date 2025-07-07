@@ -185,6 +185,8 @@ export default class index
 
     update()
     {
+        if(this.destroyed) return
+
         this.meshs.forEach(({mesh, material}) =>
         {
             material.uniforms.uFluid.value = this.gl.fluidTexture
@@ -198,6 +200,8 @@ export default class index
             material.dispose()
             mesh.geometry.dispose()
             this.scene.remove(mesh)
+
+            this.destroyed = true
         })
     }
 }

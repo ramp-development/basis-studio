@@ -1,9 +1,12 @@
-.cases
+@media screen and (min-width: 991px)
 {
-    height: calc(50vh * var(--length));
-}
+    .cases
+    {
+        height: calc(50vh * var(--length));
+    }
 
-.cases_image
-{
-    opacity: 0;
+    .cases_image
+    {
+        opacity: 0;
+    }
 }

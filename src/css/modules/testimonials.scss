@@ -11,6 +11,19 @@
 
     &:hover
     {
-        color: var(--color--black);
+        @media screen and (hover: hover)
+        {
+            color: var(--color--black);
+        }
     }
+}
+
+@media screen and (max-width: 991px)
+{
+    .testimonials_item
+    {
+        background-color: color-mix(in srgb, #363636, transparent 70%);
+        color: var(--color--white);
+    }
+
 }

@@ -9,7 +9,7 @@ export default class Cursor
         this.main = main
         this.app.cursor = this
 
-        gsap.set(this.instance, { display: 'flex' })
+        this.instance.classList.add('.loaded')
 
         this.destroyed = false
         this.cursor = this.instance.querySelector('.cursor')
@@ -73,8 +73,5 @@ export default class Cursor
     {
         if(this.destroyed) return
         this.destroyed = true
-
-        this.quicks.x.kill()
-        this.quicks.y.kill()
     }
 }

@@ -8,14 +8,11 @@ export default class Loader
         this.main = main
         this.app = app
 
-        this.hero = this.main.querySelector('.hero')
-        this.meshs = this.app.gl.world.hero.meshs
+        this.hero = this.main.querySelector('.inner-hero')
+        // this.meshs = this.app.gl.world.items.meshs
         this.title = this.hero.querySelector('h1')
-        this.descr = this.hero.querySelector('p')
-        this.btn = this.hero.querySelector('.btn')
 
         this.titleSplit = new SplitText(this.title, { type: 'chars, words'})
-        this.descrSplit = new SplitText(this.descr, { type: 'words' })
 
         gsap.set([this.titleSplit.words, this.descr], {overflow: 'clip'})
         gsap.set(this.titleSplit.words, {paddingBottom: '0.1em', marginBottom: '-0.1em'})
@@ -34,14 +31,12 @@ export default class Loader
             defaults: {ease: def.ease, duration: 1}
         })
 
-        this.meshs.forEach(({mesh}, index) =>
-        {
-            this.tl.fromTo(mesh.position, {z: 1500}, {z: 0, duration: 3.5}, index * 0.1 + 0.4)
-        })
+        // this.meshs.forEach(({mesh}, index) =>
+        // {
+        //     this.tl.fromTo(mesh.position, {z: 1500}, {z: 0, duration: 1.5}, index * 0.1)
+        // })
 
-        this.tl.fromTo(this.titleSplit.chars, {yPercent: 110}, {yPercent: 0, stagger: 0.01}, 0.5)
-        .fromTo(this.descrSplit.words, {yPercent: 110}, {yPercent: 0, stagger: 0.05}, '<0.2')
-        .fromTo(this.btn, {yPercent: 20, autoAlpha: 0}, {yPercent: 0, autoAlpha: 1}, '<0.2')
+        this.tl.fromTo(this.titleSplit.chars, {yPercent: 110}, {yPercent: 0, stagger: 0.01}, 0.2)
     }
 
     resize()
@@ -57,7 +52,5 @@ export default class Loader
         if(this.destroyed) return
 
         this.destroyed = true
-
-        this.tl?.kill()
     }
 }
