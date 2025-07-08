@@ -79,11 +79,16 @@ export default class World
 
         this.items = new Items(this.app, this.gl, this.scene, this.main, this.resources.items, this.videoTexetures, this.items)
 
-        this.app.page.triggerLoad()
-        if(!this.app.onceLoaded) this.app.globalLoader.tl.play()
-        else this.app.enterPage.tl.play()
-
         this.app.trigger('loadedWorld')
+
+
+        if(!this.app.onceLoaded)
+        {
+            this.app.globalLoader.tl.play()
+            this.app.page.triggerLoad()
+        }
+        // else this.app.enterPage.tl.play()
+
     }
 
     setScroll(e)
@@ -117,7 +122,6 @@ export default class World
 
     destroy()
     {
-        console.log('Destroying Cases World')
         this.items?.destroy()
     }
 }

@@ -2,7 +2,6 @@ import { WebGLRenderTarget, Box3, VideoTexture } from 'three'
 import Resources from '@utils/Resources'
 import gsap from 'gsap'
 
-import Hero from './meshs/hero/index.js'
 import FluidMask from '@gl/utils/fluidMask/index.js'
 
 
@@ -25,11 +24,9 @@ export default class World
 
     load()
     {
-        this.hero = this.main.querySelector('.h-services')
-        this.texture = this.hero.querySelector('.h-services_bg').querySelector('img')
         this.footerLogo = this.main.querySelector('.footer_logo')
+        this.sources = []
 
-        this.sources = [{ type: 'textureLoader', url: this.texture.getAttribute('src'), name: 'hero' }]
         if(this.footerLogo)
         {
             const texture = this.footerLogo.dataset.texture
@@ -45,8 +42,6 @@ export default class World
     init()
     {
         this.gl.loaded = true
-
-        this.hero = new Hero(this.app, this.gl, this.scene, this.main, this.resources.items.hero, this.texture)
 
         if(this.footerLogo)
         {
@@ -64,13 +59,11 @@ export default class World
 
     setScroll(e)
     {
-        this.hero?.setPosition(e)
         this.footerFluid?.setPosition(e)
     }
 
     update()
     {
-        this.hero?.update()
         this.footerFluid?.update()
     }
 
@@ -85,7 +78,6 @@ export default class World
 
     resize()
     {
-        this.hero?.resize()
         this.footerFluid?.resize()
     }
 
@@ -96,7 +88,6 @@ export default class World
 
     destroy()
     {
-        this.hero?.destroy()
         this.footerFluid?.destroy()
     }
 }

@@ -84,7 +84,7 @@ export default class HomeCta
         if(this.destroyed) return
 
         this.splits.forEach(split => split.revert())
-        this.tls.forEach(({tl}) => tl.kill())
+        this.tls.forEach(tl => tl.kill())
         this.masterTl.kill()
         this.scroll.kill()
 

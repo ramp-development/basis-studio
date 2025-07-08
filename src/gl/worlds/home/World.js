@@ -22,8 +22,7 @@ export default class World
         this.camera = this.gl.camera.instance
         this.scene = scene
 
-        if(this.app.moduleLoaded) this.load()
-        else this.app.on('modulesLoaded', () => this.load())
+        this.load()
     }
 
     load()
@@ -89,7 +88,6 @@ export default class World
             this.app.globalLoader.tl.play()
             this.app.page.triggerLoad()
         }
-        else this.app.enterPage.tl.play()
     }
 
     setScroll(e)

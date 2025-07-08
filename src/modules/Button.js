@@ -7,10 +7,10 @@ export default class Button
         this.instance = instance
         this.app = app
 
-        this.textParent = this.instance.querySelector('.btn_text')
-        this.text = this.textParent.children[0]
-        this.clone = this.text.cloneNode(true)
-        this.textParent.appendChild(this.clone)
+        // this.textParent = this.instance.querySelector('.btn_text')
+        // this.text = this.textParent.children[0]
+        // this.clone = this.text.cloneNode(true)
+        // this.textParent.appendChild(this.clone)
 
         this.destroyed = false
         this.enterPlayed = false
@@ -22,16 +22,16 @@ export default class Button
 
     init()
     {
-        this.splitMain = new SplitText(this.text, { type: 'chars' })
-        this.splitCopy = new SplitText(this.clone, { type: 'chars' })
+        // this.splitMain = new SplitText(this.text, { type: 'chars' })
+        // this.splitCopy = new SplitText(this.clone, { type: 'chars' })
 
-        this.tl = gsap.timeline({ paused: true, defaults: { ease: def.ease, duration: def.duration, stagger: def.stagger * 0.25 } })
+        // this.tl = gsap.timeline({ paused: true, defaults: { ease: def.ease, duration: def.duration, stagger: def.stagger * 0.25 } })
 
-        this.tl.fromTo(this.splitMain.chars, { yPercent: 0 }, { yPercent: -110 })
-        .fromTo(this.splitCopy.chars, { yPercent: 110 }, { yPercent: 0 }, '<0.1')
+        // this.tl.fromTo(this.splitMain.chars, { yPercent: 0 }, { yPercent: -110 })
+        // .fromTo(this.splitCopy.chars, { yPercent: 110 }, { yPercent: 0 }, '<0.1')
 
-        this.instance.addEventListener('mouseenter', () => this.tl.play())
-        this.instance.addEventListener('mouseleave', () => this.tl.reverse())
+        // this.instance.addEventListener('mouseenter', () => this.tl.play())
+        // this.instance.addEventListener('mouseleave', () => this.tl.reverse())
 
         if(this.instance.dataset.scroll == 'false') return
 
@@ -56,11 +56,8 @@ export default class Button
     {
         if(this.destroyed) return
 
-        this.instance.removeEventListener('mouseenter', () => this.tl.play())
-        this.instance.removeEventListener('mouseleave', () => this.tl.reverse())
+        this.enterPlayed = false
 
-        this.splitMain?.revert()
-        this.splitCopy?.revert()
         this.tl?.kill()
         this.tlEnter?.kill()
         this.scroll?.kill()

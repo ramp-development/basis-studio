@@ -10,11 +10,11 @@ export default class index
         this.once = false
 
         this.triggerLoad = async () => this.load()
+        if(this.app.onceLoaded) this.load()
     }
 
     load()
     {
-        if(this.once) return
         this.loader = new Loader(this.main, this.app)
         this.hero = new Hero(this.main, this.app)
 

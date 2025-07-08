@@ -1,4 +1,4 @@
-import { WebGLRenderer, ACESFilmicToneMapping, Color } from 'three'
+import { WebGLRenderer, ACESFilmicToneMapping, Color, TorusKnotGeometry } from 'three'
 
 export default class Renderer
 {

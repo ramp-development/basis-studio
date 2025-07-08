@@ -9,6 +9,7 @@ export default class index
         this.once = false
 
         this.triggerLoad = async () => this.load()
+        if(this.app.onceLoaded) this.load()
     }
 
     load()

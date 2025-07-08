@@ -91,6 +91,7 @@ export default class index
                 uRotateY: new Uniform(0),
                 uRadius: new Uniform(0.02),
                 uZoom: new Uniform(0.55),
+                uLoading: new Uniform(0),
                 uTime: new Uniform(0),
                 uFluid: new Uniform(null),
                 uOffset: new Uniform(null),

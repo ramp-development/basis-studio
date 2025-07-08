@@ -6,7 +6,7 @@ uniform vec2 uSize;
 uniform vec2 uAspect;
 uniform float uBorder;
 uniform float uParallax;
-uniform float uLoading;
+uniform float uScroll;
 
 varying vec2 vUv;
 varying vec2 screenUv;
@@ -22,10 +22,10 @@ void main()
     vec2 coverUv = getCoverUv(uv, uAspect, uSize);
 
     coverUv -= 0.5;
-    coverUv *= 0.9;
+    coverUv *= 0.9 + (1. - uScroll) * 0.1;
     coverUv += 0.5;
 
-    coverUv.x += uParallax;
+    coverUv.y -= uScroll * 0.1;
 
     vec4 color = texture2D(uTexture, coverUv);
     float alpha = getAlpha(uSize, uBorder, uv);
@@ -35,19 +35,21 @@ void main()
     cursor = clamp(cursor, 0.0, 1.0);
     cursor = pow(cursor, 2.5); // Adjust cursor sensitivity
 
-    color.a *= alpha * uLoading;
+    color.a *= alpha;
 
     float tintAmount = smoothstep(0.0, 1.0, cursor) * 0.1;
 
     // color.rgb = mix(color.rgb, 1.0 - color.rgb, cursor);
     // vec3 blurColor = 1.0 - fastGaussianBlur(uTexture, coverUv, oldCursor * 5.).rgb;
     vec3 blurColor = fastGaussianBlur(uTexture, coverUv, oldCursor * 5.).rgb;
-    blurColor = applyOverlayTint(blurColor, uColor, cursor * 0.2);
+    blurColor = applyOverlayTint(blurColor, uColor, cursor);
     color.rgb = mix(color.rgb, blurColor, cursor * 2.0);
 
     float fadeArea = smoothstep(0.0, 0.5, uv.y);
     color.rgb = mix(color.rgb * 0.2, color.rgb, fadeArea);
 
+    float alphaFade = step(uScroll, uv.y);
+    color.a *= alphaFade;
+
     gl_FragColor = color;
-    // gl_FragColor = vec4(cursor, 0.0, 0.0, 1.0);
 }

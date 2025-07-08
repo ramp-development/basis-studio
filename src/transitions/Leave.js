@@ -22,16 +22,16 @@ export default class Leave
 
         gsap.to(this.loader, {'--leftClip': 0, onComplete: () =>
         {
+            this.app.trigger('destroy')
+            this.app.gl.loaded = false
+
             ScrollTrigger.killAll()
             done()
 
             this.app.onceLoaded = true
-            this.app.trigger('destroy')
 
             this.app.scroll.destroy()
             window.scrollTo(0, 0)
         }})
-
-        this.app.gl.loaded = false
     }
 }

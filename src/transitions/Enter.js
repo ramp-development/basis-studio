@@ -51,15 +51,18 @@ export default class Enter
 
         // }, 200)
 
-        this.checkPages(this.app, this.container)
         this.app.gl.loadWorld(this.container)
 
         this.app.on('loadedWorld', async () =>
         {
             if(this.once) return
+
+            this.checkPages(this.app, this.container)
             this.app.moduleLoader.loadModules(this.container)
-            this.app.page.triggerLoad()
-            await this.app.scroll.init()
+
+            this.app.scroll.init()
+            this.app.scroll.lenis.on('scroll', e => this.app.gl.setScroll(e))
+            this.tl.play()
 
             this.once = true
         })

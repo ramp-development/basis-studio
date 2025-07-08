@@ -9,7 +9,7 @@ export default class Cursor
         this.main = main
         this.app.cursor = this
 
-        this.instance.classList.add('.loaded')
+        this.instance.classList.add('loaded')
 
         this.destroyed = false
         this.cursor = this.instance.querySelector('.cursor')

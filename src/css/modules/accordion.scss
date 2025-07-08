@@ -19,11 +19,10 @@
 {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows var(--ease);
+    transition: grid-template-rows 0.8s var(--ease);
 }
 
 .accordion_icon
 {
-    transition: transform var(--ease), color var(--ease);
+    transition: transform 0.8s var(--ease), color 0.8s var(--ease);
 }
-  

@@ -45,6 +45,8 @@ export default class TextAnimation
     {
         if(this.destroyed) return
 
+        this.played = false
+
         this.split?.revert()
         this.tl?.kill()
         this.scroll?.kill()

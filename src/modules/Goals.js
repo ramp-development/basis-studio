@@ -78,18 +78,6 @@ export default class Goals
         })
     }
 
-    getTop(el)
-    {
-        let top = 0
-        while(el && el !== document.body)
-        {
-            top += el.offsetTop || 0
-            el = el.offsetParent
-        }
-        return top
-    }
-
-
     resize()
     {
         if(this.destroyed) return
@@ -100,7 +88,7 @@ export default class Goals
             split.descr.revert()
         })
 
-        this.tls.forEach(({ tl }) => tl.kill())
+        this.tls.forEach(tl => tl.kill())
         this.mastelTL.kill()
         this.scroll.kill()
 

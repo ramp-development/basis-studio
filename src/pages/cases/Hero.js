@@ -69,6 +69,8 @@ export default class Hero
         })
 
         this.scrolls = []
+        this.innerTls = []
+        this.enterInnerTls = []
 
         this.items.forEach((item, index) =>
         {
@@ -86,6 +88,21 @@ export default class Hero
                     this.quicks[index](progress)
                     // mesh.material.uniforms.uParallax.value = progress
                 }
+            })
+
+            if(index < 2) return
+
+            this.innerTls[index] = gsap.timeline({paused: true, defaults: {ease: 'power3', duration: 1}})
+
+            this.innerTls[index].fromTo(mesh.material.uniforms.uLoading, {value: 0}, {value: 1})
+            .fromTo(item, {yPercent: 20, opacity: 0}, {yPercent: 0, opacity: 1}, '<')
+
+            this.enterInnerTls[index] = ScrollTrigger.create(
+            {
+                trigger: item,
+                start: 'left 75%',
+                containerAnimation: this.tl,
+                onEnter: () => this.innerTls[index].play(),
             })
         })
     }

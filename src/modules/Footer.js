@@ -1,3 +1,5 @@
+import LinkAnimation from '@utils/LinkAnimation.js'
+
 export default class Footer
 {
     constructor(instance, app, main)
@@ -8,6 +10,9 @@ export default class Footer
 
         this.clocks = this.instance.querySelectorAll('.footer_clock-item')
         this.app.observer.instance.observe(this.instance)
+
+        this.links = this.instance.querySelectorAll('.footer_link')
+        this.links.forEach(link => new LinkAnimation(link, this.app))
 
         this.clocks.forEach(clock =>
         {

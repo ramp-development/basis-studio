@@ -189,7 +189,7 @@ export default class Calendar
     onCalendarLoaded()
     {
         // Add any custom logic after calendar is loaded
-        console.log('Cal.com calendar loaded successfully')
+        // console.log('Cal.com calendar loaded successfully')
 
         // You can trigger custom events here if needed
         // this.app.trigger('calendarLoaded')

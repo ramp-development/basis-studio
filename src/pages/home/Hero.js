@@ -16,7 +16,8 @@ export default class Hero
         {
             const x = gsap.quickTo(image, 'x', { duration: 0.5, ease: 'power2', onUpdate: () =>
                 {
-                    if(index !== 0) return
+                    if(index !== 0 || this.destroyed) return
+
                     this.app.gl.world.hero.setPosition()
                 }
             })
@@ -27,7 +28,7 @@ export default class Hero
             return {x, y, random}
         })
 
-        window.addEventListener('mousemove', (e) => this.mouseMove(e))
+        this.main.addEventListener('mousemove', (e) => this.mouseMove(e))
         this.init()
         this.app.on('resize', () => this.resize())
         this.app.on('destroy', () => this.destroy())
@@ -36,6 +37,7 @@ export default class Hero
     mouseMove(e)
     {
         if(this.destroyed) return
+
 
         const mouse = { x: e.clientX / window.innerWidth - 0.5, y: e.clientY / window.innerHeight - 0.5 }
         const distanceX = window.innerWidth * 0.2
