@@ -27,6 +27,18 @@ export default class ModuleLoader extends EventEmitter
                 const values = moduleName.split(' ')
                 for(const value of values)
                 {
+
+                    if(value === '' || value === ' ')
+                    {
+                        count++
+                        if(count === elements.length && !loaded)
+                        {
+                            loaded = true
+                            this.trigger('loaded')
+                        }
+                        return
+                    }
+
                     const module = await import(`@modules/${value}.js`).then(module =>
                     {
                         new module.default(element, this.app, main)

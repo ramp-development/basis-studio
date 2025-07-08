@@ -154,8 +154,8 @@ export default class index
         this.offset.x = this.lerp(this.offset.x, this.mouse.x, 0.1)
         this.offset.y = this.lerp(this.offset.y, this.mouse.y, 0.1)
 
-        this.offsetQuicks.x(-(this.mouse.x - this.offset.x) * 0.15)
-        this.offsetQuicks.y((this.mouse.y - this.offset.y) * 0.09)
+        this.offsetQuicks.x(-(this.mouse.x - this.offset.x) * 0.1)
+        this.offsetQuicks.y((this.mouse.y - this.offset.y) * 0.02)
     }
 
     resize()

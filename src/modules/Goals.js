@@ -33,117 +33,48 @@ export default class Goals
             const titleSplit = new SplitText(left.querySelector('p'), { type: 'lines, words', wordsClass: 'word', linesClass: 'line' })
             const descrSplit = new SplitText(right.querySelector('p'), { type: 'lines, words', wordsClass: 'word', linesClass: 'line' })
 
-            titleSplit.lines.forEach((line, lineIndex) =>
-            {
-                const words = line.querySelectorAll('.word')
-                words.forEach((word, wordIndex) =>
-                {
-                    const position = wordIndex * 0.02 + lineIndex * 0.08
-                    word.style.setProperty('--delay', position + 's')
-                })
-            })
-
-            descrSplit.lines.forEach((line, lineIndex) =>
-            {
-                const words = line.querySelectorAll('.word')
-                words.forEach((word, wordIndex) =>
-                {
-                    const position = wordIndex * 0.02 + lineIndex * 0.08
-                    word.style.setProperty('--delay', position + 's')
-                })
-            })
-
             return { title: titleSplit, descr: descrSplit }
         })
 
+        this.mastelTL = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
+
         this.tls = [...this.items].map((item, index) =>
         {
-            // const split = this.splits[index]
+            const split = this.splits[index]
 
-            // const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3', duration: def.duration, stagger: { from: 'center', each: def.stagger } } })
+            const tl = gsap.timeline({ defaults: { ease: 'power3', duration: def.duration, stagger: { from: 'center', each: def.stagger } } })
 
-            // if(index > 0)
-            // {
-            //     this.splits[index - 1].title.lines.forEach((line, lineIndex) =>
-            //     {
-            //         const chars = line.querySelectorAll('.char')
-            //         chars.forEach((char, charIndex) =>
-            //         {
-            //             const position = Math.abs(charIndex - chars.length / 2) * 0.04 + lineIndex * 0.08
-            //             tl.to(char, { yPercent: 110, overwrite: 'auto' }, position)
-            //         })
-            //     })
-
-            //     this.splits[index - 1].descr.lines.forEach((line, lineIndex) =>
-            //     {
-            //         const words = line.querySelectorAll('.word')
-            //         words.forEach((word, wordIndex) =>
-            //         {
-            //             const position = Math.abs(wordIndex - words.length / 2) * 0.04 + lineIndex * 0.08
-            //             tl.to(word, { yPercent: 110, overwrite: 'auto' }, position)
-            //         })
-            //     })
-
-            //     const number = this.items[index - 1].querySelector('.goals_number')
-
-            //     tl.to(number, { yPercent: 110, overwrite: 'auto' }, 0)
-            // }
-
-            // split.title.lines.forEach((line, lineIndex) =>
-            // {
-            //     const chars = line.querySelectorAll('.char')
-            //     chars.forEach((char, charIndex) =>
-            //     {
-            //         const start = index > 0 ? 0.1 : 0
-            //         const position = Math.abs(charIndex - chars.length / 2) * 0.04 + lineIndex * 0.08 + start
-            //         tl.fromTo(char, { yPercent: -110 }, { yPercent: 0, overwrite: 'auto'}, position)
-            //     })
-            // })
-
-            // split.descr.lines.forEach((line, lineIndex) =>
-            // {
-            //     const words = line.querySelectorAll('.word')
-            //     words.forEach((word, wordIndex) =>
-            //     {
-            //         const start = index > 0 ? 0.1 : 0
-            //         const position = Math.abs(wordIndex - words.length / 2) * 0.04 + lineIndex * 0.08 + start
-            //         tl.fromTo(word, { yPercent: -110 }, { yPercent: 0, overwrite: 'auto'}, position)
-            //     })
-            // })
-
-            // const number = item.querySelector('.goals_number')
-            // tl.fromTo(number, { yPercent: -110 }, { yPercent: 0, overwrite: 'auto', immediateRender: false}, 0)
-
-            const scroll = ScrollTrigger.create(
+            if(index > 0)
             {
-                trigger: this.instance,
-                start: `top top-=${index * this.itemPart}`,
-                end: `+=${this.itemPart - 100}`,
-                onEnter: () =>
-                {
-                    this.items.forEach(el => el.classList.remove('active'))
-                    item.classList.add('active')
-                    item.classList.remove('past')
-                    if(index !== 0)
-                    {
-                        this.items[index - 1].classList.remove('active')
-                        this.items[index - 1].classList.add('past')
-                    }
-                },
-                onEnterBack: () =>
-                {
-                    this.items.forEach(el => el.classList.remove('active'))
-                    item.classList.add('active')
-                    item.classList.remove('past')
-                    // if(index !== this.items.length - 1)
-                    // {
-                    //     this.items[index + 1].classList.remove('active')
-                    //     this.items[index + 1].classList.add('past')
-                    // }
-                }
-            })
+                tl.to(this.splits[index - 1].title.words, {opacity: 0, filter: 'blur(10px)', overwrite: 'auto', stagger: {each: 0.01, from: 'random'}, duration: 0.8}, 0)
+                .to(this.splits[index - 1].descr.words, {opacity: 0, filter: 'blur(10px)', overwrite: 'auto', stagger: {each: 0.01, from: 'random'}, duration: 0.8}, 0)
+                .to(this.items[index - 1].querySelector('.goals_number'), {opacity: 0, filter: 'blur(10px)', overwrite: 'auto'}, 0)
+            }
 
-            return { scroll }
+            tl.fromTo(split.title.words,
+                { autoAlpha: 0, filter: 'blur(10px)' },
+                { autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, overwrite: 'auto' }, '<50%')
+            .fromTo(split.descr.words,
+                { autoAlpha: 0, filter: 'blur(10px)' },
+                { autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.05, from: 'random'}, overwrite: 'auto' }, '<0.1')
+            .fromTo(item.querySelector('.goals_number'), { autoAlpha: 0, filter: 'blur(10px)' }, { autoAlpha: 1, filter: 'blur(0px)', overwrite: 'auto' }, '<0.1')
+
+            const start = index === 0 ? 0 : '>0.2'
+
+            this.mastelTL.add(tl, start)
+
+            return tl
+        })
+
+        this.mastelTL.fromTo(this.instance.querySelectorAll('.goals_number'), { scale: 1 }, { scale: 1.4, stagger: 0, duration: this.mastelTL.duration() }, 0)
+
+        this.scroll = ScrollTrigger.create(
+        {
+            trigger: this.instance,
+            start: 'top top',
+            end: 'bottom bottom+=100%',
+            scrub: true,
+            animation: this.mastelTL,
         })
     }
 
@@ -169,11 +100,9 @@ export default class Goals
             split.descr.revert()
         })
 
-        this.tls.forEach(({ scroll }) =>
-        {
-            // tl.kill()
-            scroll.kill()
-        })
+        this.tls.forEach(({ tl }) => tl.kill())
+        this.mastelTL.kill()
+        this.scroll.kill()
 
         this.init()
     }

@@ -1,9 +1,11 @@
 import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, Color } from 'three'
-import { gsap, ScrollTrigger } from '@utils/GSAP.js'
+import { gsap, ScrollTrigger } from 'gsap/all'
 
 import vertex from './vertex.glsl'
 import fragment from './fragment.glsl'
 import { UpdateGeometry } from '@gl/UpdateGeometry.js'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default class index
 {
@@ -43,6 +45,7 @@ export default class index
                 uSize: new Uniform(new Vector2(0, 0)),
                 uFluid: new Uniform(null),
                 uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
+                uLoading: new Uniform(0),
             },
         })
     }
@@ -60,6 +63,16 @@ export default class index
         this.scene.add(this.mesh)
 
         this.setPosition()
+
+        ScrollTrigger.create(
+        {
+            trigger: this.item,
+            start: 'top 80%',
+            onEnter: () =>
+            {
+                gsap.to(this.material.uniforms.uLoading, {value: 1, duration: 1.6, ease: 'power3'})
+            }
+        })
     }
 
     setPosition()

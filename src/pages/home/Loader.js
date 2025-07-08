@@ -42,12 +42,12 @@ export default class Loader
         })
 
         this.tl.fromTo(this.titleSplit.chars,
-            {yPercent: 20, opacity: 0, filter: 'blur(10px)', scale: 0.8},
-            {yPercent: 0, opacity: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, scale: 1, duration: 1.1}, 0.8)
+            {opacity: 0, filter: 'blur(10px)'},
+            {opacity: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, duration: 1.1}, 0.8)
         .fromTo(this.descrSplit.words,
-            {yPercent: 20, opacity: 0, filter: 'blur(10px)', scale: 0.8},
-            {yPercent: 0, opacity: 1, filter: 'blur(0px)', stagger: {each: 0.05, from: 'random'}, scale: 1, duration: 1.1}, '<0.2')
-        .fromTo(this.btn, { opacity: 0, yPercent: 20, filter: 'blur(10px)', scale: 0.8 }, { opacity: 1, yPercent: 0, filter: 'blur(0px)', scale: 1 }, '<0.3')
+            {opacity: 0, filter: 'blur(10px)'},
+            {opacity: 1, filter: 'blur(0px)', stagger: {each: 0.05, from: 'random'}, duration: 1.1}, '<0.2')
+        .fromTo(this.btn, { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)',}, '<0.3')
     }
 
     resize()

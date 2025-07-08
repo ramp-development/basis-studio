@@ -31,7 +31,7 @@ export default class Talk
         {
             const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3', duration: def.duration, stagger: { from: 'center', each: def.stagger } } })
 
-            tl.fromTo(this.splits[index].chars, { yPercent: -110 }, { yPercent: 0 })
+            tl.fromTo(this.splits[index].chars, { opacity: 0, filter: 'blur(15px)' }, { opacity: 1, filter: 'blur(0px)' })
 
             const scroll = ScrollTrigger.create(
             {
@@ -48,6 +48,7 @@ export default class Talk
             {
                 trigger: item,
                 start: `center center`,
+                end: `+=${height * 0.5}`,
                 onEnter: () =>
                 {
                     this.items.forEach(i => i.classList.remove('active'))

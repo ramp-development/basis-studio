@@ -24,8 +24,8 @@ export default class CharAnimation
         this.tl = gsap.timeline({paused: true, defaults: {ease: def.ease, duration: def.duration}})
 
         this.tl.fromTo(this.split.chars,
-            { yPercent: -30, autoAlpha: 0, filter: 'blur(10px)', scale: 0.8 },
-            { yPercent: 0, autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, scale: 1, }, '<0.1')
+            { autoAlpha: 0, filter: 'blur(10px)' },
+            { autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'} }, '<0.1')
 
         this.scroll = ScrollTrigger.create(
         {
