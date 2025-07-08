@@ -23,9 +23,9 @@ export default class TextAnimation
         this.split = new SplitText(this.text, { type: 'words, lines'})
         this.tl = gsap.timeline({paused: true, defaults: {ease: def.ease, duration: def.duration}})
 
-        this.tl.fromTo(this.split.words,
-            { autoAlpha: 0, filter: 'blur(10px)', },
-            { autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'} }, '<0.1')
+        this.tl.fromTo(this.split.lines,
+            { autoAlpha: 0, filter: 'blur(10px)' },
+            { autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.1, from: 'start'} }, '<0.1')
 
         this.scroll = ScrollTrigger.create(
         {
