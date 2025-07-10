@@ -1,0 +1,17 @@
+.popup
+{
+    display: block;
+    visibility: hidden;
+    pointer-events: none;
+
+    &.active
+    {
+        visibility: visible;
+        pointer-events: auto;
+    }
+}
+
+.popup_body
+{
+    overflow-y: scroll;
+}

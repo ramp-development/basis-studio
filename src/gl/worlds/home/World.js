@@ -76,11 +76,6 @@ export default class World
             this.nowFluid = new FluidMask(this.app, this.gl, this.scene, this.nowText, this.resources.items.nowText)
         }
 
-        if(this.testimonials)
-        {
-            this.cards = new Cards(this.app, this.gl, this.scene, this.main, this.testimonials)
-        }
-
         this.app.trigger('loadedWorld')
 
         if(!this.app.onceLoaded)
@@ -97,7 +92,6 @@ export default class World
         this.hero?.setPosition()
         this.footerFluid?.setPosition()
         this.nowFluid?.setPosition()
-        this.cards?.setPosition(e)
     }
 
     update()
@@ -107,7 +101,6 @@ export default class World
         this.hero?.update()
         this.footerFluid?.update()
         this.nowFluid?.update()
-        this.cards?.update()
     }
 
     createTexture(target)
@@ -126,7 +119,6 @@ export default class World
         this.hero?.resize()
         this.footerFluid?.resize()
         this.nowFluid?.resize()
-        this.cards?.resize()
     }
 
     onMouseMove(e, mouse)
@@ -141,6 +133,5 @@ export default class World
         this.hero?.destroy()
         this.footerFluid?.destroy()
         this.nowFluid?.destroy()
-        this.cards?.destroy()
     }
 }
