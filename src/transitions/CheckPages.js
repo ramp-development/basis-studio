@@ -28,5 +28,11 @@ export const CheckPages = async (app, main) =>
             const mod = await import('@pages/services')
             return app.page = new mod.default(main, app)
         }
+
+        case 'fintech':
+        {
+            const mod = await import('@pages/fintech')
+            return app.page = new mod.default(main, app)
+        }
     }
 }

@@ -8,7 +8,7 @@ export default class Loader
         this.main = main
         this.app = app
 
-        this.hero = this.main.querySelector('.h-services')
+        this.hero = this.main.querySelector('.inner-hero')
         // // this.meshs = this.app.gl.world.items.meshs
         this.title = this.hero.querySelector('h1')
 

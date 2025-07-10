@@ -1,8 +1,8 @@
 import Core from 'smooothy'
 import Tempus from "tempus"
-import { gsap, ScrollTrigger } from 'gsap/all'
+import { gsap, ScrollTrigger, MotionPathPlugin } from 'gsap/all'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin)
 
 export default class Cards
 {
@@ -13,30 +13,33 @@ export default class Cards
 
         this.wrapper = this.instance.querySelector('[wrapper]')
         this.cards = this.instance.querySelectorAll('.card')
-        // this.clones = [...this.cards].map(item =>
-        // {
-        //     const clone = item.cloneNode(true)
-        //     this.wrapper.appendChild(clone)
-        //     return clone
-        // })
+        this.path = this.instance.querySelector('.curve-path').querySelector('path')
 
-        // this.rotations = [...this.cards].map(item => gsap.quickTo(item, 'rotation', {duration: 0.4, ease: 'power2'}))
-        // this.yMove = [...this.cards].map(item => gsap.quickTo(item, 'yPercent', {duration: 0.4, ease: 'power2'}))
-
-        // this.cards.forEach((item, index) =>
-        // {
-        //     // this.setRotation(item, index)
-        // })
-
-        this.quicks = [...this.cards].map(item =>
+        this.quicks = [...this.cards].map((item, index) =>
         {
             const rotation = gsap.quickTo(item, 'rotation', { duration: 0.4, ease: 'power2' })
-            const y = gsap.quickTo(item, 'yPercent', { duration: 0.4, ease: 'power2' })
+            const y = gsap.quickTo(item, 'y', { duration: 0.4, ease: 'power2' })
             const x = gsap.quickTo(item, 'x', { duration: 0.4, ease: 'power2' })
 
-            // this.setRotation(item, this.quicks.length - 1)
+            return { rotation, y, x, item, endY: 0 }
+        })
 
-            return { rotation, y, x, item }
+        let count = 0
+
+        this.cards.forEach((item, index) =>
+        {
+            const centerIndex = (1 - Math.abs(index - (this.quicks.length - 1) / 2) / (this.quicks.length - 1)) / 2
+
+            item.addEventListener('mouseenter', () =>
+            {
+                this.quicks[index].y(item.getBoundingClientRect().height * -0.1 * centerIndex)
+                item.style.setProperty('z-index', count++)
+            })
+
+            item.addEventListener('mouseleave', () =>
+            {
+                this.quicks[index].y(this.quicks[index].endY)
+            })
         })
 
         this.destroyed = false
@@ -48,37 +51,53 @@ export default class Cards
 
     init()
     {
+        this.cards.forEach(item => item.classList.add('absolute'))
         this.height = this.cards[0].getBoundingClientRect().height
         this.width = this.cards[0].getBoundingClientRect().width
-        this.cards.forEach(item => item.classList.add('absolute'))
 
         gsap.set(this.wrapper, { height: this.height + 'px' })
         const wrapperWidth = this.wrapper.getBoundingClientRect().width
         const cardsTotalWidth = this.cards.length * this.width
-        const offset = (wrapperWidth - cardsTotalWidth) / 2
-        console.log(offset)
+        const offset = (wrapperWidth - cardsTotalWidth) / this.cards.length
+        console.log(wrapperWidth, this.width, this.cards.length, cardsTotalWidth, offset)
 
-        this.tl = gsap.timeline({paused: true, defaults: { duration: 1.2, ease: 'power2' }})
+        this.staggerAmount = 0.5
+        this.staggerDelay = 0.2
+        this.rotation = 25
+
+        this.tl = gsap.timeline({paused: true, defaults: { duration: 2, ease: 'power2' }})
         this.scrollValue = { value: 0 }
+        this.rawPath = MotionPathPlugin.getRawPath(this.path)
 
-        this.tl.fromTo(this.scrollValue, { value: 0 },
+        this.tl.fromTo(this.scrollValue, {value: 0},
             {
                 value: 1,
                 onUpdate: () =>
                 {
+                    const progress = this.scrollValue.value
                     this.quicks.forEach(({rotation, y, x, item}, index) =>
                     {
-                        const progress = this.scrollValue.value
                         let centerIndex = Math.abs(index - (this.quicks.length - 1) / 2)
                         if(index > (this.quicks.length - 1) / 2) centerIndex *= -1
+                        const staggerOffset = index * this.staggerDelay
+                        const staggeredProgress = Math.max(0, Math.min(1,
+                            (progress - staggerOffset * this.staggerAmount) / (1 - this.staggerAmount)
+                        ))
                         // fil all cards inside the wrapper
                         const startX = window.innerWidth
-                        const endX = startX * (1 - progress) + (offset * centerIndex) * progress
-                        const rotationValue = this.setRotation(item, index)
+                        const endX = startX * (1 - staggeredProgress) + (offset * centerIndex) * staggeredProgress
+                        const rotateProgres = 1 - ((index + 1) / this.quicks.length) * progress
 
+                        const point = MotionPathPlugin.getPositionOnPath(this.rawPath, rotateProgres , true)
+                        // const rotationValue = 5 * (1 - staggeredProgress) + point.angle * staggeredProgress
+                        const rotationValue = point.angle / 2
+                        const yValue = window.innerHeight * 0.15 * (1 - staggeredProgress) + point.y / 2 * staggeredProgress
+
+                        // Apply position from motion path
                         x(endX)
-                        rotation(rotationValue)
-                        y(Math.abs(rotationValue))
+                        y(yValue)
+                        rotation(-rotationValue)
+                        this.quicks[index].endY = yValue
 
                     })
                 }
@@ -88,7 +107,7 @@ export default class Cards
         {
             trigger: this.wrapper,
             start: 'top 80%',
-            onEnter: () => this.tl.restart(),
+            onEnter: () => this.tl.play(),
         })
         // this.slider = new Core(this.wrapper,
         // {
@@ -98,24 +117,14 @@ export default class Cards
         // Tempus.add(() => this.slider.update())
     }
 
-    setRotation(item, index)
-    {
-        const { x, width, height } = item.getBoundingClientRect()
-        const windowCenter = window.innerWidth / 2
-
-        const itemCenterDistance = x + width / 2 - windowCenter
-        const rotation = Math.sin(itemCenterDistance / windowCenter) * 25
-        // const yMove = Math.abs(Math.sin(itemCenterDistance / windowCenter) * 0.5 * height)
-        const yMove = Math.abs(rotation)
-        // const yMove = Math.abs(rotation * 0.01 * height)
-        // this.rotations[index](rotation)
-        // this.yMove[index](Math.abs(rotation))
-        return rotation
-    }
-
     resize()
     {
         if(this.destroyed) return
+
+        this.tl?.kill()
+        this.srcoll?.kill()
+
+        this.init()
     }
 
     destroy()

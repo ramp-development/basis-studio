@@ -16,6 +16,7 @@ export default class Cursor
         this.cursorText = this.instance.querySelector('.heading_span')
 
         this.triggers = this.main.querySelectorAll('[data-cursor-trigger]')
+        this.lastTrigger = null
 
         this.quicks =
         {
@@ -47,7 +48,17 @@ export default class Cursor
             this.quicks.y(y)
         })
 
-        this.tl = gsap.timeline({ paused: true })
+        this.tl = gsap.timeline(
+        {
+            paused: true,
+            onReverseComplete: () =>
+            {
+                if(this.lastTrigger.dataset.cursorTrigger === 'Scroll')
+                {
+                    this.cursor.classList.remove('stroke')
+                }
+            }
+        })
         this.tl.fromTo(this.cursor, { scale: 0 }, { scale: 1, duration: 0.4, ease: 'power2' })
 
         this.triggers.forEach(trigger =>
@@ -56,8 +67,15 @@ export default class Cursor
 
             trigger.addEventListener('mouseenter', () =>
             {
+                if(trigger.dataset.cursorTrigger === 'Scroll')
+                {
+                    this.cursor.classList.add('stroke')
+                }
+
                 this.tl.play()
                 this.cursorText.textContent = text
+
+                this.lastTrigger = trigger
             })
 
             trigger.addEventListener('mouseleave', () =>

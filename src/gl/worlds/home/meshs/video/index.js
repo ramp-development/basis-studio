@@ -127,22 +127,27 @@ export default class index
 
             this.app.observer.instance.observe(item)
 
-            const tl = gsap.timeline({paused: true, defaults: {duration: 1, ease: 'power2.in'}})
-            tl.to(material.uniforms.uReveal, {value: 1.55})
-            .fromTo(material.uniforms.uRotate, {value: -0.2}, {value: Math.PI / 3}, '<')
-            .to(material.uniforms.uRotateX, {value: 0.7, duration: 0.3}, '<')
+            const tl = gsap.timeline({paused: true, defaults: {duration: 1, ease: 'power2.out'}})
+            tl.to(material.uniforms.uReveal, {value: 1})
+            .fromTo(material.uniforms.uRotate, {value: -0.1}, {value: 0}, '<')
+            // .to(material.uniforms.uRotateX, {value: 0.7, duration: 0.3}, '<')
             .fromTo(material.uniforms.uRadius, {value: 0}, {value: 0.02, duration: 0.2}, '<')
-            .to(material.uniforms.uRotateY, {value: -0.3, duration: 0.3}, '<0.2')
+            // .to(material.uniforms.uRotateY, {value: -0.3, duration: 0.3}, '<0.2')
+            // tl.to(material.uniforms.uReveal, {value: 1.55})
+            // .fromTo(material.uniforms.uRotate, {value: -0.2}, {value: Math.PI / 3}, '<')
+            // .to(material.uniforms.uRotateX, {value: 0.7, duration: 0.3}, '<')
+            // .fromTo(material.uniforms.uRadius, {value: 0}, {value: 0.02, duration: 0.2}, '<')
+            // .to(material.uniforms.uRotateY, {value: -0.3, duration: 0.3}, '<0.2')
 
             ScrollTrigger.create(
             {
                 trigger: item,
-                start: 'top 80%',
+                start: 'top 90%',
                 onEnter: () =>
                 {
                     if(revealed) return
                     revealed = true
-                    tl.play()
+                    tl.restart()
                 }
             })
 

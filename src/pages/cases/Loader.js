@@ -50,8 +50,8 @@ export default class Loader
     {
         if(this.destroyed) return
 
-        this.titleSplit.revert()
-        this.descrSplit.revert()
+        this.titleSplit?.revert()
+        this.descrSplit?.revert()
     }
 
     destroy()

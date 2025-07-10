@@ -5,8 +5,20 @@
         height: calc(50vh * var(--length));
     }
 
-    .cases_image
+    [data-transition-page="cases"]
     {
-        opacity: 0;
+        .cases_image
+        {
+            opacity: 0;
+        }
+    }
+}
+
+.cases_item
+{
+    .f-28
+    {
+        position: relative;
+        z-index: 2;
     }
 }

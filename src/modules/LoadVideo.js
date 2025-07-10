@@ -2,17 +2,19 @@ export default class LoadVideo
 {
     constructor(instance)
     {
-        if(window.innerWidth > 992) return
+        if(window.innerWidth > 992 && !instance.hasAttribute('data-hard-load')) return
 
-        const source = instance.querySelector('source')
+        const video = instance.querySelector('video') || instance
+
+        const source = video.querySelector('source')
         const url = source.dataset.src
 
         source.setAttribute('src', url)
-        instance.load()
-        instance.addEventListener('loadeddata', () =>
+        video.load()
+        video.addEventListener('loadeddata', () =>
         {
-            instance.play()
-            instance.classList.add('loaded')
+            video.play()
+            video.classList.add('loaded')
         })
     }
 }

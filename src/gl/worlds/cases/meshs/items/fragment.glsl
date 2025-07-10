@@ -41,9 +41,9 @@ void main()
 
     // color.rgb = mix(color.rgb, 1.0 - color.rgb, cursor);
     // vec3 blurColor = 1.0 - fastGaussianBlur(uTexture, coverUv, oldCursor * 5.).rgb;
-    vec3 blurColor = fastGaussianBlur(uTexture, coverUv, oldCursor * 5.).rgb;
-    blurColor = applyOverlayTint(blurColor, uColor, cursor * 0.2);
-    color.rgb = mix(color.rgb, blurColor, cursor * 2.0);
+    // vec3 blurColor = fastGaussianBlur(uTexture, coverUv, oldCursor * 5.).rgb;
+    // blurColor = applyOverlayTint(blurColor, uColor, cursor * 0.2);
+    // color.rgb = mix(color.rgb, blurColor, cursor * 2.0);
 
     float fadeArea = smoothstep(0.0, 0.5, uv.y);
     color.rgb = mix(color.rgb * 0.2, color.rgb, fadeArea);

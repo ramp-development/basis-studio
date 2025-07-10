@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    flex: none;
 
     .card
     {
@@ -12,4 +13,14 @@
             position: absolute;
         }
     }
+}
+
+.curve-path
+{
+    pointer-events: none;
+}
+
+.relative:has(> [wrapper])
+{
+    display: flex;
 }
