@@ -9,13 +9,14 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default class index
 {
-    constructor(app, gl, scene, item, texture)
+    constructor(app, gl, scene, item, texture, index)
     {
         this.app = app
         this.gl = gl
         this.scene = scene
         this.item = item
         this.texture = texture
+        this.index = index
 
         this.sizes = this.app.sizes
         this.time = this.app.time
@@ -46,6 +47,7 @@ export default class index
                 uFluid: new Uniform(null),
                 uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
                 uLoading: new Uniform(0),
+                uTranslateY: new Uniform(1.2),
             },
         })
     }
@@ -59,6 +61,9 @@ export default class index
 
         this.mesh = new Mesh(this.geometry, this.material)
         this.mesh.renderOrder = 10
+        this.mesh.rotation.y = -5 * Math.PI / 180
+        this.mesh.rotation.x = -1 * Math.PI / 180
+        this.mesh.position.z = -10
 
         this.scene.add(this.mesh)
 
@@ -70,7 +75,9 @@ export default class index
             start: 'top 80%',
             onEnter: () =>
             {
-                gsap.to(this.material.uniforms.uLoading, {value: 1, duration: 1.6, ease: 'power3'})
+                gsap.to(this.material.uniforms.uLoading, {value: 1, duration: 1.2, ease: 'expo.out', delay: this.index * 0.1})
+                gsap.to(this.mesh.rotation, {y: 0, x: 0, duration: 1.2, ease: 'power2', delay: this.index * 0.1})
+                gsap.to(this.mesh.position, {z: 0, duration: 1.2, ease: 'power2', delay: this.index * 0.1})
             }
         })
     }

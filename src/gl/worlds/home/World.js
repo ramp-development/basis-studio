@@ -6,16 +6,16 @@ import Video from './meshs/video/index.js'
 import Full from './meshs/full/index.js'
 import Hero from './meshs/hero/index.js'
 import FluidMask from '@gl/utils/fluidMask/index.js'
-import Cards from './meshs/testimonials/index.js'
 
 export default class World
 {
-    constructor(gl, app, scene, main)
+    constructor(gl, app, scene, main, index)
     {
         this.gl = gl
         this.app = app
         this.scene = scene
         this.main = main
+        this.index = index
 
         this.sizes = this.app.sizes
         this.renderer = this.gl.renderer.instance
@@ -43,15 +43,21 @@ export default class World
 
         if(this.footerLogo)
         {
-            const texture = this.footerLogo.dataset.texture
-            this.sources.push({ type: 'textureLoader', url: texture, name: 'footerLogo' })
+            const textures = this.getTextureAttributes(this.footerLogo)
+            textures.forEach(({value}, index) =>
+            {
+                this.sources.push({ type: 'textureLoader', url: value, name: `footer-${index}` })
+            })
             gsap.set(this.footerLogo, {opacity: 0})
         }
 
         if(this.nowText)
         {
-            const texture = this.nowText.dataset.texture
-            this.sources.push({ type: 'textureLoader', url: texture, name: 'nowText' })
+            const textures = this.getTextureAttributes(this.nowText)
+            textures.forEach(({value}, index) =>
+            {
+                this.sources.push({ type: 'textureLoader', url: value, name: `nowText-${index}` })
+            })
         }
 
         this.resources = new Resources(this.sources)
@@ -68,12 +74,32 @@ export default class World
 
         if(this.footerLogo)
         {
-            this.footerFluid = new FluidMask(this.app, this.gl, this.scene, this.footerLogo, this.resources.items.footerLogo)
+            this.footerMeshs = []
+            const textures = this.getTextureAttributes(this.footerLogo)
+            this.footerTextures = textures.map((_, index) =>
+            {
+                const name = `footer-${index}`
+                return this.resources.items[name]
+            })
+            this.footerTextures.forEach((texture, index) =>
+            {
+                this.footerMeshs[index] = new FluidMask(this.app, this.gl, this.scene, this.footerLogo, texture, index)
+            })
         }
 
         if(this.nowText)
         {
-            this.nowFluid = new FluidMask(this.app, this.gl, this.scene, this.nowText, this.resources.items.nowText)
+            this.nowMeshs = []
+            const textures = this.getTextureAttributes(this.nowText)
+            this.nowTextTextures = textures.map((_, index) =>
+            {
+                const name = `nowText-${index}`
+                return this.resources.items[name]
+            })
+            this.nowTextTextures.forEach((texture, index) =>
+            {
+                this.nowMeshs[index] = new FluidMask(this.app, this.gl, this.scene, this.nowText, texture, index)
+            })
         }
 
         this.app.trigger('loadedWorld')
@@ -90,8 +116,8 @@ export default class World
         this.video?.setPosition()
         this.full?.setPosition()
         this.hero?.setPosition()
-        this.footerFluid?.setPosition()
-        this.nowFluid?.setPosition()
+        this.footerMeshs?.forEach(mesh => mesh.setPosition())
+        this.nowMeshs?.forEach(mesh => mesh.setPosition())
     }
 
     update()
@@ -99,8 +125,8 @@ export default class World
         this.video?.update()
         this.full?.update()
         this.hero?.update()
-        this.footerFluid?.update()
-        this.nowFluid?.update()
+        this.footerMeshs?.forEach(mesh => mesh.update())
+        this.nowMeshs?.forEach(mesh => mesh.update())
     }
 
     createTexture(target)
@@ -117,8 +143,8 @@ export default class World
         this.video?.resize()
         this.full?.resize()
         this.hero?.resize()
-        this.footerFluid?.resize()
-        this.nowFluid?.resize()
+        this.footerMeshs?.forEach(mesh => mesh.resize())
+        this.nowMeshs?.forEach(mesh => mesh.resize())
     }
 
     onMouseMove(e, mouse)
@@ -131,7 +157,19 @@ export default class World
         this.video?.destroy()
         this.full?.destroy()
         this.hero?.destroy()
-        this.footerFluid?.destroy()
-        this.nowFluid?.destroy()
+        this.footerMeshs?.forEach(mesh => mesh.destroy())
+        this.nowMeshs?.forEach(mesh => mesh.destroy())
+    }
+
+    getTextureAttributes(element)
+    {
+        return element.getAttributeNames()
+            .filter(name => name.startsWith('data-texture-'))
+            .map(name => ({
+                name: name,
+                value: element.getAttribute(name),
+                number: parseInt(name.split('-')[2]) // Extract the number
+            }))
+            .sort((a, b) => a.number - b.number); // Sort by number
     }
 }

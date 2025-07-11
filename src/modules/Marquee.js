@@ -1,5 +1,7 @@
-import { gsap, ScrollTrigger } from '@utils/GSAP.js'
+import { gsap, ScrollTrigger, Draggable, InertiaPlugin } from 'gsap/all'
 import { LoadImages } from '@utils/LoadImages.js'
+
+gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin)
 
 export default class Marquee
 {
@@ -19,11 +21,17 @@ export default class Marquee
         this.velocity = { value: 0 }
         this.enter = { value: 1 }
         this.move = 0
+        this.draggableMove = { value: 0 }
+        this.draggableVelocity = 0
 
-        this.wrappers = this.instance.querySelectorAll('.marquee_wrapper')
+        this.proxy = document.createElement('div')
+        this.props = gsap.getProperty(this.proxy)
+
+        this.wrappers = this.instance.querySelectorAll('[wrapper]')
         LoadImages(this.instance)
 
         this.quicks = [...this.wrappers].map(el => gsap.quickSetter(el, 'x', '%'))
+        this.draggbleQuick = gsap.quickTo(this.draggableMove, 'value', {duration: 0.2, ease: 'power2'})
         this.changeVelocity = gsap.quickTo(this.velocity, 'value', {duration: 0.2, ease: 'power2'})
 
         this.scroll.on('scroll', (e) =>
@@ -31,10 +39,12 @@ export default class Marquee
             if(this.destroyed) return
             this.changeVelocity(Math.abs(e.velocity))
             if(this.prevDirection === e.direction) return
-            this.direction = e.direction * this.multiDirection
+            this.direction = Math.abs(e.direction) * this.multiDirection
 
             this.prevDirection = e.direction
         })
+
+        this.initDraggable()
 
         this.observer.observe(this.instance)
 
@@ -57,13 +67,35 @@ export default class Marquee
         this.app.on('destroy', () => this.destroy())
     }
 
+    initDraggable()
+    {
+        this.draggable = Draggable.create(this.proxy,
+        {
+            type: 'x',
+            inertia: true,
+            trigger: this.instance,
+            onDrag: () =>
+            {
+                if(this.destroyed) return
+                this.draggbleQuick(InertiaPlugin.getVelocity(this.proxy, "x") / this.instance.offsetWidth)
+            },
+            onThrowUpdate: () =>
+            {
+                if(this.destroyed) return
+                this.draggbleQuick(InertiaPlugin.getVelocity(this.proxy, "x") / this.instance.offsetWidth)
+            }
+        })
+    }
+
     tick()
     {
         if(this.destroyed || this.instance.dataset.visible == 'false') return
 
         this.quicks.forEach(quick => quick(this.move))
         const velocity = gsap.utils.mapRange(0, 100, 0, 1, this.velocity.value)
-        this.move += (this.direction * (0.05 + velocity)) * this.enter.value
+        this.move += (this.direction * (0.05 + velocity)) * this.enter.value + this.draggableMove.value
+
+        this.draggbleQuick(0)
 
         if(this.move > 100 || this.move < -100) this.move = 0
 
