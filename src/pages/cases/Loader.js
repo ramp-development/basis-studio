@@ -13,8 +13,8 @@ export default class Loader
         this.meshs = this.app.gl.world.items.meshs
         this.title = this.hero.querySelector('h1')
 
-        this.firstTwoItems = [...this.items].slice(0, 2)
-        this.firstTwoMeshs = this.meshs.slice(0, 2)
+        this.firstTwoItems = [...this.items].slice(0, 3)
+        this.firstTwoMeshs = this.meshs.slice(0, 3)
 
         this.titleSplit = new SplitText(this.title, { type: 'chars, words'})
 

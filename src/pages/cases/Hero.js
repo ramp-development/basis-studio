@@ -90,7 +90,7 @@ export default class Hero
                 }
             })
 
-            if(index < 2) return
+            if(index < 3) return
 
             this.innerTls[index] = gsap.timeline({paused: true, defaults: {ease: 'power3', duration: 1}})
 
