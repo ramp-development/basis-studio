@@ -16,11 +16,12 @@ export default class Loader
         this.descr = this.hero.querySelector('p')
         this.btn = this.hero.querySelector('.btn')
 
-        this.titleSplit = new SplitText(this.title, { type: 'chars, words'})
-        this.descrSplit = new SplitText(this.descr, { type: 'words' })
-
-        // gsap.set([this.titleSplit.words, this.descr], {overflow: 'clip'})
-        // gsap.set(this.titleSplit.words, {paddingBottom: '0.1em', marginBottom: '-0.1em'})
+        this.titleSplit = new SplitText(this.title, { type: 'lines'})
+        this.titleSplitSecond = new SplitText(this.title, { type: 'lines', linesClass: 'line-second' })
+        gsap.set(this.titleSplitSecond.lines, { overflow: 'clip', paddingBottom: '0.1em', marginBottom: '-0.1em', perspective: 1000 })
+        this.descrSplit = new SplitText(this.descr, { type: 'lines' })
+        this.descrSplitSecond = new SplitText(this.descr, { type: 'lines'})
+        gsap.set(this.descrSplitSecond.lines, { overflow: 'clip', paddingBottom: '0.1em', marginBottom: '-0.1em'})
 
         this.destroyed = false
 
@@ -33,7 +34,12 @@ export default class Loader
     {
         this.tl = gsap.timeline(
         {
-            defaults: {ease: def.ease, duration: 1}
+            defaults: {ease: def.ease, duration: 1.4},
+            onComplete: () =>
+            {
+                this.titleSplit.revert()
+                this.descrSplit.revert()
+            }
         })
 
         this.meshs.forEach(({mesh}, index) =>
@@ -41,12 +47,14 @@ export default class Loader
             this.tl.fromTo(mesh.position, {z: 1500}, {z: 0, duration: 3.5}, index * 0.1 + 0.4)
         })
 
-        this.tl.fromTo(this.titleSplit.chars,
-            {opacity: 0, filter: 'blur(10px)'},
-            {opacity: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, duration: 1.1}, 0.8)
-        .fromTo(this.descrSplit.words,
-            {opacity: 0, filter: 'blur(10px)'},
-            {opacity: 1, filter: 'blur(0px)', stagger: {each: 0.05, from: 'random'}, duration: 1.1}, '<0.2')
+        this.tl.fromTo(this.titleSplit.lines,
+            {y: '120%'}, {y: '0%', stagger: 0.1, ease: 'power3', stagger: 0.1}, '<0.2')
+        .fromTo(this.titleSplit.lines,
+            {rotateX: '-35deg', rotateY: '-5deg', z: '-1rem', transformStyle: 'preserve-3d', transformOrigin: '50% 0'},
+            {rotateX: '0deg', rotateY: '0deg', z: '0rem', stagger: 0.1, ease: 'power2', stagger: 0.1}, '<')
+
+        .fromTo(this.descrSplit.lines, {y: '120%'}, {y: '0%', stagger: 0.1, ease: 'power3'}, '<0.2')
+
         .fromTo(this.btn, { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)',}, '<0.3')
     }
 

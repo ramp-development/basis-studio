@@ -24,19 +24,19 @@ export default class SectionHeading
 
     init()
     {
-        this.split = new SplitText(this.title, { type: 'words, lines'})
-        this.tl = gsap.timeline({paused: true, defaults: {ease: def.ease, duration: def.duration}})
+        this.split = new SplitText(this.title, { type: 'lines'})
+        this.splitSecond = new SplitText(this.title, { type: 'lines'})
+        gsap.set(this.splitSecond.lines, { overflow: 'clip', paddingBottom: '0.1em', marginBottom: '-0.1em'})
+        this.tl = gsap.timeline({paused: true, defaults: {ease: def.ease, duration: 1.2}})
 
         this.tl.fromTo(this.divider, {transformOrigin: 'left', scaleX: 0}, {scaleX: 1})
         .fromTo(this.dot, {scale: 0}, {scale: 1}, '<0.1')
-        .fromTo(this.split.words,
-            { yPercent: -30, autoAlpha: 0, filter: 'blur(10px)', scale: 0.8 },
-            { yPercent: 0, autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, scale: 1, }, '<0.1')
+        .fromTo(this.split.lines, {y: '120%'}, {y: '0%', stagger: 0.1, ease: 'power3'}, '<0.1')
 
         this.scroll = ScrollTrigger.create(
         {
             trigger: this.instance,
-            start: 'top 80%',
+            start: 'top 90%',
             onEnter: () =>
             {
                 if(this.played) return

@@ -35,8 +35,8 @@ export default class Button
 
         if(this.instance.dataset.scroll == 'false') return
 
-        this.tlEnter = gsap.timeline({ paused: true, defaults: { ease: 'power2', duration: def.duration } })
-        this.tlEnter.fromTo(this.instance, { opacity: 0, filter: 'blur(10px)'}, { opacity: 1, filter: 'blur(0px)'})
+        this.tlEnter = gsap.timeline({ paused: true, defaults: { ease: 'power1', duration: 0.8 } })
+        this.tlEnter.fromTo(this.instance, { opacity: 0, y: '20%'}, { y: '0%', opacity: 1})
 
         this.scroll = ScrollTrigger.create(
         {
