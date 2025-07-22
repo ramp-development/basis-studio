@@ -94,8 +94,8 @@ export default class Loader
 
         .fromTo(this.btn, { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)',}, '<0.3')
 
-        .fromTo(this.imagesParent, { yPercent: 20, scale: 0.6 }, { yPercent: 0, scale: 1, duration: 4, ease: 'power1' }, 0.6)
-        .fromTo(this.images, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 3, ease: 'power1', stagger: 0.15 }, 0.4)
+        .fromTo(this.imagesParent, { yPercent: 20, scale: 0.6 }, { yPercent: 0, scale: 1, duration: 4, ease: 'power1', force3D: true }, 0.6)
+        .fromTo(this.images, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 3, ease: 'power1', stagger: 0.15, force3D: true }, 0.4)
     }
 
     resize()
