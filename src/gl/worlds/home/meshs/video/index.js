@@ -1,10 +1,12 @@
 import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, VideoTexture, Color } from 'three'
-import { gsap, ScrollTrigger } from '@utils/GSAP.js'
+import { gsap, ScrollTrigger } from 'gsap/all'
 
 import vertex from './vertex.glsl'
 import fragment from './fragment.glsl'
 import { UpdateGeometry } from '@gl/UpdateGeometry.js'
 import VideoLoader from '@utils/VideoLoader.js'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default class index
 {
@@ -35,34 +37,34 @@ export default class index
         if(!this.app.debug.active) return
 
         const gui = this.app.debug.gui
-        const folder = gui.addFolder('Home/Video')
+        this.folder = gui.addFolder('Home/Video')
 
-        folder.add(this.material.uniforms.uReveal, 'value', 0, 1, 0.01).name('uReveal').onChange((value) =>
+        this.folder.add(this.material.uniforms.uReveal, 'value', 0, 1, 0.01).name('uReveal').onChange((value) =>
         {
             this.meshs.forEach(({material}) => material.uniforms.uReveal.value = value)
         })
 
-        folder.add(this.material.uniforms.uRotate, 'value', 0, 2, 0.01).name('uRotate').onChange((value) =>
+        this.folder.add(this.material.uniforms.uRotate, 'value', 0, 2, 0.01).name('uRotate').onChange((value) =>
         {
             this.meshs.forEach(({material}) => material.uniforms.uRotate.value = value)
         })
 
-        folder.add(this.material.uniforms.uRadius, 'value', 0, 1, 0.01).name('uRadius').onChange((value) =>
+        this.folder.add(this.material.uniforms.uRadius, 'value', 0, 1, 0.01).name('uRadius').onChange((value) =>
         {
             this.meshs.forEach(({material}) => material.uniforms.uRadius.value = value)
         })
 
-        folder.add(this.material.uniforms.uRotateX, 'value', -1, 1, 0.01).name('uRotateX').onChange((value) =>
+        this.folder.add(this.material.uniforms.uRotateX, 'value', -1, 1, 0.01).name('uRotateX').onChange((value) =>
         {
             this.meshs.forEach(({material}) => material.uniforms.uRotateX.value = value)
         })
 
-        folder.add(this.material.uniforms.uRotateY, 'value', -1, 1, 0.01).name('uRotateY').onChange((value) =>
+        this.folder.add(this.material.uniforms.uRotateY, 'value', -1, 1, 0.01).name('uRotateY').onChange((value) =>
         {
             this.meshs.forEach(({material}) => material.uniforms.uRotateY.value = value)
         })
 
-        folder.add(this.material.uniforms.uZoom, 'value', -1, 1, 0.01).name('uZoom').onChange((value) =>
+        this.folder.add(this.material.uniforms.uZoom, 'value', -1, 1, 0.01).name('uZoom').onChange((value) =>
         {
             this.meshs.forEach(({material}) => material.uniforms.uZoom.value = value)
         })
@@ -91,6 +93,7 @@ export default class index
                 uZoom: new Uniform(0.55),
                 uTime: new Uniform(0),
                 uFluid: new Uniform(null),
+                uParallax: new Uniform(0),
                 uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
             },
         })
@@ -121,16 +124,15 @@ export default class index
                 })
             }
 
-            let revealed = false
-
             this.scene.add(mesh)
 
             this.app.observer.instance.observe(item)
 
-            const tl = gsap.timeline({paused: true, defaults: {duration: 1, ease: 'power2.out'}})
+            const tl = gsap.timeline({paused: true, defaults: {duration: 1, ease: 'power3.out'}})
             tl.to(material.uniforms.uReveal, {value: 1})
-            .fromTo(material.uniforms.uRotate, {value: -0.1}, {value: 0}, '<')
-            // .to(material.uniforms.uRotateX, {value: 0.7, duration: 0.3}, '<')
+            .fromTo(material.uniforms.uRotate, {value: -0.3}, {value: 0}, '<')
+            .fromTo(material.uniforms.uRotateY, {value: .8}, {value: 0}, '<')
+            .fromTo(material.uniforms.uRotateX, {value: -.8}, {value: 0}, '<')
             .fromTo(material.uniforms.uRadius, {value: 0}, {value: 0.02, duration: 0.2}, '<')
             // .to(material.uniforms.uRotateY, {value: -0.3, duration: 0.3}, '<0.2')
             // tl.to(material.uniforms.uReveal, {value: 1.55})
@@ -138,16 +140,37 @@ export default class index
             // .to(material.uniforms.uRotateX, {value: 0.7, duration: 0.3}, '<')
             // .fromTo(material.uniforms.uRadius, {value: 0}, {value: 0.02, duration: 0.2}, '<')
             // .to(material.uniforms.uRotateY, {value: -0.3, duration: 0.3}, '<0.2')
+            const value = {progress: 0}
+
+            setTimeout(() =>
+            {
+                this.folder.add(value, 'progress', 0, 1, 0.01).name(`Play ${index + 1}`).onChange(() => tl.progress(value.progress))
+            }, 100)
 
             ScrollTrigger.create(
             {
                 trigger: item,
                 start: 'top 90%',
-                onEnter: () =>
+                onEnter: () => tl.play()
+            })
+
+            ScrollTrigger.create(
+            {
+                trigger: item,
+                start: 'top bottom',
+                onLeaveBack: () => tl.pause(0)
+            })
+
+            ScrollTrigger.create(
+            {
+                trigger: item,
+                start: 'top bottom',
+                end: 'bottom top',
+                onUpdate: self =>
                 {
-                    if(revealed) return
-                    revealed = true
-                    tl.restart()
+                    const progress = self.progress
+                    const remappedProgress = gsap.utils.mapRange(0, 1, -0.2, 0.2, progress)
+                    material.uniforms.uParallax.value = remappedProgress
                 }
             })
 

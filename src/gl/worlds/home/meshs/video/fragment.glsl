@@ -11,6 +11,7 @@ uniform float uRotateX;
 uniform float uRotateY;
 uniform float uRadius; // Add this uniform for border radius control
 uniform float uZoom;
+uniform float uParallax;
 
 varying vec2 vUv;
 varying vec2 screenUv;
@@ -33,14 +34,19 @@ void main()
 {
     vec2 uv = vUv;
     vec2 coverUv = getCoverUv(uv, uAspect, uSize);
-    vec2 zoomedUv = coverUv - uZoom;
-    zoomedUv *= 1.0 - uZoom * (1.0 - smoothstep(0.0, 1.0, uReveal));
-    zoomedUv += uZoom;
+
+    coverUv -= 0.5;
+    coverUv *= 0.9;
+    coverUv += 0.5;
+
+    // coverUv.y += 0.1;
+    coverUv.y -= uParallax * - 1.0;
+
     vec2 rotatedUv = rotateUV(uv, uRotate);
     rotatedUv = rotateUVX(rotatedUv, uRotateX);
     rotatedUv = rotateUVY(rotatedUv, uRotateY);
 
-    vec4 color = texture2D(uTexture, zoomedUv);
+    vec4 color = texture2D(uTexture, coverUv);
     float alpha = getAlpha(uSize, uBorder, uv);
     float cursor = texture2D(uFluid, screenUv).r;
 

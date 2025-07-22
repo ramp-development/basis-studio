@@ -1,3 +1,7 @@
+import { gsap, ScrollTrigger } from 'gsap/all'
+
+gsap.registerPlugin(ScrollTrigger)
+
 export default class Calendar
 {
     constructor(instance, app)
@@ -193,6 +197,7 @@ export default class Calendar
 
         // You can trigger custom events here if needed
         // this.app.trigger('calendarLoaded')
+        setTimeout(() => ScrollTrigger.refresh(), 100) // Refresh ScrollTrigger if needed
     }
 
     // Method to update calendar configuration

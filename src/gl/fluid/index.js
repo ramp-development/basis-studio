@@ -39,7 +39,7 @@ export default class FluidSimulation {
         this.velocityDissipation = 0.95; // How quickly velocity fades (0.95-0.99)
         this.pressureDissipation = 0.8; // Pressure dissipation (0.7-0.9)
         this.curlStrength = 36; // Vorticity strength (10-30)
-        this.radius = this.sizes.width / 10000; // Splat radius (0.1-0.3)
+        this.radius = 0.3 * window.innerWidth * 0.0007; // Splat radius (0.1-0.3)
         this.splatForce = 2000; // Amplifies mouse movement impact (3000-10000)
         this.outputColor = new Color(1,1,1); // Default output color
 
@@ -269,6 +269,7 @@ export default class FluidSimulation {
 
     resize() {
         // Update texel sizes when resizing
+        this.radius = 0.3 * window.innerWidth * 0.0007; // Adjust radius based on new width
         this.texelSize.set(1 / this.simRes, 1 / this.simRes);
         this.dyeTexelSize.set(1 / this.dyeRes, 1 / this.dyeRes);
 

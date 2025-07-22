@@ -42,13 +42,14 @@ export default class Button
         {
             trigger: this.instance,
             start: 'top 80%',
-            onEnter: () =>
-            {
-                if(this.enterPlayed) return
-                this.enterPlayed = true
+            onEnter: () => this.tlEnter.play()
+        })
 
-                this.tlEnter.play()
-            }
+        this.srcollBack = ScrollTrigger.create(
+        {
+            trigger: this.instance,
+            start: 'top bottom',
+            onLeaveBack: () => this.tlEnter.pause(0)
         })
     }
 
@@ -61,6 +62,7 @@ export default class Button
         this.tl?.kill()
         this.tlEnter?.kill()
         this.scroll?.kill()
+        this.srcollBack?.kill()
 
         this.init()
     }

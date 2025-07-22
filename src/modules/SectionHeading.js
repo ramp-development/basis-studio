@@ -37,13 +37,14 @@ export default class SectionHeading
         {
             trigger: this.instance,
             start: 'top 90%',
-            onEnter: () =>
-            {
-                if(this.played) return
-                this.played = true
+            onEnter: () => this.tl.play()
+        })
 
-                this.tl.play()
-            }
+        this.srcollBack = ScrollTrigger.create(
+        {
+            trigger: this.instance,
+            start: 'top bottom',
+            onLeaveBack: () => this.tl.pause(0)
         })
     }
 
@@ -54,6 +55,7 @@ export default class SectionHeading
         this.split?.revert()
         this.tl?.kill()
         this.scroll?.kill()
+        this.srcollBack?.kill()
 
         this.init()
     }

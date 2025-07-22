@@ -51,21 +51,34 @@ export default class Enter
 
         // }, 200)
 
-        this.app.gl.loadWorld(this.container)
 
-        this.app.on('loadedWorld', async () =>
+        if(window.innerWidth > 992)
         {
-            if(this.once) return
+            this.app.gl.loadWorld(this.container)
 
+            this.app.on('loadedWorld', async () =>
+            {
+                if(this.once) return
+
+                this.checkPages(this.app, this.container)
+                this.app.moduleLoader.loadModules(this.container)
+
+                this.app.scroll.init()
+                this.app.scroll.lenis.on('scroll', e => this.app.gl.setScroll(e))
+                this.tl.play()
+
+                this.once = true
+            })
+        } else
+        {
             this.checkPages(this.app, this.container)
             this.app.moduleLoader.loadModules(this.container)
 
             this.app.scroll.init()
             this.app.scroll.lenis.on('scroll', e => this.app.gl.setScroll(e))
             this.tl.play()
+        }
 
-            this.once = true
-        })
 
         ScrollTrigger.refresh()
     }

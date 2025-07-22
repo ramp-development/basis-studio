@@ -11,10 +11,11 @@ export default class Loader
         this.app = app
 
         this.hero = this.main.querySelector('.hero')
-        this.meshs = this.app.gl.world.hero.meshs
         this.title = this.hero.querySelector('h1')
         this.descr = this.hero.querySelector('p')
         this.btn = this.hero.querySelector('.btn')
+        this.imagesParent = this.hero.querySelector('.hero_images')
+        this.images = this.imagesParent.querySelectorAll('.hero_image')
 
         this.titleSplit = new SplitText(this.title, { type: 'lines'})
         this.titleSplitSecond = new SplitText(this.title, { type: 'lines', linesClass: 'line-second' })
@@ -25,13 +26,26 @@ export default class Loader
 
         this.destroyed = false
 
-        this.init()
+        this.checkInit()
         this.app.on('resize', () => this.resize())
         this.app.on('destroy', () => this.destroy())
     }
 
+    checkInit()
+    {
+        if(window.innerWidth > 992)
+        {
+            this.init()
+        } else
+        {
+            this.mobInit()
+        }
+    }
+
     init()
     {
+        this.meshs = this.app.gl.world.hero.meshs
+
         this.tl = gsap.timeline(
         {
             defaults: {ease: def.ease, duration: 1.4},
@@ -56,6 +70,32 @@ export default class Loader
         .fromTo(this.descrSplit.lines, {y: '120%'}, {y: '0%', stagger: 0.1, ease: 'power3'}, '<0.2')
 
         .fromTo(this.btn, { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)',}, '<0.3')
+    }
+
+    mobInit()
+    {
+        this.tl = gsap.timeline(
+        {
+            defaults: {ease: def.ease, duration: 1.4},
+            onComplete: () =>
+            {
+                this.titleSplit.revert()
+                this.descrSplit.revert()
+            }
+        })
+
+        this.tl.fromTo(this.titleSplit.lines,
+            {y: '120%'}, {y: '0%', stagger: 0.1, ease: 'power3', stagger: 0.1}, 0.6)
+        .fromTo(this.titleSplit.lines,
+            {rotateX: '-35deg', rotateY: '-5deg', z: '-1rem', transformStyle: 'preserve-3d', transformOrigin: '50% 0'},
+            {rotateX: '0deg', rotateY: '0deg', z: '0rem', stagger: 0.1, ease: 'power2', stagger: 0.1}, '<')
+
+        .fromTo(this.descrSplit.lines, {y: '120%'}, {y: '0%', stagger: 0.1, ease: 'power3'}, '<0.2')
+
+        .fromTo(this.btn, { opacity: 0, filter: 'blur(10px)' }, { opacity: 1, filter: 'blur(0px)',}, '<0.3')
+
+        .fromTo(this.imagesParent, { yPercent: 20, scale: 0.6 }, { yPercent: 0, scale: 1, duration: 4, ease: 'power1' }, 0.6)
+        .fromTo(this.images, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 3, ease: 'power1', stagger: 0.15 }, 0.4)
     }
 
     resize()

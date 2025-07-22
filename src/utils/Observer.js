@@ -11,7 +11,7 @@ export default class Observer
         },
         {
             root: null,
-            rootMargin: '15% 0px 15% 0px'
+            rootMargin: '7.5% 0px 7.5% 0px'
         })
     }
 }

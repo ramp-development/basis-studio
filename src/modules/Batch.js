@@ -23,6 +23,8 @@ export default class Batch
 
     init()
     {
+        if(this.instance.dataset.nomob === 'true' && window.innerWidth <= 991) return
+
         gsap.set(this.items, {opacity: 0, filter: 'blur(10px)'})
 
         this.scroll = ScrollTrigger.batch(this.items,
@@ -38,8 +40,8 @@ export default class Batch
     {
         if(this.destroyed) return
 
+        if(this.scroll) this.scroll.forEach(scroll => scroll.kill())
         this.init()
-        this.scroll.forEach(scroll => scroll.kill())
     }
 
     destroy()

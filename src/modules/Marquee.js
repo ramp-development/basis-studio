@@ -28,6 +28,10 @@ export default class Marquee
         this.props = gsap.getProperty(this.proxy)
 
         this.wrappers = this.instance.querySelectorAll('[wrapper]')
+        this.items = this.instance.querySelectorAll('[item]')
+        this.partLength = this.items.length / this.wrappers.length
+        this.newOrderItems = [...Array.from(this.items).slice(this.partLength / 2), ...Array.from(this.items).slice(0, this.partLength / 2)]
+
         LoadImages(this.instance)
 
         this.quicks = [...this.wrappers].map(el => gsap.quickSetter(el, 'x', '%'))
@@ -36,10 +40,10 @@ export default class Marquee
 
         this.scroll.on('scroll', (e) =>
         {
-            if(this.destroyed) return
+            if(this.destroyed || this.instance.dataset.visible == 'false') return
             this.changeVelocity(Math.abs(e.velocity))
             if(this.prevDirection === e.direction) return
-            this.direction = Math.abs(e.direction) * this.multiDirection
+            this.direction = e.direction * this.multiDirection
 
             this.prevDirection = e.direction
         })
@@ -62,6 +66,20 @@ export default class Marquee
             })
         })
 
+        this.revealed = false
+        this.revealTl = gsap.timeline({paused: true, defaults: {duration: 1, ease: 'power3'}})
+        this.revealTl.fromTo(this.newOrderItems, {y: 40, autoAlpha: 0}, {y: 0, autoAlpha: 1, stagger: 0.05, onComplete: () => this.revealed = true})
+
+        this.scrollTrigger = ScrollTrigger.create(
+        {
+            trigger: this.wrappers[0],
+            start: 'top 90%',
+            onEnter: () =>
+            {
+                if(!this.revealed) this.revealTl.play()
+            }
+        })
+
         this.app.on('tick', () => this.tick())
         this.app.on('resize', () => this.resize())
         this.app.on('destroy', () => this.destroy())
@@ -77,12 +95,12 @@ export default class Marquee
             onDrag: () =>
             {
                 if(this.destroyed) return
-                this.draggbleQuick(InertiaPlugin.getVelocity(this.proxy, "x") / this.instance.offsetWidth)
+                this.draggbleQuick(this.draggable[0].deltaX)
             },
             onThrowUpdate: () =>
             {
                 if(this.destroyed) return
-                this.draggbleQuick(InertiaPlugin.getVelocity(this.proxy, "x") / this.instance.offsetWidth)
+                this.draggbleQuick(this.draggable[0].deltaX)
             }
         })
     }
@@ -93,7 +111,7 @@ export default class Marquee
 
         this.quicks.forEach(quick => quick(this.move))
         const velocity = gsap.utils.mapRange(0, 100, 0, 1, this.velocity.value)
-        this.move += (this.direction * (0.05 + velocity)) * this.enter.value + this.draggableMove.value
+        this.move += (this.direction * (0.05 + velocity)) * this.enter.value + this.draggableMove.value / 10
 
         this.draggbleQuick(0)
 

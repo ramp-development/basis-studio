@@ -14,6 +14,8 @@ export default class Hero
 
         this.quicks = [...this.images].map((image, index) =>
         {
+            if(window.innerWidth < 992) return
+
             const x = gsap.quickTo(image, 'x', { duration: 0.5, ease: 'power2', onUpdate: () =>
                 {
                     if(index !== 0 || this.destroyed) return

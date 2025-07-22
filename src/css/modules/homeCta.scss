@@ -20,9 +20,10 @@
 
         @media screen and (max-width: 991px)
         {
-            width: auto;
+            left: 50%;
+            transform: translateX(-50%);
             height: auto;
-            right: 0;
+            width: 100%;
         }
     }
 
@@ -33,7 +34,21 @@
 
         @media screen and (max-width: 991px)
         {
-            width: 100%;
+            text-align: start;
+            width: auto;
+
+            .line
+            {
+                text-align: center;
+                display: flex !important;
+                justify-content: center;
+                gap: 0.33ch;
+
+                div
+                {
+                    display: block !important;
+                }
+            }
         }
     }
 
