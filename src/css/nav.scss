@@ -193,7 +193,7 @@
 .nav_content
 {
     display: flex;
-    height: calc(100vh - var(--size--16) * 2);
+    height: calc(100dvh - var(--size--16) * 2);
     clip-path: inset(0 0 100% 0 round var(--size--24));
     transition: clip-path 0.7s var(--expoInOut);
     top: 0;
