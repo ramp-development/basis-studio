@@ -1,4 +1,4 @@
-import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, Color } from 'three'
+import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, Color, Group } from 'three'
 import gsap from 'gsap'
 
 import vertex from './vertex.glsl'
@@ -72,12 +72,16 @@ export default class index
                 uHovered: new Uniform(0),
                 uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
                 uMouse: new Uniform(this.mouse),
+                uOpacity: new Uniform(0),
             },
         })
     }
 
     setMesh()
     {
+        this.group = new Group()
+        this.scene.add(this.group)
+
         this.meshs = [...this.items].map((item, index) =>
         {
             const roots = window.getComputedStyle(item).getPropertyValue('border-radius').split('px')
@@ -104,7 +108,7 @@ export default class index
             const tl = gsap.timeline({ paused: true })
             tl.to(mesh.material.uniforms.uHovered, { value: 1, duration: 0.4, ease: 'power1.inOut' })
 
-            this.scene.add(mesh)
+            this.group.add(mesh)
 
             item.style.setProperty('opacity', '0')
             this.app.observer.instance.observe(item)

@@ -13,7 +13,7 @@
         width: 100%;
         height: 100%;
         border-radius: calc(var(--size--16));
-        transition: transform 0.6s var(--ease);
+        transition: transform 0.6s var(--smooth), background-color 0.6s var(--smooth), border-color 0.6s var(--smooth);
     }
 
     &[data-wf--button--variant='pink']
@@ -53,6 +53,24 @@
 
     &:hover
     {
+        &[data-wf--button--variant='pink']
+        {
+            &::before
+            {
+                background-color: #d66388;
+            }
+        }
+
+        &[data-wf--button--variant='base']
+        {
+            &::before
+            {
+                background-color: var(--color--white);
+            }
+
+            color: var(--color--black)
+        }
+
         .btn_text
         {
             & > div:nth-child(1)

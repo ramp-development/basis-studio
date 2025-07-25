@@ -1,7 +1,7 @@
 .testimonials_item
 {
     transition: color 0.4s var(--expoOut), background-color 0.4s var(--expoOut);
-    background-color: #181818;
+    // background-color: #181818;
 
     // user-select: none;
     // -moz-user-select: none;
@@ -14,7 +14,7 @@
     {
         @media screen and (hover: hover)
         {
-            background-color: var(--color--white);
+            // background-color: var(--color--white);
             color: var(--color--black);
         }
     }

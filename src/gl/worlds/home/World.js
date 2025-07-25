@@ -6,6 +6,7 @@ import Video from './meshs/video/index.js'
 import Full from './meshs/full/index.js'
 import Hero from './meshs/hero/index.js'
 import FluidMask from '@gl/utils/fluidMask/index.js'
+import Testimonials from './meshs/testimonials/index.js'
 
 export default class World
 {
@@ -71,6 +72,7 @@ export default class World
         this.video = new Video(this.app, this.gl, this.scene, this.main)
         this.full = new Full(this.app, this.gl, this.scene, this.main)
         this.hero = new Hero(this.app, this.gl, this.scene, this.main, this.resources)
+        this.testimonialsMesh = new Testimonials(this.app, this.gl, this.scene, this.main, this.testimonials)
 
         if(this.footerLogo)
         {
@@ -118,6 +120,7 @@ export default class World
         this.hero?.setPosition()
         this.footerMeshs?.forEach(mesh => mesh.setPosition())
         this.nowMeshs?.forEach(mesh => mesh.setPosition())
+        this.testimonialsMesh?.setPosition()
     }
 
     update()
@@ -127,6 +130,7 @@ export default class World
         this.hero?.update()
         this.footerMeshs?.forEach(mesh => mesh.update())
         this.nowMeshs?.forEach(mesh => mesh.update())
+        this.testimonialsMesh?.update()
     }
 
     createTexture(target)
@@ -145,6 +149,7 @@ export default class World
         this.hero?.resize()
         this.footerMeshs?.forEach(mesh => mesh.resize())
         this.nowMeshs?.forEach(mesh => mesh.resize())
+        this.testimonialsMesh?.resize()
     }
 
     onMouseMove(e, mouse)
@@ -159,6 +164,7 @@ export default class World
         this.hero?.destroy()
         this.footerMeshs?.forEach(mesh => mesh.destroy())
         this.nowMeshs?.forEach(mesh => mesh.destroy())
+        this.testimonialsMesh?.destroy()
     }
 
     getTextureAttributes(element)

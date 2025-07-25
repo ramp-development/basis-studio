@@ -142,10 +142,10 @@ export default class index
             // .to(material.uniforms.uRotateY, {value: -0.3, duration: 0.3}, '<0.2')
             const value = {progress: 0}
 
-            setTimeout(() =>
-            {
-                this.folder.add(value, 'progress', 0, 1, 0.01).name(`Play ${index + 1}`).onChange(() => tl.progress(value.progress))
-            }, 100)
+            // setTimeout(() =>
+            // {
+            //     this.folder.add(value, 'progress', 0, 1, 0.01).name(`Play ${index + 1}`).onChange(() => tl.progress(value.progress))
+            // }, 100)
 
             ScrollTrigger.create(
             {

@@ -61,24 +61,25 @@ export default class index
 
         this.mesh = new Mesh(this.geometry, this.material)
         this.mesh.renderOrder = 10
-        this.mesh.rotation.y = -5 * Math.PI / 180
-        this.mesh.rotation.x = -1 * Math.PI / 180
-        this.mesh.position.z = -10
+        // this.mesh.rotation.y = -5 * Math.PI / 180
+        this.mesh.rotation.x = -Math.PI / 2
+        // this.mesh.position.z = -10
 
         this.scene.add(this.mesh)
 
         this.setPosition()
 
+        const tl = gsap.timeline({ paused: true, defaults: { duration: 1.4, ease: 'power2' } })
+
+        tl.to(this.material.uniforms.uLoading, {value: 1}, this.index * 0.3)
+        tl.to(this.mesh.rotation, {y: 0, x: 0}, this.index * 0.3)
+        tl.to(this.mesh.position, {z: 0}, this.index * 0.3)
+
         ScrollTrigger.create(
         {
             trigger: this.item,
             start: 'top 80%',
-            onEnter: () =>
-            {
-                gsap.to(this.material.uniforms.uLoading, {value: 1, duration: 1.2, ease: 'expo.out', delay: this.index * 0.1})
-                gsap.to(this.mesh.rotation, {y: 0, x: 0, duration: 1.2, ease: 'power2', delay: this.index * 0.1})
-                gsap.to(this.mesh.position, {z: 0, duration: 1.2, ease: 'power2', delay: this.index * 0.1})
-            }
+            onEnter: () => tl.restart(),
         })
     }
 

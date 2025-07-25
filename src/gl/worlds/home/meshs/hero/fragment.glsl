@@ -6,6 +6,7 @@ uniform vec2 uSize;
 uniform vec2 uAspect;
 uniform float uBorder;
 uniform float uHovered;
+uniform float uOpacity;
 
 varying vec2 vUv;
 varying vec2 screenUv;
@@ -32,6 +33,8 @@ void main()
     color.rgb = mix(color.rgb, blurColor, cursor);
     vec3 fakeBlurColor = fakeBlur(uTexture, coverUv, uHovered * 10.).rgb;
     color.rgb = mix(color.rgb, fakeBlurColor, uHovered);
+
+    color.a *= uOpacity;
 
     gl_FragColor = color;
 }

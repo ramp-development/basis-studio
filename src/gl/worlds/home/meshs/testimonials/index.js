@@ -97,6 +97,7 @@ export default class index
 
             this.app.observer.instance.observe(item)
 
+
             return {mesh, item, material, tl}
         })
 

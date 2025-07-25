@@ -18,5 +18,6 @@ void main()
 
     vec4 color = vec4(mix(uColor, uHoverColor, uHovered), border);
 
-    gl_FragColor = color;
+    // gl_FragColor = color;
+    gl_FragColor = vec4(uv, 0.0, 1.0); // For debugging purposes, replace with actual color logic
 }

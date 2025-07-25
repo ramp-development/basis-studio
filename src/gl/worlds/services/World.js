@@ -32,8 +32,11 @@ export default class World
         this.sources = [{ type: 'textureLoader', url: this.texture.getAttribute('src'), name: 'hero' }]
         if(this.footerLogo)
         {
-            const texture = this.footerLogo.dataset.texture
-            this.sources.push({ type: 'textureLoader', url: texture, name: 'footerLogo' })
+            const textures = this.getTextureAttributes(this.footerLogo)
+            textures.forEach(({value}, index) =>
+            {
+                this.sources.push({ type: 'textureLoader', url: value, name: `footer-${index}` })
+            })
             gsap.set(this.footerLogo, {opacity: 0})
         }
 
@@ -50,7 +53,17 @@ export default class World
 
         if(this.footerLogo)
         {
-            this.footerFluid = new FluidMask(this.app, this.gl, this.scene, this.footerLogo, this.resources.items.footerLogo)
+            this.footerMeshs = []
+            const textures = this.getTextureAttributes(this.footerLogo)
+            this.footerTextures = textures.map((_, index) =>
+            {
+                const name = `footer-${index}`
+                return this.resources.items[name]
+            })
+            this.footerTextures.forEach((texture, index) =>
+            {
+                this.footerMeshs[index] = new FluidMask(this.app, this.gl, this.scene, this.footerLogo, texture, index)
+            })
         }
 
         this.app.trigger('loadedWorld')
@@ -65,13 +78,13 @@ export default class World
     setScroll(e)
     {
         this.hero?.setPosition(e)
-        this.footerFluid?.setPosition(e)
+        this.footerMeshs?.forEach(mesh => mesh.setPosition())
     }
 
     update()
     {
         this.hero?.update()
-        this.footerFluid?.update()
+        this.footerMeshs?.forEach(mesh => mesh.update())
     }
 
     createTexture(target)
@@ -86,7 +99,7 @@ export default class World
     resize()
     {
         this.hero?.resize()
-        this.footerFluid?.resize()
+        this.footerMeshs?.forEach(mesh => mesh.resize())
     }
 
     onMouseMove(e, mouse)
@@ -97,6 +110,18 @@ export default class World
     destroy()
     {
         this.hero?.destroy()
-        this.footerFluid?.destroy()
+        this.footerMeshs?.forEach(mesh => mesh.destroy())
+    }
+
+    getTextureAttributes(element)
+    {
+        return element.getAttributeNames()
+            .filter(name => name.startsWith('data-texture-'))
+            .map(name => ({
+                name: name,
+                value: element.getAttribute(name),
+                number: parseInt(name.split('-')[2]) // Extract the number
+            }))
+            .sort((a, b) => a.number - b.number); // Sort by number
     }
 }

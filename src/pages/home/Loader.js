@@ -45,6 +45,7 @@ export default class Loader
     init()
     {
         this.meshs = this.app.gl.world.hero.meshs
+        this.group = this.app.gl.world.hero.group
 
         this.tl = gsap.timeline(
         {
@@ -58,8 +59,11 @@ export default class Loader
 
         this.meshs.forEach(({mesh}, index) =>
         {
-            this.tl.fromTo(mesh.position, {z: 1500}, {z: 0, duration: 3.5}, index * 0.1 + 0.4)
+            this.tl.fromTo(mesh.position, {z: 600}, {z: 0, duration: 3.5}, index * 0.1 + 0.4)
+            .fromTo(mesh.material.uniforms.uOpacity, {value: 0}, {value: 1, duration: 4.5}, '<')
         })
+
+        this.tl.fromTo(this.group.position, {y: -window.innerHeight / 2}, {y: 0, duration: 3.5, ease: 'power1'}, 0)
 
         this.tl.fromTo(this.titleSplit.lines,
             {y: '120%'}, {y: '0%', stagger: 0.1, ease: 'power3', stagger: 0.1}, '<0.2')
