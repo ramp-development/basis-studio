@@ -1,17 +1,15 @@
-.popup
-{
-    display: block;
-    visibility: hidden;
-    pointer-events: none;
+.popup {
+  display: block;
+  visibility: hidden;
+  pointer-events: none;
 
-    &.active
-    {
-        visibility: visible;
-        pointer-events: auto;
-    }
+  &.active {
+    z-index: 2;
+    visibility: visible;
+    pointer-events: auto;
+  }
 }
 
-.popup_body
-{
-    overflow-y: scroll;
+.popup_body {
+  overflow-y: auto;
 }
