@@ -1,27 +1,77 @@
-.talk_item
-{
-    .f-96
-    {
-        overflow: clip;
+// Original CSS - kept for reference
+// .talk_item
+// {
+//     .f-96
+//     {
+//         overflow: clip;
 
-        .word
-        {
-            overflow: clip;
-        }
+//         .word
+//         {
+//             overflow: clip;
+//         }
 
-        &:first-child
-        {
-            color: var(--color--pink)
-        }
+//         &:first-child
+//         {
+//             color: var(--color--pink)
+//         }
 
-        &:not(:first-child)
-        {
-            opacity: 0.3;
+//         &:not(:first-child)
+//         {
+//             opacity: 0.3;
 
-            &.active
-            {
-                opacity: 1;
-            }
-        }
+//             &.active
+//             {
+//                 opacity: 1;
+//             }
+//         }
+//     }
+// }
+
+// New 3D cylinder effect CSS
+.talk {
+  perspective: 70vw; // Add perspective to container
+  perspective-origin: center center;
+  width: 100%;
+  height: 100vh;
+}
+
+.talk_item {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d; // Enable 3D positioning for children
+  transform-origin: center center;
+  position: absolute;
+
+  .f-96 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform-origin: center center;
+    backface-visibility: hidden;
+
+    // Calculate positions based on example website values
+    // They use ~12.857deg spacing with radius ~400px and X offset
+    // $radius: 400px;
+    // $spacing: 12.857deg;
+    // $x-offset: -150px; // Approximate X offset from their values
+
+    // @for $i from 0 through 8 {
+    //   &:nth-child(#{$i + 1}) {
+    //     $angle: $i * $spacing;
+    //     $rotation-angle: $i * -$spacing; // Negative rotation as in example
+    //     $x: $x-offset + (sin($angle) * 50px); // X varies slightly
+    //     $y: sin($angle) * $radius;
+    //     $z: cos($angle) * $radius;
+
+    //     transform: translate3d(-50%, -50%, 0)
+    //       translate3d(#{$x}, #{$y}, #{$z})
+    //       rotateX(#{$rotation-angle});
+    //   }
+    // }
+
+    &:first-child {
+      color: var(--color--pink);
     }
+  }
 }
