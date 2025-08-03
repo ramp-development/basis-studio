@@ -8,6 +8,7 @@ export default class Talk {
     this.instance = instance;
     this.app = app;
 
+    this.title = this.instance.querySelector(".talk_title");
     this.list = this.instance.querySelector(".talk_item");
     this.items = this.list.querySelectorAll(".f-96");
 
@@ -19,57 +20,24 @@ export default class Talk {
   }
 
   init() {
-    // Original SplitText logic - commented out for 3D cylinder testing
-    // this.splits = [...this.items].map(item =>
-    // {
-    //     return new SplitText(item, { type: 'chars, words', charsClass: 'char', wordsClass: 'word' })
-    // })
-
-    // this.tls = [...this.items].map((item, index) =>
-    // {
-    //     const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3', duration: def.duration, stagger: { from: 'center', each: def.stagger } } })
-
-    //     tl.fromTo(this.splits[index].chars, { opacity: 0, filter: 'blur(15px)' }, { opacity: 1, filter: 'blur(0px)' })
-
-    //     const scroll = ScrollTrigger.create(
-    //     {
-    //         trigger: item,
-    //         start: 'top 80%',
-    //         end: 'center center',
-    //         scrub: true,
-    //         animation: tl,
-    //     })
-
-    //     const height = item.getBoundingClientRect().height
-
-    //     const centerScroll = ScrollTrigger.create(
-    //     {
-    //         trigger: item,
-    //         start: `center center`,
-    //         end: `+=${height * 0.5}`,
-    //         onEnter: () =>
-    //         {
-    //             this.items.forEach(i => i.classList.remove('active'))
-    //             item.classList.add('active')
-    //         },
-    //         onEnterBack: () =>
-    //         {
-    //             this.items.forEach(i => i.classList.remove('active'))
-    //             item.classList.add('active')
-    //         },
-    //     })
-
-    //     return { tl, scroll, centerScroll }
-    // })
+    // SplitText for title animation
+    this.titleSplit = new SplitText(this.title, { 
+      type: 'chars, words', 
+      charsClass: 'char', 
+      wordsClass: 'word' 
+    });
 
     // Calculate and apply 3D cylinder positions
     this.calculatePositions();
+
+    // Setup title animation first
+    this.setupTitleAnimation();
 
     // Setup ScrollTrigger for cylinder rotation
     this.setupScrollAnimation();
 
     console.log(
-      "Talk module initialized - 3D cylinder with ScrollTrigger rotation"
+      "Talk module initialized - Title animation + 3D cylinder with ScrollTrigger rotation"
     );
   }
 
@@ -94,22 +62,46 @@ export default class Talk {
     });
   }
 
+  setupTitleAnimation() {
+    // Create timeline for title animation
+    this.titleTl = gsap.timeline({ paused: true, defaults: { 
+      ease: 'power3', 
+      duration: def.duration, 
+      stagger: { from: 'center', each: def.stagger } 
+    }});
+
+    // Set initial state and animate to visible
+    this.titleTl.fromTo(this.titleSplit.chars, 
+      { opacity: 0, filter: 'blur(15px)' }, 
+      { opacity: 1, filter: 'blur(0px)' }
+    );
+
+    // ScrollTrigger for title animation - from top of viewport to center
+    this.titleScrollTrigger = ScrollTrigger.create({
+      trigger: this.title,
+      start: 'top 80%',
+      end: 'center center',
+      scrub: true,
+      animation: this.titleTl,
+      markers: { startColor: "blue", endColor: "blue", fontSize: "12px", fontWeight: "bold", indent: 20 }
+    });
+  }
+
   setupScrollAnimation() {
-    // Pin the container and rotate the cylinder
+    // Pin when title reaches center, then animate cylinder
     this.scrollTrigger = ScrollTrigger.create({
-      trigger: this.instance, // Pin the entire section
-      start: "top top",
-      end: "+=200vh", // Much longer scroll for slower rotation
-      pin: true,
+      trigger: this.title, // Use title as trigger point
+      start: "center center", // Pin when title is centered
+      end: "+=150vh", // Longer scroll distance for slower animation
+      pin: this.instance, // Pin the entire section
       markers: true,
-      scrub: 2, // Slower scrub for more control
+      scrub: 2,
       animation: gsap.fromTo(
         this.list,
-        { rotateX: -30 }, // Start with text visible (less rotation)
-        { rotateX: 270, ease: "none" } // End rotation (extended range)
+        { rotateX: -80 }, // Start with text visible
+        { rotateX: 270, ease: "none" } // Complete cylinder rotation
       ),
       onUpdate: (self) => {
-        // Optional: log progress for debugging
         console.log(
           `Cylinder rotation progress: ${(self.progress * 100).toFixed(1)}%`
         );
@@ -130,9 +122,17 @@ export default class Talk {
     if (this.destroyed) return;
     this.destroyed = true;
 
-    // Clean up ScrollTrigger
+    // Clean up ScrollTriggers
+    if (this.titleScrollTrigger) {
+      this.titleScrollTrigger.kill();
+    }
     if (this.scrollTrigger) {
       this.scrollTrigger.kill();
+    }
+
+    // Clean up SplitText
+    if (this.titleSplit) {
+      this.titleSplit.revert();
     }
   }
 }
