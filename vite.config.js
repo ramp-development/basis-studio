@@ -5,7 +5,8 @@ import mkcert from "vite-plugin-mkcert";
 
 // vite.config.js
 export default defineConfig({
-  base: "https://basis-52q.pages.dev/",
+  // base: "https://basis-52q.pages.dev/",
+  base: "https://basis-studio-preview.netlify.app/",
   resolve: {
     alias: {
       "@src": path.resolve(__dirname, "src"),
