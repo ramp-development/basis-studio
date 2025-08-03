@@ -21,10 +21,10 @@ export default class Talk {
 
   init() {
     // SplitText for title animation
-    this.titleSplit = new SplitText(this.title, { 
-      type: 'chars, words', 
-      charsClass: 'char', 
-      wordsClass: 'word' 
+    this.titleSplit = new SplitText(this.title, {
+      type: "chars, words",
+      charsClass: "char",
+      wordsClass: "word",
     });
 
     // Calculate and apply 3D cylinder positions
@@ -64,26 +64,30 @@ export default class Talk {
 
   setupTitleAnimation() {
     // Create timeline for title animation
-    this.titleTl = gsap.timeline({ paused: true, defaults: { 
-      ease: 'power3', 
-      duration: def.duration, 
-      stagger: { from: 'center', each: def.stagger } 
-    }});
+    this.titleTl = gsap.timeline({
+      paused: true,
+      defaults: {
+        ease: "power3",
+        duration: def.duration,
+        stagger: { from: "center", each: def.stagger },
+      },
+    });
 
     // Set initial state and animate to visible
-    this.titleTl.fromTo(this.titleSplit.chars, 
-      { opacity: 0, filter: 'blur(15px)' }, 
-      { opacity: 1, filter: 'blur(0px)' }
+    this.titleTl.fromTo(
+      this.titleSplit.chars,
+      { opacity: 0, filter: "blur(15px)" },
+      { opacity: 1, filter: "blur(0px)" }
     );
 
     // ScrollTrigger for title animation - from top of viewport to center
     this.titleScrollTrigger = ScrollTrigger.create({
       trigger: this.title,
-      start: 'top 80%',
-      end: 'center center',
+      start: "top 80%",
+      end: "center center",
       scrub: true,
       animation: this.titleTl,
-      markers: { startColor: "blue", endColor: "blue", fontSize: "12px", fontWeight: "bold", indent: 20 }
+      // markers: { startColor: "blue", endColor: "blue", fontSize: "12px", fontWeight: "bold", indent: 20 }
     });
   }
 
@@ -94,7 +98,6 @@ export default class Talk {
       start: "center center", // Pin when title is centered
       end: "+=150vh", // Longer scroll distance for slower animation
       pin: this.instance, // Pin the entire section
-      markers: true,
       scrub: 2,
       animation: gsap.fromTo(
         this.list,
