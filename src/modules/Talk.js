@@ -97,7 +97,7 @@ export default class Talk {
       trigger: this.title, // Use title as trigger point
       start: "center center", // Pin when title is centered
       end: "+=150vh", // Longer scroll distance for slower animation
-      pin: this.instance, // Pin the entire section
+      pin: this.instance,
       scrub: 2,
       animation: gsap.fromTo(
         this.list,
@@ -110,6 +110,9 @@ export default class Talk {
         );
       },
     });
+
+    // Fix mobile interaction blocking by disabling pointer events on talk_item
+    this.list.style.pointerEvents = 'none';
   }
 
   resize() {
@@ -117,6 +120,12 @@ export default class Talk {
 
     // Recalculate positions on resize for responsiveness
     this.calculatePositions();
+
+    // Kill and recreate ScrollTrigger to handle mobile/desktop switch
+    if (this.scrollTrigger) {
+      this.scrollTrigger.kill();
+      this.setupScrollAnimation();
+    }
 
     console.log("Talk module resize - recalculated 3D positions");
   }

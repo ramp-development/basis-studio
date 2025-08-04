@@ -45,6 +45,7 @@
   transform-style: preserve-3d; // Enable 3D positioning for children
   transform-origin: center center;
   position: absolute;
+  pointer-events: none;
 
   .f-96 {
     position: absolute;
