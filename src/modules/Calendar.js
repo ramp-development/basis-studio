@@ -52,6 +52,8 @@ export default class Calendar {
     this.calendarDiv.id = this.calendarId;
     this.calendarDiv.style.width = "100%";
     this.calendarDiv.style.height = "100%";
+    this.calendarDiv.style.minHeight = "1052px";
+    this.calendarDiv.style.scrollbarWidth = "none";
     // this.calendarDiv.style.overflow = "auto";
 
     this.instance.appendChild(this.calendarDiv);
@@ -219,6 +221,7 @@ export default class Calendar {
       theme: theme,
       hideEventTypeDetails: this.config.hideEventTypeDetails,
       layout: this.config.layout,
+      scrollbarWidth: "none",
     });
   }
 
@@ -235,6 +238,7 @@ export default class Calendar {
             theme: this.config.theme,
             hideEventTypeDetails: this.config.hideEventTypeDetails,
             layout: this.config.layout,
+            scrollbarWidth: "none",
           });
         } catch (error) {
           console.error("Error resizing calendar:", error);

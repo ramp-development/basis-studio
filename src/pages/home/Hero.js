@@ -6,7 +6,8 @@ export default class Hero {
     this.app = app;
 
     this.hero = this.main.querySelector(".hero");
-    this.images = this.hero.querySelectorAll(".hero_image");
+    this.images = this.hero.querySelectorAll(".hero_image, .hero_video");
+    this.button = this.hero.querySelector(".hero_button");
 
     this.destroyed = false;
 
@@ -30,6 +31,12 @@ export default class Hero {
     });
 
     this.main.addEventListener("mousemove", (e) => this.mouseMove(e));
+
+    // Add click handler for hero button
+    if (this.button) {
+      this.button.addEventListener("click", (e) => this.handleButtonClick(e));
+    }
+
     this.init();
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
@@ -56,6 +63,20 @@ export default class Hero {
   }
 
   init() {}
+
+  handleButtonClick(e) {
+    e.preventDefault();
+    const target = document.querySelector("#work_with");
+
+    this.app.scroll.lenis.scrollTo(target, {
+      offset: 0,
+      lerp: 0.1,
+      duration: 1.5,
+      immediate: false,
+      lock: false,
+      force: false,
+    });
+  }
 
   resize() {
     if (this.destroyed) return;

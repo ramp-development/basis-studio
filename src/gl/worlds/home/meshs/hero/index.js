@@ -1,203 +1,232 @@
-import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, Color, Group } from 'three'
-import gsap from 'gsap'
+import {
+  Uniform,
+  PlaneGeometry,
+  ShaderMaterial,
+  Mesh,
+  Vector2,
+  Color,
+  Group,
+  VideoTexture,
+} from "three";
+import gsap from "gsap";
+import { UpdateGeometry } from "@gl/UpdateGeometry.js";
+import VideoLoader from "@utils/VideoLoader.js";
 
-import vertex from './vertex.glsl'
-import fragment from './fragment.glsl'
-import { UpdateGeometry } from '@gl/UpdateGeometry.js'
+import vertex from "./vertex.glsl";
+import fragment from "./fragment.glsl";
 
-export default class index
-{
-    constructor(app, gl, scene, main, resources)
-    {
-        this.app = app
-        this.gl = gl
-        this.scene = scene
-        this.main = main
-        this.resources = resources.items
+export default class index {
+  constructor(app, gl, scene, main, resources) {
+    this.app = app;
+    this.gl = gl;
+    this.scene = scene;
+    this.main = main;
+    this.resources = resources.items;
 
-        this.sizes = this.app.sizes
-        this.time = this.app.time
+    this.sizes = this.app.sizes;
+    this.time = this.app.time;
 
-        this.items = this.main.querySelectorAll('.hero_image')
-        this.mouse = new Vector2(0, 0)
-        this.offset = new Vector2(0, 0)
-        this.outputOffset = new Vector2(0, 0)
+    this.items = this.main.querySelectorAll(".hero_image, .hero_video");
+    this.mouse = new Vector2(0, 0);
+    this.offset = new Vector2(0, 0);
+    this.outputOffset = new Vector2(0, 0);
 
-        this.offsetQuicks =
-        {
-            x: gsap.quickTo(this.outputOffset, 'x', { duration: 0.4, ease: 'power2', onUpdate: () => this.meshs.forEach(({material}) => material.uniforms.uMouse.value.set(this.outputOffset.x, this.outputOffset.y))}),
-            y: gsap.quickTo(this.outputOffset, 'y', { duration: 0.4, ease: 'power2' })
-        }
+    this.offsetQuicks = {
+      x: gsap.quickTo(this.outputOffset, "x", {
+        duration: 0.4,
+        ease: "power2",
+        onUpdate: () =>
+          this.meshs.forEach(({ material }) =>
+            material.uniforms.uMouse.value.set(
+              this.outputOffset.x,
+              this.outputOffset.y
+            )
+          ),
+      }),
+      y: gsap.quickTo(this.outputOffset, "y", {
+        duration: 0.4,
+        ease: "power2",
+      }),
+    };
 
-        this.init()
-    }
+    this.init();
+  }
 
-    init()
-    {
-        this.setMaterial()
-        this.setMesh()
-        this.debug()
-    }
+  init() {
+    this.setMaterial();
+    this.setMesh();
+    this.debug();
+  }
 
-    debug()
-    {
-        if(!this.app.debug.active) return
+  debug() {
+    if (!this.app.debug.active) return;
 
-        const gui = this.app.debug.gui
-        const folder = gui.addFolder('Home/Hero')
+    const gui = this.app.debug.gui;
+    const folder = gui.addFolder("Home/Hero");
 
-        // folder.add(this.material.uniforms.uOffset, 'value', -100, 100, 1).name('uOffset').onChange((value) =>
-        // {
-        //     this.meshs.forEach(({material}) => material.uniforms.uOffset.value = value)
-        // })
-    }
+    // folder.add(this.material.uniforms.uOffset, 'value', -100, 100, 1).name('uOffset').onChange((value) =>
+    // {
+    //     this.meshs.forEach(({material}) => material.uniforms.uOffset.value = value)
+    // })
+  }
 
-    setMaterial()
-    {
-        this.material = new ShaderMaterial(
-        {
-            vertexShader: vertex,
-            fragmentShader: fragment,
-            transparent: true,
-            depthTest: false,
-            uniforms:
-            {
-                uTexture: new Uniform(null),
-                uRes: new Uniform(new Vector2(this.sizes.width, this.sizes.height)),
-                uAspect: new Uniform(new Vector2(16, 9)),
-                uSize: new Uniform(new Vector2(0, 0)),
-                uBorder: new Uniform(0),
-                uTime: new Uniform(0),
-                uFluid: new Uniform(null),
-                uHovered: new Uniform(0),
-                uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
-                uMouse: new Uniform(this.mouse),
-                uOpacity: new Uniform(0),
-            },
-        })
-    }
+  setMaterial() {
+    this.material = new ShaderMaterial({
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+      depthTest: false,
+      uniforms: {
+        uTexture: new Uniform(null),
+        uRes: new Uniform(new Vector2(this.sizes.width, this.sizes.height)),
+        uAspect: new Uniform(new Vector2(16, 9)),
+        uSize: new Uniform(new Vector2(0, 0)),
+        uBorder: new Uniform(0),
+        uTime: new Uniform(0),
+        uFluid: new Uniform(null),
+        uHovered: new Uniform(0),
+        uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
+        uMouse: new Uniform(this.mouse),
+        uOpacity: new Uniform(0),
+      },
+    });
+  }
 
-    setMesh()
-    {
-        this.group = new Group()
-        this.scene.add(this.group)
+  setMesh() {
+    this.group = new Group();
+    this.scene.add(this.group);
 
-        this.meshs = [...this.items].map((item, index) =>
-        {
-            const roots = window.getComputedStyle(item).getPropertyValue('border-radius').split('px')
-            const rect = item.getBoundingClientRect()
-            const geometry = new PlaneGeometry(rect.width, rect.height, 200, 200)
-            const material = this.material.clone()
+    this.meshs = [...this.items].map((item, index) => {
+      // Calculate correct resource index for images only
+      const imageItems = [...this.items].filter((i) => i.querySelector("img"));
+      const resourceIndex = imageItems.indexOf(item);
+      const borderRadius = window
+        .getComputedStyle(item)
+        .getPropertyValue("border-radius");
+      const rect = item.getBoundingClientRect();
+      const geometry = new PlaneGeometry(rect.width, rect.height, 200, 200);
+      const material = this.material.clone();
 
-            material.uniforms.uSize.value.set(rect.width, rect.height)
-            material.uniforms.uBorder.value = parseFloat(roots[0])
-            material.uniforms.uTexture.value = this.resources[index]
+      material.uniforms.uSize.value.set(rect.width, rect.height);
+      console.log(borderRadius, "borderRadius");
+      material.uniforms.uBorder.value = parseFloat(borderRadius) || 0;
 
-            const image = item.querySelector('img')
-            const url = image.getAttribute('src')
-            const newImage = new Image()
-            newImage.src = url
-            newImage.crossOrigin = 'anonymous'
-            newImage.onload = () =>
-            {
-                material.uniforms.uAspect.value.set(newImage.width, newImage.height)
-            }
+      // Detect content type and handle accordingly
+      const image = item.querySelector("img");
+      const video = item.querySelector("video");
 
-            const mesh = new Mesh(geometry, material)
+      if (video) {
+        // Handle video content
+        const videoLoader = new VideoLoader(video);
+        videoLoader.on("loaded", () => {
+          const texture = new VideoTexture(video);
+          material.uniforms.uTexture.value = texture;
+          material.uniforms.uAspect.value.set(
+            videoLoader.width,
+            videoLoader.height
+          );
+        });
+      } else if (image) {
+        // Handle image content (existing logic)
+        material.uniforms.uTexture.value = this.resources[resourceIndex];
+        const url = image.getAttribute("src");
+        const newImage = new Image();
+        newImage.src = url;
+        newImage.crossOrigin = "anonymous";
+        newImage.onload = () => {
+          material.uniforms.uAspect.value.set(newImage.width, newImage.height);
+        };
+      }
 
-            const tl = gsap.timeline({ paused: true })
-            tl.to(mesh.material.uniforms.uHovered, { value: 1, duration: 0.4, ease: 'power1.inOut' })
+      const mesh = new Mesh(geometry, material);
 
-            this.group.add(mesh)
+      const tl = gsap.timeline({ paused: true });
+      tl.to(mesh.material.uniforms.uHovered, {
+        value: 1,
+        duration: 0.4,
+        ease: "power1.inOut",
+      });
 
-            item.style.setProperty('opacity', '0')
-            this.app.observer.instance.observe(item)
+      this.group.add(mesh);
 
-            return {mesh, item, material, tl}
-        })
+      item.style.setProperty("opacity", "0");
+      this.app.observer.instance.observe(item);
 
-        this.meshs.forEach(({item}, index) =>
-        {
-            item.addEventListener('mouseenter', () =>
-            {
-                this.meshs.forEach(({tl}, i) =>
-                {
-                    if(i != index) tl.play()
-                })
-            })
+      return { mesh, item, material, tl };
+    });
 
-            item.addEventListener('mouseleave', () =>
-            {
-                this.meshs.forEach(({tl}, i) =>
-                {
-                    tl.reverse()
-                })
-            })
-        })
+    this.meshs.forEach(({ item }, index) => {
+      item.addEventListener("mouseenter", () => {
+        this.meshs.forEach(({ tl }, i) => {
+          if (i != index) tl.play();
+        });
+      });
 
-        this.setPosition()
-    }
+      item.addEventListener("mouseleave", () => {
+        this.meshs.forEach(({ tl }, i) => {
+          tl.reverse();
+        });
+      });
+    });
 
-    setPosition()
-    {
-        this.meshs.forEach(({mesh, item}) =>
-        {
-            if(item.dataset.visible == 'false') return
+    this.setPosition();
+  }
 
-            const rect = item.getBoundingClientRect()
-            mesh.position.x = rect.left + rect.width / 2 - this.sizes.width / 2
-            mesh.position.y = -rect.top - rect.height / 2 + this.sizes.height / 2
-        })
-    }
+  setPosition() {
+    this.meshs.forEach(({ mesh, item }) => {
+      if (item.dataset.visible == "false") return;
 
-    onMouseMove(e)
-    {
-        this.mouse.x = e.clientX - window.innerWidth / 2
-        this.mouse.y = e.clientY - window.innerHeight / 2
+      const rect = item.getBoundingClientRect();
+      mesh.position.x = rect.left + rect.width / 2 - this.sizes.width / 2;
+      mesh.position.y = -rect.top - rect.height / 2 + this.sizes.height / 2;
+    });
+  }
 
-        this.offset.x = this.lerp(this.offset.x, this.mouse.x, 0.1)
-        this.offset.y = this.lerp(this.offset.y, this.mouse.y, 0.1)
+  onMouseMove(e) {
+    this.mouse.x = e.clientX - window.innerWidth / 2;
+    this.mouse.y = e.clientY - window.innerHeight / 2;
 
-        this.offsetQuicks.x(-(this.mouse.x - this.offset.x) * 0.1)
-        this.offsetQuicks.y((this.mouse.y - this.offset.y) * 0.02)
-    }
+    this.offset.x = this.lerp(this.offset.x, this.mouse.x, 0.1);
+    this.offset.y = this.lerp(this.offset.y, this.mouse.y, 0.1);
 
-    resize()
-    {
-        this.meshs.forEach(({mesh, item}) =>
-        {
-            const rect = item.getBoundingClientRect()
-            UpdateGeometry(mesh, new PlaneGeometry(rect.width, rect.height, 200, 200))
-            mesh.material.uniforms.uSize.value.set(rect.width, rect.height)
+    this.offsetQuicks.x(-(this.mouse.x - this.offset.x) * 0.1);
+    this.offsetQuicks.y((this.mouse.y - this.offset.y) * 0.02);
+  }
 
-            const roots = window.getComputedStyle(item).getPropertyValue('border-radius').split('px')
-            mesh.material.uniforms.uBorder.value = parseFloat(roots[0])
-        })
-    }
+  resize() {
+    this.meshs.forEach(({ mesh, item }) => {
+      const rect = item.getBoundingClientRect();
+      UpdateGeometry(
+        mesh,
+        new PlaneGeometry(rect.width, rect.height, 200, 200)
+      );
+      mesh.material.uniforms.uSize.value.set(rect.width, rect.height);
 
-    update()
-    {
-        this.meshs.forEach(({mesh, material}) =>
-        {
-            material.uniforms.uFluid.value = this.gl.fluidTexture
-        })
+      const borderRadius = window
+        .getComputedStyle(item)
+        .getPropertyValue("border-radius");
+      mesh.material.uniforms.uBorder.value = parseFloat(borderRadius) || 0;
+    });
+  }
 
-        this.offsetQuicks.x(0)
-        this.offsetQuicks.y(0)
-    }
+  update() {
+    this.meshs.forEach(({ mesh, material }) => {
+      material.uniforms.uFluid.value = this.gl.fluidTexture;
+    });
 
-    destroy()
-    {
-        this.meshs.forEach(({mesh, material}) =>
-        {
-            material.dispose()
-            mesh.geometry.dispose()
-            this.scene.remove(mesh)
-        })
-    }
+    this.offsetQuicks.x(0);
+    this.offsetQuicks.y(0);
+  }
 
-    lerp(start, end, t)
-    {
-        return start * ( 1 - t ) + end * t;
-    }
+  destroy() {
+    this.meshs.forEach(({ mesh, material }) => {
+      material.dispose();
+      mesh.geometry.dispose();
+      this.scene.remove(mesh);
+    });
+  }
+
+  lerp(start, end, t) {
+    return start * (1 - t) + end * t;
+  }
 }

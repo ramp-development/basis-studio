@@ -19,8 +19,6 @@ export default class Popup {
     this.isOpen = false;
 
     this.init();
-
-    console.log(this.instance, "instance");
   }
 
   init() {

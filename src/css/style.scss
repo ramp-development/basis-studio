@@ -1,27 +1,30 @@
-@import './root.scss';
+@import "./root.scss";
 
-@import './nav.scss';
-@import './loader.scss';
+@import "./nav.scss";
+@import "./loader.scss";
 
-@import './modules/fullBleed.scss';
-@import './modules/accordion.scss';
-@import './modules/footer.scss';
-@import './modules/button.scss';
-@import './modules/homeCta.scss';
-@import './modules/goals.scss';
-@import './modules/testimonials.scss';
-@import './modules/talk.scss';
-@import './modules/cursor.scss';
-@import './modules/links.scss';
-@import './modules/popup.scss';
+@import "./modules/fullBleed.scss";
+@import "./modules/accordion.scss";
+@import "./modules/footer.scss";
+@import "./modules/button.scss";
+@import "./modules/homeCta.scss";
+@import "./modules/goals.scss";
+@import "./modules/testimonials.scss";
+@import "./modules/talk.scss";
+@import "./modules/cursor.scss";
+@import "./modules/links.scss";
+@import "./modules/popup.scss";
 
-@import './pages/home/index.scss';
-@import './pages/cases/index.scss';
-@import './pages/services/index.scss';
+@import "./pages/home/index.scss";
+@import "./pages/cases/index.scss";
+@import "./pages/services/index.scss";
 
-@import './editor.scss';
+@import "./editor.scss";
 
-a:is(.w-webflow-badge)
-{
-    display: none !important;
+a:is(.w-webflow-badge) {
+  display: none !important;
+}
+
+* {
+  scroll-behavior: unset;
 }

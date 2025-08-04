@@ -1,31 +1,26 @@
-.testimonials_item
-{
-    transition: color 0.4s var(--expoOut), background-color 0.4s var(--expoOut);
-    // background-color: #181818;
+.testimonials_item {
+  transition:
+    color 0.4s var(--expoOut),
+    background-color 0.4s var(--expoOut);
+  // background-color: #181818;
 
-    // user-select: none;
-    // -moz-user-select: none;
-    // -khtml-user-select: none;
-    // -webkit-user-select: none;
-    // -o-user-select: none;
+  // user-select: none;
+  // -moz-user-select: none;
+  // -khtml-user-select: none;
+  // -webkit-user-select: none;
+  // -o-user-select: none;
 
-
-    &:hover
-    {
-        @media screen and (hover: hover)
-        {
-            // background-color: var(--color--white);
-            color: var(--color--black);
-        }
+  &:hover {
+    @media screen and (hover: hover) {
+      background-color: var(--color--white);
+      color: var(--color--black);
     }
+  }
 }
 
-@media screen and (max-width: 991px)
-{
-    .testimonials_item
-    {
-        background-color: color-mix(in srgb, #363636, transparent 70%);
-        color: var(--color--white);
-    }
-
+@media screen and (max-width: 991px) {
+  .testimonials_item {
+    background-color: color-mix(in srgb, #363636, transparent 70%);
+    color: var(--color--white);
+  }
 }
