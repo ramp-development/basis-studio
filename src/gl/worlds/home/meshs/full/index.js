@@ -87,25 +87,36 @@ export default class index {
 
       this.app.observer.instance.observe(item);
 
+      // OLD ANIMATION - commented for easy rollback
+      // const tl = gsap.timeline({
+      //   paused: true,
+      //   defaults: { duration: 1, ease: "power2.in" },
+      // });
+      // tl.to(material.uniforms.uReveal, { value: 1.55 })
+      //   .fromTo(
+      //     material.uniforms.uRotate,
+      //     { value: -0.2 },
+      //     { value: Math.PI / 3 },
+      //     "<"
+      //   )
+      //   .to(material.uniforms.uRotateX, { value: 0.7, duration: 0.3 }, "<")
+      //   .fromTo(
+      //     material.uniforms.uRadius,
+      //     { value: 0 },
+      //     { value: 0.02, duration: 0.2 },
+      //     "<"
+      //   )
+      //   .to(material.uniforms.uRotateY, { value: -0.3, duration: 0.3 }, "<0.2");
+
+      // NEW ANIMATION - same as video entering effect
       const tl = gsap.timeline({
         paused: true,
-        defaults: { duration: 1, ease: "power2.in" },
+        defaults: { duration: 1, ease: "power3.out" },
       });
-      tl.to(material.uniforms.uReveal, { value: 1.55 })
-        .fromTo(
-          material.uniforms.uRotate,
-          { value: -0.2 },
-          { value: Math.PI / 3 },
-          "<"
-        )
-        .to(material.uniforms.uRotateX, { value: 0.7, duration: 0.3 }, "<")
-        .fromTo(
-          material.uniforms.uRadius,
-          { value: 0 },
-          { value: 0.02, duration: 0.2 },
-          "<"
-        )
-        .to(material.uniforms.uRotateY, { value: -0.3, duration: 0.3 }, "<0.2");
+      tl.to(material.uniforms.uReveal, { value: 1 })
+        .fromTo(material.uniforms.uRotate, { value: -0.3 }, { value: 0 }, "<")
+        .fromTo(material.uniforms.uRotateY, { value: 0.8 }, { value: 0 }, "<")
+        .fromTo(material.uniforms.uRotateX, { value: -0.8 }, { value: 0 }, "<");
 
       return { mesh, item, material, tl };
     });

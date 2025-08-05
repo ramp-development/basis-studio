@@ -18,7 +18,11 @@ export default class index
         this.sizes = this.app.sizes
         this.time = this.app.time
 
-        this.items = this.section.querySelectorAll('.testimonials_item')
+        // OLD SELECTOR - wrong for HTML structure
+        // this.items = this.section.querySelectorAll('.testimonials_item')
+        
+        // NEW SELECTOR - matches Marquee module expectation and HTML structure
+        this.items = this.section.querySelectorAll('[item]') // This gets .testimonials_item-parent elements
         this.mouse = new Vector2(0, 0)
         this.offset = new Vector2(0, 0)
         this.outputOffset = new Vector2(0, 0)
@@ -68,10 +72,15 @@ export default class index
                 uSize: new Uniform(new Vector2(0, 0)),
                 uBorder: new Uniform(0),
                 uTime: new Uniform(0),
-                uOffset: new Uniform(new Vector2(0, 0)),
+                // OLD OFFSET SYSTEM - commented for easy rollback
+                // uOffset: new Uniform(new Vector2(0, 0)),
                 uHovered: new Uniform(0),
                 uColor: new Uniform(new Color(24 / 255, 24 / 255, 24 / 255)),
                 uHoverColor: new Uniform(new Color(1, 1, 1)),
+                
+                // NEW UNIFORMS - inspired by cases distortion system
+                uOffset: new Uniform(0), // Single value like cases for distortion
+                uLoading: new Uniform(0), // For reveal animation like cases
             },
         })
     }
@@ -90,21 +99,42 @@ export default class index
 
             const mesh = new Mesh(geometry, material)
 
-            const tl = gsap.timeline({ paused: true })
-            tl.to(mesh.material.uniforms.uHovered, { value: 1, duration: 0.4, ease: 'power1.inOut' })
+            // OLD HOVER ANIMATION - commented for easy rollback
+            // const tl = gsap.timeline({ paused: true })
+            // tl.to(mesh.material.uniforms.uHovered, { value: 1, duration: 0.4, ease: 'power1.inOut' })
+
+            // NEW ANIMATIONS - hover + reveal like cases
+            const hoverTl = gsap.timeline({ paused: true })
+            hoverTl.to(mesh.material.uniforms.uHovered, { value: 1, duration: 0.4, ease: 'power1.inOut' })
+
+            const revealTl = gsap.timeline({ paused: true, defaults: { ease: 'power3', duration: 1 } })
+            revealTl.fromTo(material.uniforms.uLoading, { value: 0 }, { value: 1 })
 
             this.scene.add(mesh)
 
             this.app.observer.instance.observe(item)
 
-
-            return {mesh, item, material, tl}
+            return {mesh, item, material, hoverTl, revealTl}
         })
 
-        this.meshs.forEach(({item, tl}, index) =>
+        // OLD EVENT LISTENERS - commented for easy rollback
+        // this.meshs.forEach(({item, tl}, index) =>
+        // {
+        //     item.addEventListener('mouseenter', () => tl.play())
+        //     item.addEventListener('mouseleave', () => tl.reverse())
+        // })
+
+        // NEW EVENT LISTENERS - using hoverTl + trigger reveal animations
+        this.meshs.forEach(({item, hoverTl, revealTl}, index) =>
         {
-            item.addEventListener('mouseenter', () => tl.play())
-            item.addEventListener('mouseleave', () => tl.reverse())
+            item.addEventListener('mouseenter', () => hoverTl.play())
+            item.addEventListener('mouseleave', () => hoverTl.reverse())
+            
+            // Trigger reveal animation after a delay - staggered for 3-container structure
+            // Only reveal first set (every 3rd item starting from 0 since containers repeat)
+            if(index % 3 === index && index < 3) {
+                setTimeout(() => revealTl.play(), index * 150 + 300)
+            }
         })
 
         this.setPosition()
@@ -121,15 +151,35 @@ export default class index
             mesh.position.y = -rect.top - rect.height / 2 + this.sizes.height / 2
         })
 
+        // OLD VELOCITY SYSTEM - commented for easy rollback
+        // if(e)
+        // {
+        //     this.quick(-e.velocity * 1.5)
+        //     this.meshs.forEach(({material}) => material.uniforms.uOffset.value.y = this.velocity.value)
+        // }
+
+        // NEW VELOCITY SYSTEM - adapted for cases-style distortion
         if(e)
         {
             this.quick(-e.velocity * 1.5)
-            this.meshs.forEach(({material}) => material.uniforms.uOffset.value.y = this.velocity.value)
+            this.meshs.forEach(({material}) => material.uniforms.uOffset.value = this.velocity.value)
         }
     }
 
     setCarouselPosition(speed)
     {
+        // OLD CAROUSEL POSITION - commented for easy rollback
+        // this.meshs.forEach(({mesh, item}) =>
+        // {
+        //     if(item.dataset.visible == 'false') return
+
+        //     const rect = item.getBoundingClientRect()
+        //     mesh.position.x = rect.left + rect.width / 2 - this.sizes.width / 2
+        //     mesh.position.y = -rect.top - rect.height / 2 + this.sizes.height / 2
+        //     mesh.material.uniforms.uOffset.value.x = speed * 2
+        // })
+
+        // NEW CAROUSEL POSITION - cases-inspired distortion system
         this.meshs.forEach(({mesh, item}) =>
         {
             if(item.dataset.visible == 'false') return
@@ -137,7 +187,9 @@ export default class index
             const rect = item.getBoundingClientRect()
             mesh.position.x = rect.left + rect.width / 2 - this.sizes.width / 2
             mesh.position.y = -rect.top - rect.height / 2 + this.sizes.height / 2
-            mesh.material.uniforms.uOffset.value.x = speed * 2
+            
+            // Apply velocity-based distortion like cases (speed becomes distortion factor)
+            mesh.material.uniforms.uOffset.value = speed * 1.5
         })
     }
 

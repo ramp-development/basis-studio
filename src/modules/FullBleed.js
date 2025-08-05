@@ -24,11 +24,19 @@ export default class FullBleed
         this.splits = []
         this.scrolls = []
 
-        gsap.set(this.wrapper, {height: this.items.length * 100 + 'vh'})
+        // OLD HEIGHT - commented for easy rollback
+        // gsap.set(this.wrapper, {height: this.items.length * 100 + 'vh'})
+        
+        // NEW HEIGHT - extra space for last item to dwell
+        gsap.set(this.wrapper, {height: (this.items.length * 100) + 50 + 'vh'})
         ScrollTrigger.refresh()
 
         this.height = this.instance.getBoundingClientRect().height
-        this.itemPart = this.height / (this.items.length + 1)
+        // OLD TIMING - commented for easy rollback
+        // this.itemPart = this.height / (this.items.length + 1)
+        
+        // NEW TIMING - more spacing between animations
+        this.itemPart = this.height / (this.items.length - 0.5)
 
         this.items.forEach((item, index) =>
         {

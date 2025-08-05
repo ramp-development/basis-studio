@@ -96,7 +96,7 @@ export default class Talk {
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.title, // Use title as trigger point
       start: "center center", // Pin when title is centered
-      end: "+=150vh", // Longer scroll distance for slower animation
+      end: "+=1850vh", // Longer scroll distance for slower animation
       pin: this.instance,
       scrub: 2,
       animation: gsap.fromTo(
@@ -112,7 +112,7 @@ export default class Talk {
     });
 
     // Fix mobile interaction blocking by disabling pointer events on talk_item
-    this.list.style.pointerEvents = 'none';
+    this.list.style.pointerEvents = "none";
   }
 
   resize() {

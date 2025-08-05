@@ -51,9 +51,11 @@ export default class Calendar {
     this.calendarDiv = document.createElement("div");
     this.calendarDiv.id = this.calendarId;
     this.calendarDiv.style.width = "100%";
-    this.calendarDiv.style.height = "100%";
-    this.calendarDiv.style.minHeight = "1052px";
+    this.calendarDiv.style.height = window.innerWidth < 992 ? "auto" : "100%";
     this.calendarDiv.style.scrollbarWidth = "none";
+    if (window.innerWidth < 992) {
+      this.calendarDiv.style.minHeight = "2000px";
+    }
     // this.calendarDiv.style.overflow = "auto";
 
     this.instance.appendChild(this.calendarDiv);

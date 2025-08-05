@@ -4,7 +4,11 @@ uniform vec2 uRes;
 uniform vec2 uSize;
 uniform float uBorder;
 uniform float uHovered;
-uniform vec2 uOffset;
+// OLD UNIFORM - commented for easy rollback
+// uniform vec2 uOffset;
+
+// NEW UNIFORM - single float like cases for distortion
+uniform float uOffset;
 
 varying vec2 vUv;
 varying vec2 screenUv;

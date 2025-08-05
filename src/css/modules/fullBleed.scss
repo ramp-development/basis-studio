@@ -27,20 +27,22 @@
         }
     }
 
-    &.show-bg
-    {
-        .full_bg
-        {
-            transition: clip-path 0.8s var(--expoOut) 0s;
-            clip-path: inset(0% 0 0 0);
-        }
-    }
+    // OLD CLIP-PATH ANIMATION - commented for easy rollback
+    // &.show-bg
+    // {
+    //     .full_bg
+    //     {
+    //         transition: clip-path 0.8s var(--expoOut) 0s;
+    //         clip-path: inset(0% 0 0 0);
+    //     }
+    // }
 }
 
 .full_bg
 {
-    transition: clip-path 0.5s var(--expoOut) 0s;
-    clip-path: inset(100% 0 0 0);
+    // OLD CLIP-PATH - commented for easy rollback
+    // transition: clip-path 0.5s var(--expoOut) 0s;
+    // clip-path: inset(100% 0 0 0);
 
     &::before
     {

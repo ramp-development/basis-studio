@@ -108,7 +108,6 @@ export default class index {
       const material = this.material.clone();
 
       material.uniforms.uSize.value.set(rect.width, rect.height);
-      console.log(borderRadius, "borderRadius");
       material.uniforms.uBorder.value = parseFloat(borderRadius) || 0;
 
       // Detect content type and handle accordingly
@@ -158,7 +157,9 @@ export default class index {
     this.meshs.forEach(({ item }, index) => {
       item.addEventListener("mouseenter", () => {
         this.meshs.forEach(({ tl }, i) => {
-          if (i != index) tl.play();
+          if (i != index) {
+            tl.play();
+          }
         });
       });
 
@@ -222,8 +223,14 @@ export default class index {
     this.meshs.forEach(({ mesh, material }) => {
       material.dispose();
       mesh.geometry.dispose();
-      this.scene.remove(mesh);
+      // Remove from group, not scene directly
+      this.group.remove(mesh);
     });
+    
+    // Remove the entire group from the scene
+    if (this.group) {
+      this.scene.remove(this.group);
+    }
   }
 
   lerp(start, end, t) {
