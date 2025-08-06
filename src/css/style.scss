@@ -29,3 +29,9 @@ a:is(.w-webflow-badge) {
 * {
   scroll-behavior: unset;
 }
+
+.n-padding {
+  @media screen and (max-width: 991px) {
+    padding-top: 0 !important;
+  }
+}
