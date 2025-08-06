@@ -69,7 +69,7 @@ export default class Hero {
     const target = document.querySelector("#work_with");
 
     this.app.scroll.lenis.scrollTo(target, {
-      offset: 0,
+      offset: window.innerHeight * 0.35,
       lerp: 0.1,
       duration: 1.5,
       immediate: false,

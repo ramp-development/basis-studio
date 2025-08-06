@@ -1,0 +1,14 @@
+.t-96 {
+  @media screen and (max-width: 991px) {
+    font-size: var(--size--40);
+  }
+}
+
+.custom-descr :is(em) {
+  display: inline !important;
+}
+
+// embed calender thing
+// #skeleton-container {
+//   display: none !important;
+// }

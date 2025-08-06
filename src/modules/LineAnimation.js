@@ -35,7 +35,7 @@ export default class LineAnimation {
 
     this.scroll = ScrollTrigger.create({
       trigger: this.instance,
-      start: "top 90%",
+      start: "top 95%",
       onEnter: () => this.tl.play(),
     });
 

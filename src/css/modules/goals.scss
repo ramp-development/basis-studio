@@ -1,70 +1,68 @@
-.goals
-{
-    height: 400vh;
+.goals {
+  height: 400vh;
 }
 
-.goals_sticky
-{
-    height: 100vh;
+.goals_sticky {
+  height: 100vh;
 }
 
-.goals_list
-{
-    position: relative;
+.goal_center {
+  overflow: clip;
 }
 
-.goals_item
-{
-    &:not(:first-child)
-    {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: var(--size--60);
-        // height: max-content;
-    }
+.goals_list {
+  position: relative;
+}
 
-    .custom-descr
-    {
-        width: calc(var(--max-w) + 2ch);
-        max-width: none;
-    }
+.goals_item {
+  &:not(:first-child) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--size--60);
+    // height: max-content;
+  }
 
-    // .line
-    // {
-    //     overflow: clip;
-    // }
+  .custom-descr {
+    width: calc(var(--max-w) + 2ch);
+    max-width: none;
+  }
 
-    // .char,
-    // .word
-    // {
-    //     transition: transform 0.8s var(--expoOut) var(--delay);
-    //     transform: translate3d(0, -110%, 0);
-    // }
+  // .line
+  // {
+  //     overflow: clip;
+  // }
 
-    // .goals_number
-    // {
-    //     transition: transform 0.8s var(--expoOut);
-    //     transform: translate3d(0, -110%, 0);
-    // }
+  // .char,
+  // .word
+  // {
+  //     transition: transform 0.8s var(--expoOut) var(--delay);
+  //     transform: translate3d(0, -110%, 0);
+  // }
 
-    // &.active
-    // {
-    //     .char,
-    //     .word,
-    //     .goals_number
-    //     {
-    //         transform: translate3d(0, 0%, 0);
-    //     }
-    // }
+  // .goals_number
+  // {
+  //     transition: transform 0.8s var(--expoOut);
+  //     transform: translate3d(0, -110%, 0);
+  // }
 
-    // &.past
-    // {
-    //     .char,
-    //     .word,
-    //     .goals_number
-    //     {
-    //         transform: translate3d(0, 110%, 0);
-    //     }
-    // }
+  // &.active
+  // {
+  //     .char,
+  //     .word,
+  //     .goals_number
+  //     {
+  //         transform: translate3d(0, 0%, 0);
+  //     }
+  // }
+
+  // &.past
+  // {
+  //     .char,
+  //     .word,
+  //     .goals_number
+  //     {
+  //         transform: translate3d(0, 110%, 0);
+  //     }
+  // }
 }

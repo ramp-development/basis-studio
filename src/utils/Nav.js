@@ -32,7 +32,9 @@ export default class Nav {
       this.toggleMenu();
     });
 
-    this.navDots.addEventListener("click", () => {
+    this.navDots.addEventListener("click", (e) => {
+      e.stopPropagation();
+      console.log("click");
       this.toggleMenu();
     });
 

@@ -1,57 +1,62 @@
-.full_item
-{
-    .f-64,
-    .full_line-parent
-    {
-        overflow: clip;
-    }
+.full_item {
+  .f-64,
+  .full_line-parent {
+    overflow: clip;
+  }
 
+  .full_char,
+  .full_line,
+  .full_button {
+    transition:
+      transform 0.5s var(--expoOut) 0s,
+      filter 0.5s var(--expoOut) 0s,
+      opacity 0.5s var(--expoOut) 0s;
+    // transform: translateY(30%) scale(0.8);
+    filter: blur(10px);
+    opacity: 0;
+  }
+
+  &.active {
     .full_char,
-    .full_line
-    {
-        transition: transform 0.5s var(--expoOut) 0s, filter 0.5s var(--expoOut) 0s, opacity 0.5s var(--expoOut) 0s;
-        // transform: translateY(30%) scale(0.8);
-        filter: blur(10px);
-        opacity: 0;
+    .full_line,
+    .full_button {
+      transition:
+        transform 1s var(--expoOut) var(--delay),
+        filter 1s var(--expoOut) var(--delay),
+        opacity 1s var(--expoOut) var(--delay);
+      // transform: translateY(0%) scale(1);
+      filter: blur(0px);
+      opacity: 1;
     }
+  }
 
-    &.active
-    {
-        .full_char,
-        .full_line
-        {
-            transition: transform 1s var(--expoOut) var(--delay), filter 1s var(--expoOut) var(--delay), opacity 1s var(--expoOut) var(--delay);
-            // transform: translateY(0%) scale(1);
-            filter: blur(0px);
-            opacity: 1;
-        }
-    }
-
-    // OLD CLIP-PATH ANIMATION - commented for easy rollback
-    // &.show-bg
-    // {
-    //     .full_bg
-    //     {
-    //         transition: clip-path 0.8s var(--expoOut) 0s;
-    //         clip-path: inset(0% 0 0 0);
-    //     }
-    // }
+  // OLD CLIP-PATH ANIMATION - commented for easy rollback
+  // &.show-bg
+  // {
+  //     .full_bg
+  //     {
+  //         transition: clip-path 0.8s var(--expoOut) 0s;
+  //         clip-path: inset(0% 0 0 0);
+  //     }
+  // }
 }
 
-.full_bg
-{
-    // OLD CLIP-PATH - commented for easy rollback
-    // transition: clip-path 0.5s var(--expoOut) 0s;
-    // clip-path: inset(100% 0 0 0);
+.full_bg {
+  // OLD CLIP-PATH - commented for easy rollback
+  // transition: clip-path 0.5s var(--expoOut) 0s;
+  // clip-path: inset(100% 0 0 0);
 
-    &::before
-    {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 50%;
-        background: linear-gradient(to top, color-mix(in srgb, var(--color--black), transparent 20%), transparent);
-    }
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color--black), transparent 20%),
+      transparent
+    );
+  }
 }

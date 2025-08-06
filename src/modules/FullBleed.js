@@ -72,18 +72,45 @@ export default class FullBleed
                     this.items.forEach(el => el.classList.remove('active'))
                     item.classList.add('active')
                     item.classList.add('show-bg')
-                    if(window.innerWidth < 991) return
+                    
+                    if(window.innerWidth < 991) {
+                        // Mobile: manually switch videos
+                        this.items.forEach(el => {
+                            const video = el.querySelector('video')
+                            if(video) video.style.opacity = '0'
+                        })
+                        const currentVideo = item.querySelector('video')
+                        if(currentVideo) currentVideo.style.opacity = '1'
+                        return
+                    }
                     this.app.gl.world.full.meshs[index].tl.play()
                 },
                 onEnterBack: () =>
                 {
                     this.items.forEach(el => el.classList.remove('active'))
                     item.classList.add('active')
+                    
+                    if(window.innerWidth < 991) {
+                        // Mobile: show current video when entering back
+                        this.items.forEach(el => {
+                            const video = el.querySelector('video')
+                            if(video) video.style.opacity = '0'
+                        })
+                        const currentVideo = item.querySelector('video')
+                        if(currentVideo) currentVideo.style.opacity = '1'
+                        return
+                    }
                 },
                 onLeaveBack: () =>
                 {
                     item.classList.remove('show-bg')
-                    if(window.innerWidth < 991) return
+                    
+                    if(window.innerWidth < 991) {
+                        // Mobile: hide current video
+                        const currentVideo = item.querySelector('video')
+                        if(currentVideo) currentVideo.style.opacity = '0'
+                        return
+                    }
                     this.app.gl.world.full.meshs[index].tl.reverse()
                 },
             })
