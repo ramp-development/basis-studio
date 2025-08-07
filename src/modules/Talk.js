@@ -53,8 +53,8 @@ export default class Talk {
     // Responsive radius based on viewport size
     const radius = Math.min(window.innerWidth, window.innerHeight) * 0.4; // 40% of smaller viewport dimension
 
-    // Spacing matches example website pattern
-    const spacing = 12; // degrees
+    // Increased spacing for more breathing room
+    const spacing = 16; // degrees (was 12)
 
     this.items.forEach((item, index) => {
       const angle = index * spacing * (Math.PI / 180); // Convert to radians
