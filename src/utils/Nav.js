@@ -34,7 +34,6 @@ export default class Nav {
 
     this.navDots.addEventListener("click", (e) => {
       e.stopPropagation();
-      console.log("click");
       this.toggleMenu();
     });
 

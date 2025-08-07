@@ -28,16 +28,18 @@
 // }
 
 // New 3D cylinder effect CSS
-.talk {
-  perspective: 70vw; // Add perspective to container
-  perspective-origin: center center;
-  width: 100%;
-  height: 80vh;
-}
+// .talk {
+//   perspective: 70vw; // Add perspective to container
+//   perspective-origin: center center;
+//   width: 100%;
+//   height: 100vh;
+// }
 
-.talk_title {
-  color: var(--color--pink);
-}
+// .talk_full {
+//   width: 100%;
+//   height: 100%;
+//   position: absolute;
+// }
 
 .talk_item {
   width: 100%;

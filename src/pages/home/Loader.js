@@ -65,22 +65,22 @@ export default class Loader {
       this.tl
         .fromTo(
           mesh.position,
-          { z: 600 },
-          { z: 0, duration: 3.5 },
+          { z: 100 },
+          { z: 0, duration: 2.5 },
           index * 0.1 + 0.4
         )
         .fromTo(
           mesh.material.uniforms.uOpacity,
           { value: 0 },
-          { value: 1, duration: 4.5 },
+          { value: 1, duration: 2.5 },
           "<"
         );
     });
 
     this.tl.fromTo(
       this.group.position,
-      { y: window.innerHeight / 2 },
-      { y: 0, duration: 3.5, ease: "power1" },
+      { y: -window.innerHeight / 2 },
+      { y: 0, duration: 2, ease: "power1" },
       0
     );
 
@@ -179,7 +179,7 @@ export default class Loader {
       .fromTo(
         this.imagesParent,
         { yPercent: 20, scale: 0.6 },
-        { yPercent: 0, scale: 1, duration: 4, ease: "power1", force3D: true },
+        { yPercent: 0, scale: 1, duration: 2, ease: "power1", force3D: true },
         0.6
       )
       .fromTo(
@@ -188,7 +188,7 @@ export default class Loader {
         {
           scale: 1,
           opacity: 1,
-          duration: 3,
+          duration: 2,
           ease: "power1",
           stagger: 0.15,
           force3D: true,

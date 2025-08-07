@@ -27,28 +27,40 @@ export default class Goals {
       const right = item.querySelector(".v-flex-right-center");
 
       const titleSplit = new SplitText(left.querySelector("p"), {
-        type: "lines, words",
-        wordsClass: "word",
+        type: "lines",
         linesClass: "line",
+      });
+      const titleSplitParent = new SplitText(left.querySelector("p"), {
+        type: "lines",
+        linesClass: "line-parent",
       });
       const descrSplit = new SplitText(right.querySelector("p"), {
-        type: "lines, words",
-        wordsClass: "word",
+        type: "lines",
         linesClass: "line",
       });
-
-      // Set perspective and 3D properties for lines
-      gsap.set(titleSplit.lines, {
-        overflow: "clip",
-        paddingBottom: "0.1em",
-        marginBottom: "-0.1em",
-        perspective: 1000,
+      const descrSplitParent = new SplitText(right.querySelector("p"), {
+        type: "lines",
+        linesClass: "line-parent",
       });
-      gsap.set(descrSplit.lines, {
-        overflow: "clip",
-        paddingBottom: "0.1em",
-        marginBottom: "-0.1em",
+
+      // Set up parent lines with overflow hidden and perspective
+      const lineParents = [
+        ...titleSplitParent.lines,
+        ...descrSplitParent.lines,
+      ];
+      gsap.set(lineParents, {
+        overflow: "hidden",
         perspective: 1000,
+        perspectiveOrigin: "center center",
+      });
+
+      // Set up child lines with initial 3D state
+      const lines = [...titleSplit.lines, ...descrSplit.lines];
+      gsap.set(lines, {
+        y: "120%",
+        rotateX: "-35deg",
+        transformOrigin: "center bottom",
+        transformStyle: "preserve-3d",
       });
 
       return { title: titleSplit, descr: descrSplit };
@@ -86,7 +98,7 @@ export default class Goals {
       // NEW 3D REVEAL EFFECT - ADAPTED FROM HOMECTA
       if (index > 0) {
         tl.to(
-          this.splits[index - 1].title.words,
+          this.splits[index - 1].title.lines,
           {
             rotateX: "-35deg",
             z: "-1rem",
@@ -99,7 +111,7 @@ export default class Goals {
           0
         )
           .to(
-            this.splits[index - 1].descr.words,
+            this.splits[index - 1].descr.lines,
             {
               rotateX: "-35deg",
               z: "-1rem",
@@ -114,7 +126,7 @@ export default class Goals {
           .to(
             this.items[index - 1].querySelector(".goals_number"),
             {
-              rotateX: "-35deg",
+              rotateX: "-15deg",
               z: "-1rem",
               y: "120%",
               transformStyle: "preserve-3d",
@@ -125,13 +137,13 @@ export default class Goals {
       }
 
       tl.fromTo(
-        split.title.words,
+        split.title.lines,
         { y: "120%" },
         { y: "0%", stagger: 0.1, ease: "power3" },
         "<50%"
       )
         .fromTo(
-          split.title.words,
+          split.title.lines,
           {
             rotateX: "-35deg",
             z: "-1rem",
@@ -147,13 +159,13 @@ export default class Goals {
           "<0.2"
         )
         .fromTo(
-          split.descr.words,
+          split.descr.lines,
           { y: "120%" },
           { y: "0%", stagger: 0.1, ease: "power3" },
           "<0.1"
         )
         .fromTo(
-          split.descr.words,
+          split.descr.lines,
           {
             rotateX: "-35deg",
             z: "-1rem",
@@ -177,7 +189,7 @@ export default class Goals {
         .fromTo(
           item.querySelector(".goals_number"),
           {
-            rotateX: "-35deg",
+            rotateX: "-15deg",
             z: "-1rem",
             transformStyle: "preserve-3d",
             transformOrigin: "50% 0",

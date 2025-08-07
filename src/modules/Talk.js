@@ -1,5 +1,4 @@
 import { gsap, SplitText, ScrollTrigger } from "gsap/all";
-import { def } from "@utils/GSAP.js";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -21,10 +20,23 @@ export default class Talk {
 
   init() {
     // SplitText for title animation
-    this.titleSplit = new SplitText(this.title, {
-      type: "chars, words",
-      charsClass: "char",
-      wordsClass: "word",
+    // this.titleSplit = new SplitText(this.title, {
+    //   type: "chars, words",
+    //   charsClass: "char",
+    //   wordsClass: "word",
+    // });
+
+    this.split = new SplitText(this.title, {
+      type: "lines",
+    });
+    this.splitSecond = new SplitText(this.title, {
+      type: "lines",
+    });
+    gsap.set(this.splitSecond.lines, {
+      overflow: "clip",
+      paddingBottom: "0.1em",
+      marginBottom: "-0.1em",
+      perspective: 1000,
     });
 
     // Calculate and apply 3D cylinder positions
@@ -35,10 +47,6 @@ export default class Talk {
 
     // Setup ScrollTrigger for cylinder rotation
     this.setupScrollAnimation();
-
-    console.log(
-      "Talk module initialized - Title animation + 3D cylinder with ScrollTrigger rotation"
-    );
   }
 
   calculatePositions() {
@@ -66,28 +74,32 @@ export default class Talk {
     // Create timeline for title animation
     this.titleTl = gsap.timeline({
       paused: true,
-      defaults: {
-        ease: "power3",
-        duration: def.duration,
-        stagger: { from: "center", each: def.stagger },
-      },
+      defaults: { duration: 0.8, ease: "power3.out" },
     });
 
     // Set initial state and animate to visible
     this.titleTl.fromTo(
-      this.titleSplit.chars,
-      { opacity: 0, filter: "blur(15px)" },
-      { opacity: 1, filter: "blur(0px)" }
+      this.split.lines,
+      {
+        y: "120%",
+        rotateX: "-65deg",
+        transformStyle: "preserve-3d",
+        transformOrigin: "center bottom",
+      },
+      {
+        y: "0%",
+        rotateX: "0deg",
+        stagger: 0.1,
+      }
     );
 
-    // ScrollTrigger for title animation - from top of viewport to center
+    // ScrollTrigger for title animation - trigger on enter and re-enter
     this.titleScrollTrigger = ScrollTrigger.create({
       trigger: this.title,
-      start: "top 80%",
-      end: "center center",
-      scrub: true,
-      animation: this.titleTl,
-      // markers: { startColor: "blue", endColor: "blue", fontSize: "12px", fontWeight: "bold", indent: 20 }
+      start: "top 85%",
+      onEnter: () => this.titleTl.play(),
+      onLeaveBack: () => this.titleTl.reverse(),
+      onEnterBack: () => this.titleTl.play(),
     });
   }
 
@@ -104,11 +116,6 @@ export default class Talk {
         { rotateX: -80 }, // Start with text visible
         { rotateX: 270, ease: "none" } // Complete cylinder rotation
       ),
-      onUpdate: (self) => {
-        console.log(
-          `Cylinder rotation progress: ${(self.progress * 100).toFixed(1)}%`
-        );
-      },
     });
 
     // Fix mobile interaction blocking by disabling pointer events on talk_item
@@ -126,8 +133,6 @@ export default class Talk {
       this.scrollTrigger.kill();
       this.setupScrollAnimation();
     }
-
-    console.log("Talk module resize - recalculated 3D positions");
   }
 
   destroy() {

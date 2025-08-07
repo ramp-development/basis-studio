@@ -1,15 +1,14 @@
-:root
-{
-    --ease: cubic-bezier(0.76, 0 ,0.24 ,1);
-    --smooth: cubic-bezier(0.76, 0 ,0.24 ,1);
-    --expoInOut: cubic-bezier(0.87, 0, 0.13, 1);
-    --expoIn: cubic-bezier(0.7, 0, 0.84, 0);
-    --expoOut: cubic-bezier(0.16, 1, 0.3, 1);
+:root {
+  --ease: cubic-bezier(0.76, 0, 0.24, 1);
+  --smooth: cubic-bezier(0.76, 0, 0.24, 1);
+  --expoInOut: cubic-bezier(0.87, 0, 0.13, 1);
+  --expoIn: cubic-bezier(0.7, 0, 0.84, 0);
+  --expoOut: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 ::selection,
-::-webkit-selection
-{
-    background: var(--color--pink);
-    color: var(--color--black);
+::-webkit-selection {
+  background: var(--color--pink);
+  color: var(--color--black);
 }

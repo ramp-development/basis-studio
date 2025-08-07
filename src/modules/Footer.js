@@ -16,7 +16,7 @@ export default class Footer {
     this.hasAnimated = false;
 
     this.links = this.instance.querySelectorAll(".footer_link");
-    this.links.forEach((link) => new LinkAnimation(link, this.app));
+    // this.links.forEach((link) => new LinkAnimation(link, this.app));
 
     // Store clock data for later use
     this.clockData = [];

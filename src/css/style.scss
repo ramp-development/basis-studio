@@ -35,3 +35,14 @@ a:is(.w-webflow-badge) {
     padding-top: 0 !important;
   }
 }
+
+.section-space {
+  @media screen and (max-width: 991px) {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+
+    &:last-child {
+      padding-bottom: 0 !important;
+    }
+  }
+}

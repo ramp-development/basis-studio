@@ -26,7 +26,7 @@ export default class index {
     this.sizes = this.app.sizes;
     this.time = this.app.time;
 
-    this.items = this.main.querySelectorAll(".preview_img");
+    this.items = this.main.querySelectorAll(".preview_img, .talk_full");
 
     this.init();
   }
@@ -194,22 +194,25 @@ export default class index {
         onLeaveBack: () => tl.pause(0),
       });
 
-      ScrollTrigger.create({
-        trigger: item,
-        start: "top bottom",
-        end: "bottom top",
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const remappedProgress = gsap.utils.mapRange(
-            0,
-            1,
-            -0.2,
-            0.2,
-            progress
-          );
-          material.uniforms.uParallax.value = remappedProgress;
-        },
-      });
+      // Only apply parallax to .preview_img, not .talk_full
+      if (item.classList.contains("preview_img")) {
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top bottom",
+          end: "bottom top",
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const remappedProgress = gsap.utils.mapRange(
+              0,
+              1,
+              -0.2,
+              0.2,
+              progress
+            );
+            material.uniforms.uParallax.value = remappedProgress;
+          },
+        });
+      }
 
       return { mesh, item, material };
     });
