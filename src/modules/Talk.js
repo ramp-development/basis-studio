@@ -12,6 +12,7 @@ export default class Talk {
     this.items = this.list.querySelectorAll(".f-96");
 
     this.destroyed = false;
+    this.titleHidden = false;
 
     this.init();
     this.app.on("resize", () => this.resize());
@@ -116,10 +117,42 @@ export default class Talk {
         { rotateX: -80 }, // Start with text visible
         { rotateX: 270, ease: "none" } // Complete cylinder rotation
       ),
+      onUpdate: (self) => {
+        // Hide title after 20% of circular animation begins
+        if (self.progress > 0.15 && !this.titleHidden) {
+          this.hideTitleAnimation();
+          this.titleHidden = true;
+        } else if (self.progress <= 0.15 && this.titleHidden) {
+          this.showTitleAnimation();
+          this.titleHidden = false;
+        }
+      },
     });
 
     // Fix mobile interaction blocking by disabling pointer events on talk_item
     this.list.style.pointerEvents = "none";
+  }
+
+  hideTitleAnimation() {
+    // Animate title out with same 3D effect but reversed
+    gsap.to(this.split.lines, {
+      y: "-120%",
+      rotateX: "65deg",
+      duration: 0.6,
+      ease: "power3.in",
+      stagger: 0.05,
+    });
+  }
+
+  showTitleAnimation() {
+    // Animate title back in
+    gsap.to(this.split.lines, {
+      y: "0%",
+      rotateX: "0deg",
+      duration: 0.6,
+      ease: "power3.out",
+      stagger: 0.05,
+    });
   }
 
   resize() {

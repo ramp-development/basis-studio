@@ -39,6 +39,7 @@ export default class FullBleed {
       const title = item.querySelector(".f-64");
       const descr = item.querySelector("p");
       const video = item.querySelector("video");
+      const button = item.querySelector(".full_button");
 
       const splitTitle = new SplitText(title, {
         type: "lines",
@@ -59,12 +60,14 @@ export default class FullBleed {
 
       this.splits.push(splitDescr, splitTitle, splitDescrParent);
 
-      // Setup line animation like LineAnimation.js
-      const lineParents = [
-        ...splitDescrParent.lines,
-        ...splitTitleParent.lines,
-      ];
-      const lines = [...splitDescr.lines, ...splitTitle.lines];
+      // Setup line animation like LineAnimation.js - separate title and description for proper ordering
+      const titleLineParents = [...splitTitleParent.lines];
+      const descrLineParents = [...splitDescrParent.lines];
+      const titleLines = [...splitTitle.lines];
+      const descrLines = [...splitDescr.lines];
+
+      const lineParents = [...titleLineParents, ...descrLineParents];
+      const lines = [...titleLines, ...descrLines];
 
       // Set up parent lines with overflow hidden and perspective
       gsap.set(lineParents, {
@@ -81,15 +84,52 @@ export default class FullBleed {
         transformStyle: "preserve-3d",
       });
 
-      // Create timeline for text animation
+      // Create timeline for text animation with proper order: title first, then description
       const textTl = gsap.timeline({ paused: true });
-      textTl.to(lines, {
-        y: "0%",
-        rotateX: "0deg",
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.1,
-      });
+      textTl
+        .to(
+          titleLines,
+          {
+            y: "0%",
+            rotateX: "0deg",
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.1,
+          },
+          0.3
+        ) // Start after video
+        .to(
+          descrLines,
+          {
+            y: "0%",
+            rotateX: "0deg",
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.1,
+          },
+          0.3
+        ); // Start after title
+
+      // Add button animation for mobile
+      if (button && window.innerWidth <= 991) {
+        gsap.set(button, {
+          opacity: 0,
+          y: 20,
+          scale: 0.8,
+        });
+
+        textTl.to(
+          button,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
+          },
+          1.6
+        ); // Start after description
+      }
 
       // Store timeline for later use
       item.textTl = textTl;
