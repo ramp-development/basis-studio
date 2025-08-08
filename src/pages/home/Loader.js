@@ -61,12 +61,19 @@ export default class Loader {
       },
     });
 
+    this.tl.fromTo(
+      this.group.position,
+      { y: -window.innerHeight / 2 },
+      { y: 0, duration: 3, ease: "power1" },
+      0
+    );
+
     this.meshs.forEach(({ mesh }, index) => {
       this.tl
         .fromTo(
-          mesh.position,
-          { z: 100 },
-          { z: 0, duration: 2.5 },
+          mesh.scale,
+          { x: 0.6, y: 0.6, z: 0.6 },
+          { x: 1, y: 1, z: 1, duration: 2.5, ease: "power1" },
           index * 0.1 + 0.4
         )
         .fromTo(
@@ -76,13 +83,6 @@ export default class Loader {
           "<"
         );
     });
-
-    this.tl.fromTo(
-      this.group.position,
-      { y: -window.innerHeight / 2 },
-      { y: 0, duration: 2, ease: "power1" },
-      0
-    );
 
     this.tl
       .fromTo(

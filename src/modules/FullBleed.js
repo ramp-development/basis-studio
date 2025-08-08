@@ -25,7 +25,7 @@ export default class FullBleed {
     // gsap.set(this.wrapper, {height: this.items.length * 100 + 'vh'})
 
     // EXTENDED HEIGHT - much more space for each video to dwell
-    gsap.set(this.wrapper, { height: this.items.length * 100 + 100 + "vh" });
+    gsap.set(this.wrapper, { height: this.items.length * 100 + 100 + "svh" });
     ScrollTrigger.refresh();
 
     this.height = this.instance.getBoundingClientRect().height;
