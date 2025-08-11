@@ -19,6 +19,7 @@
 @import "./pages/home/index.scss";
 @import "./pages/cases/index.scss";
 @import "./pages/services/index.scss";
+@import "./pages/fintech/index.scss";
 
 @import "./editor.scss";
 
@@ -33,6 +34,7 @@ a:is(.w-webflow-badge) {
 .n-padding {
   @media screen and (max-width: 991px) {
     padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 }
 
@@ -50,4 +52,16 @@ a:is(.w-webflow-badge) {
 .heading_outline {
   border: 1px solid var(--color--white);
   background-color: transparent !important;
+}
+
+.m-light-grey {
+  @media screen and (max-width: 991px) {
+    color: var(--color--light-grey);
+  }
+}
+
+.services_hero_container {
+  @media screen and (max-width: 991px) {
+    padding: 0 !important;
+  }
 }

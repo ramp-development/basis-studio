@@ -50,7 +50,7 @@ export default class LineAnimation {
 
     this.scroll = ScrollTrigger.create({
       trigger: this.instance,
-      start: window.innerWidth > 992 ? "top 70%" : "top 85%",
+      start: window.innerWidth > 992 ? "top 90%" : "top 95%",
       onEnter: () => this.tl.play(),
     });
 
@@ -74,5 +74,9 @@ export default class LineAnimation {
   destroy() {
     if (this.destroyed) return;
     this.destroyed = true;
+
+    this.tl?.kill();
+    this.scroll?.kill();
+    this.scrollBack?.kill();
   }
 }

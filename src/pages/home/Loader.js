@@ -64,22 +64,30 @@ export default class Loader {
     this.tl.fromTo(
       this.group.position,
       { y: -window.innerHeight / 2 },
-      { y: 0, duration: 3, ease: "power1" },
+      { y: 0, duration: 3.5, ease: "power1" },
       0
     );
 
     this.meshs.forEach(({ mesh }, index) => {
+      console.log(mesh.position, "mesh.position");
+      // this.tl
+      //   .fromTo(
+      //     mesh.scale,
+      //     { x: 0.6, y: 0.6, z: 0.6 },
+      //     { x: 1, y: 1, z: 1, duration: 3.5, ease: "power1" },
+      //     index * 0.1 + 0.4
+      //   )
       this.tl
         .fromTo(
-          mesh.scale,
-          { x: 0.6, y: 0.6, z: 0.6 },
-          { x: 1, y: 1, z: 1, duration: 2.5, ease: "power1" },
-          index * 0.1 + 0.4
+          mesh.position,
+          { z: 600 },
+          { z: 0, stagger: 0.1, duration: 3.5, ease: "power1" },
+          index * 0.2 + 0.4
         )
         .fromTo(
           mesh.material.uniforms.uOpacity,
           { value: 0 },
-          { value: 1, duration: 2.5 },
+          { value: 1, duration: 4.5 },
           "<"
         );
     });

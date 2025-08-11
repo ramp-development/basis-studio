@@ -13,12 +13,20 @@ export default class Calendar {
     this.calNamespace = this.generateNamespace(); // Generate unique namespace for each instance
     this.calendarId = `my-cal-inline-${Math.random().toString(36).substr(2, 9)}`;
 
+    // Height monitoring
+    this.lastHeight = 0;
+    this.heightObserver = null;
+
     // Get configuration from data attributes
     this.config = this.getConfigFromAttributes();
 
     this.init();
     this.app.on("destroy", () => this.destroy());
     this.app.on("resize", () => this.resize());
+    
+    // Listen for page transition events
+    this.app.on("pageEnter", () => this.onPageTransition());
+    this.app.on("pageReady", () => this.onPageTransition());
   }
 
   generateNamespace() {
@@ -53,9 +61,6 @@ export default class Calendar {
     this.calendarDiv.style.width = "100%";
     this.calendarDiv.style.height = window.innerWidth < 992 ? "auto" : "100%";
     this.calendarDiv.style.scrollbarWidth = "none";
-    if (window.innerWidth < 992) {
-      this.calendarDiv.style.minHeight = "2000px";
-    }
     // this.calendarDiv.style.overflow = "auto";
 
     this.instance.appendChild(this.calendarDiv);
@@ -197,9 +202,69 @@ export default class Calendar {
     // Add any custom logic after calendar is loaded
     // console.log('Cal.com calendar loaded successfully')
 
+    // Start monitoring height changes
+    this.startHeightMonitoring();
+
     // You can trigger custom events here if needed
     // this.app.trigger('calendarLoaded')
     setTimeout(() => ScrollTrigger.refresh(), 100); // Refresh ScrollTrigger if needed
+  }
+
+  startHeightMonitoring() {
+    if (!this.calendarDiv || this.destroyed) return;
+
+    // Use ResizeObserver if available, otherwise fallback to polling
+    if (window.ResizeObserver) {
+      this.heightObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          const newHeight = entry.contentRect.height;
+          if (Math.abs(newHeight - this.lastHeight) > 50) { // Only refresh if height change is significant
+            this.lastHeight = newHeight;
+            setTimeout(() => {
+              if (!this.destroyed) {
+                ScrollTrigger.refresh();
+              }
+            }, 300); // Debounce refresh
+          }
+        }
+      });
+      
+      this.heightObserver.observe(this.calendarDiv);
+    } else {
+      // Fallback: poll for height changes
+      this.heightPolling = setInterval(() => {
+        if (this.destroyed) return;
+        
+        const currentHeight = this.calendarDiv.offsetHeight;
+        if (Math.abs(currentHeight - this.lastHeight) > 50) {
+          this.lastHeight = currentHeight;
+          ScrollTrigger.refresh();
+        }
+      }, 1000);
+    }
+  }
+
+  stopHeightMonitoring() {
+    if (this.heightObserver) {
+      this.heightObserver.disconnect();
+      this.heightObserver = null;
+    }
+    
+    if (this.heightPolling) {
+      clearInterval(this.heightPolling);
+      this.heightPolling = null;
+    }
+  }
+
+  onPageTransition() {
+    // Handle page transitions - refresh ScrollTrigger after calendar adjusts
+    if (this.destroyed) return;
+    
+    setTimeout(() => {
+      if (!this.destroyed && this.calInstance) {
+        ScrollTrigger.refresh();
+      }
+    }, 500); // Delay to let page transition complete
   }
 
   // Method to update calendar configuration
@@ -253,6 +318,9 @@ export default class Calendar {
     if (this.destroyed) return;
 
     this.destroyed = true;
+
+    // Stop height monitoring
+    this.stopHeightMonitoring();
 
     // Clean up the calendar instance
     if (this.calendarDiv) {

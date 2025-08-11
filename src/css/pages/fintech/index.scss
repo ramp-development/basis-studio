@@ -1,0 +1,20 @@
+.inner-hero {
+  .f-48 {
+    @media screen and (max-width: 991px) {
+      font-size: var(--size--32);
+      max-width: 16ch;
+    }
+  }
+}
+
+.self-aligned-mobile {
+  @media screen and (max-width: 991px) {
+    align-self: start;
+  }
+}
+
+.f-descr-mb {
+  @media screen and (max-width: 991px) {
+    font-size: 2.3rem;
+  }
+}
