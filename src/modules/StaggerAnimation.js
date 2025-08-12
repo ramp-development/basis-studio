@@ -6,6 +6,7 @@ export default class StaggerAnimation {
     this.app = app;
 
     this.destroyed = false;
+    this.splits = [];
 
     this.init();
     this.app.on("resize", () => this.resize());
@@ -24,7 +25,6 @@ export default class StaggerAnimation {
     });
 
     this.items = this.instance.querySelectorAll(".stagger-item");
-    this.splits = [];
     this.animationTargets = [];
 
     this.items.forEach((item) => {
@@ -64,9 +64,6 @@ export default class StaggerAnimation {
 
     this.tl = gsap.timeline({
       paused: true,
-      onComplete: () => {
-        this.splits.forEach((split) => split.revert());
-      },
     });
 
     const isMobile = window.innerWidth < 992;
@@ -136,7 +133,7 @@ export default class StaggerAnimation {
     if (this.destroyed) return;
     this.destroyed = true;
 
-    // this.splits.forEach(split => split.revert());
+    this.splits.forEach((split) => split.revert());
     this.tl?.kill();
     this.scroll?.kill();
     this.scrollBack?.kill();

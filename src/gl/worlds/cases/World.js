@@ -1,127 +1,128 @@
-import { WebGLRenderTarget, Box3, VideoTexture, TorusKnotGeometry } from 'three'
-import Resources from '@utils/Resources'
-import gsap from 'gsap'
-import VideoLoader from '@utils/VideoLoader.js'
+import {
+  WebGLRenderTarget,
+  Box3,
+  VideoTexture,
+  TorusKnotGeometry,
+} from "three";
+import Resources from "@utils/Resources";
+import gsap from "gsap";
+import VideoLoader from "@utils/VideoLoader.js";
 
-import Items from './meshs/items/index.js'
+import Items from "./meshs/items/index.js";
 
+export default class World {
+  constructor(gl, app, scene, main) {
+    this.gl = gl;
+    this.app = app;
+    this.scene = scene;
+    this.main = main;
 
-export default class World
-{
-    constructor(gl, app, scene, main)
-    {
-        this.gl = gl
-        this.app = app
-        this.scene = scene
-        this.main = main
+    this.sizes = this.app.sizes;
+    this.renderer = this.gl.renderer.instance;
+    this.camera = this.gl.camera.instance;
+    this.scene = scene;
 
-        this.sizes = this.app.sizes
-        this.renderer = this.gl.renderer.instance
-        this.camera = this.gl.camera.instance
-        this.scene = scene
+    this.load();
+  }
 
-        this.load()
+  load() {
+    this.videosLength = this.main.querySelectorAll(
+      ".cases_video:not(.w-condition-invisible"
+    ).length;
+    this.videoTexetures = [];
+    this.count = 0;
+    this.videoLoaded = false;
+    this.items = this.main.querySelectorAll(".cases_item");
+    this.sources = [...this.items]
+      .map((item) => {
+        const name = item.querySelector(".f-28").textContent.trim();
+        const image = item.querySelector("img");
+
+        if (image.classList.contains("w-condition-invisible")) return null;
+        const url = image.getAttribute("src");
+
+        return { type: "textureLoader", url, name: name };
+      })
+      .filter(Boolean);
+
+    this.resources = new Resources(this.sources);
+
+    this.items.forEach((item) => {
+      const name = item.querySelector(".f-28").textContent.trim();
+      const videoParent = item.querySelector(".cases_video");
+
+      if (videoParent.classList.contains("w-condition-invisible")) return;
+      const video = videoParent.querySelector("video");
+      const videoLoader = new VideoLoader(video);
+
+      videoLoader.on("loaded", () => {
+        const texture = new VideoTexture(video);
+
+        this.videoTexetures.push({
+          name,
+          texture,
+          width: videoLoader.width,
+          height: videoLoader.height,
+        });
+        this.checkLoaded();
+      });
+    });
+
+    this.resources.on("ready", () => this.checkLoaded());
+  }
+
+  checkLoaded() {
+    this.count++;
+    if (this.count == this.videosLength + 1) {
+      this.init();
     }
+  }
 
-    load()
-    {
-        this.videosLength = this.main.querySelectorAll('.cases_video:not(.w-condition-invisible').length
-        this.videoTexetures = []
-        this.count = 0
-        this.videoLoaded = false
-        this.items = this.main.querySelectorAll('.cases_item')
-        this.sources = [...this.items].map(item =>
-        {
-            const name = item.querySelector('.f-28').textContent.trim()
-            const image = item.querySelector('img')
+  init() {
+    this.gl.loaded = true;
 
-            if(image.classList.contains('w-condition-invisible')) return null
-            const url = image.getAttribute('src')
+    this.items = new Items(
+      this.app,
+      this.gl,
+      this.scene,
+      this.main,
+      this.resources.items,
+      this.videoTexetures,
+      this.items
+    );
 
-            return { type: 'textureLoader', url, name: name }
-        }).filter(Boolean)
+    this.app.trigger("loadedWorld");
 
-        this.resources = new Resources(this.sources)
-
-        this.items.forEach(item =>
-        {
-            const name = item.querySelector('.f-28').textContent.trim()
-            const videoParent = item.querySelector('.cases_video')
-
-            if(videoParent.classList.contains('w-condition-invisible')) return
-            const video = videoParent.querySelector('video')
-            const videoLoader = new VideoLoader(video)
-
-            videoLoader.on('loaded', () =>
-            {
-                const texture = new VideoTexture(video)
-
-                this.videoTexetures.push({ name, texture, width: videoLoader.width, height: videoLoader.height })
-                this.checkLoaded()
-            })
-        })
-
-        this.resources.on('ready', () => this.checkLoaded())
+    if (!this.app.onceLoaded) {
+      this.app.globalLoader.tl.play();
+      this.app.page.triggerLoad();
     }
+    // else this.app.enterPage.tl.play()
+  }
 
-    checkLoaded()
-    {
-        this.count++
-        if(this.count == this.videosLength + 1)
-        {
-            this.init()
-        }
-    }
+  setScroll(e) {
+    this.items?.setPosition(e);
+  }
 
-    init()
-    {
-        this.gl.loaded = true
+  update() {
+    this.items?.update();
+  }
 
-        this.items = new Items(this.app, this.gl, this.scene, this.main, this.resources.items, this.videoTexetures, this.items)
+  createTexture(target) {
+    this.renderer.setRenderTarget(target);
+    this.renderer.render(this.scene, this.camera);
+    this.renderer.setRenderTarget(null);
 
-        this.app.trigger('loadedWorld')
+    return target.texture;
+  }
 
+  resize() {
+    this.items?.resize();
+  }
 
-        if(!this.app.onceLoaded)
-        {
-            this.app.globalLoader.tl.play()
-            this.app.page.triggerLoad()
-        }
-        // else this.app.enterPage.tl.play()
+  onMouseMove(e, mouse) {}
 
-    }
-
-    setScroll(e)
-    {
-        this.items?.setPosition(e)
-    }
-
-    update()
-    {
-        this.items?.update()
-    }
-
-    createTexture(target)
-    {
-        this.renderer.setRenderTarget(target)
-        this.renderer.render(this.scene, this.camera)
-        this.renderer.setRenderTarget(null)
-
-        return target.texture
-    }
-
-    resize()
-    {
-        this.items?.resize()
-    }
-
-    onMouseMove(e, mouse)
-    {
-
-    }
-
-    destroy()
-    {
-        this.items?.destroy()
-    }
+  destroy() {
+    this.items?.destroy();
+  }
 }
