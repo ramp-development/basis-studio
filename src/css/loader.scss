@@ -1,6 +1,11 @@
 .loader
 {
     clip-path: inset(0 calc(var(--leftClip, 0) * 1%) 0 calc(var(--clip, 0) * 1%));
+    
+    &.bottom-transition
+    {
+        clip-path: inset(calc(var(--topClip, 0) * 1%) 0 calc(var(--bottomClip, 0) * 1%) 0);
+    }
 
     .loader_layer
     {

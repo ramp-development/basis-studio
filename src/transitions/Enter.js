@@ -13,7 +13,7 @@ export default class Enter
         this.data = data
         this.loader = document.querySelector('.loader')
         this.once = false
-        gsap.set(this.loader, {'--clip': 0, '--leftClip': 0})
+        gsap.set(this.loader, {'--clip': 0, '--leftClip': 0, '--bottomClip': 0})
 
         this.tl = gsap.timeline({paused: true, defaults: {duration: 0.8 , ease: 'power2.inOut'}})
 

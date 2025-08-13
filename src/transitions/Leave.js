@@ -16,7 +16,9 @@ export default class Leave
         this.nav = document.querySelector('.nav')
         this.nav.classList.remove('active')
 
-        gsap.set(this.loader, {'--clip': 0, '--leftClip': 100})
+        console.log('🚀 Normal Leave transition starting')
+        gsap.set(this.loader, {'--clip': 0, '--leftClip': 100, '--bottomClip': 0})
+        console.log('🎨 Clip variables set:', { clip: 0, leftClip: 100, bottomClip: 0 })
 
         this.scroll.stop()
 

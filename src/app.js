@@ -4,6 +4,7 @@ import barbaPrefetch from '@barba/prefetch'
 import EventEmitter from '@utils/EventEmitter.js'
 import { RestartWebflow } from '@utils/RestartWebflow.js'
 import { defaultTransition } from '@transitions/schema/defaultTransition.js'
+import { caseTransition } from '@transitions/schema/caseTransition.js'
 import { CheckPages } from '@transitions/CheckPages.js'
 import FontFaceObserver from 'fontfaceobserver'
 
@@ -58,13 +59,30 @@ export default class app extends EventEmitter
                     name: 'once',
                     once: ({next}) => this.onceLoad(next),
                 },
+                caseTransition(this, CheckPages),
                 defaultTransition('transition', this, CheckPages),
                 defaultTransition('self', this, CheckPages)
             ]
         })
 
+        barba.hooks.before( (data) =>
+        {
+            console.log('🔍 Before transition:', {
+                from: data.current?.namespace,
+                to: data.next?.namespace,
+                fromRoute: data.current?.container?.getAttribute('data-transition-page'),
+                toRoute: data.next?.container?.getAttribute('data-transition-page')
+            })
+        })
+
         barba.hooks.enter( (data) =>
         {
+            console.log('📄 Barba page info:', {
+                from: data.current?.namespace,
+                to: data.next?.namespace,
+                fromRoute: data.current?.container?.getAttribute('data-transition-page'),
+                toRoute: data.next?.container?.getAttribute('data-transition-page')
+            })
             const videos = data.next.container.querySelectorAll('video')
             if(videos.length > 0) videos.forEach(video =>  video.load())
         })

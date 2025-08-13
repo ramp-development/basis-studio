@@ -2,29 +2,36 @@ import { customTrigger } from './customTrigger'
 
 export const caseTransition = (app, CheckPages) =>
 {
-    const homeToCase =
-    {
-        name: 'home-to-case',
-        sync: true,
-        from:
-        {
-            custom: ({trigger}) => {return customTrigger(trigger, 'project-transition-item')},
-            route: ['home', 'project']
+    console.log('🔧 Creating caseTransition')
+    return {
+        name: 'case-transition',
+        from: {
+            namespace: ['home', 'services', 'cases', 'fintech']
         },
-        to: {route: ['project']},
-        leave(data)
-        {
-
+        to: {
+            namespace: ['case-inner']
         },
-        async beforeEnter(data)
+        async leave(data)
         {
+            // Double-check that we're going TO a case study, not FROM one
+            const fromNamespace = data.current?.namespace
+            const toNamespace = data.next?.namespace
+            
+            console.log('🎯 Case transition triggered!', { fromNamespace, toNamespace })
+            
+            if (toNamespace !== 'case-inner') {
+                console.log('❌ Not going to case-inner, skipping case transition')
+                return
+            }
+            
+            if (fromNamespace === 'case-inner') {
+                console.log('❌ Coming from case-inner, skipping case transition') 
+                return
+            }
+            
             const done = this.async()
-            const leave = await import('@jsTransition/HomeToCase.js')
-            new leave.default(data, done, CheckPages, app)
-        },
+            const HomeToCase = await import('@transitions/HomeToCase.js')
+            new HomeToCase.default(data, done, CheckPages, app)
+        }
     }
-
-    const transition = window.innerWidth >= 1024 ? homeToCase : {}
-
-    return transition
 }
