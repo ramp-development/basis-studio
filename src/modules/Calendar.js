@@ -23,7 +23,7 @@ export default class Calendar {
     this.init();
     this.app.on("destroy", () => this.destroy());
     this.app.on("resize", () => this.resize());
-    
+
     // Listen for page transition events
     this.app.on("pageEnter", () => this.onPageTransition());
     this.app.on("pageReady", () => this.onPageTransition());
@@ -35,7 +35,7 @@ export default class Calendar {
 
   getConfigFromAttributes() {
     return {
-      calLink: this.instance.dataset.calLink || "stabondar/secret",
+      calLink: this.instance.dataset.calLink || "skvarenina/30min",
       theme: this.instance.dataset.theme || "dark",
       layout: this.instance.dataset.layout || "month_view",
       hideEventTypeDetails:
@@ -218,7 +218,8 @@ export default class Calendar {
       this.heightObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           const newHeight = entry.contentRect.height;
-          if (Math.abs(newHeight - this.lastHeight) > 50) { // Only refresh if height change is significant
+          if (Math.abs(newHeight - this.lastHeight) > 50) {
+            // Only refresh if height change is significant
             this.lastHeight = newHeight;
             setTimeout(() => {
               if (!this.destroyed) {
@@ -228,13 +229,13 @@ export default class Calendar {
           }
         }
       });
-      
+
       this.heightObserver.observe(this.calendarDiv);
     } else {
       // Fallback: poll for height changes
       this.heightPolling = setInterval(() => {
         if (this.destroyed) return;
-        
+
         const currentHeight = this.calendarDiv.offsetHeight;
         if (Math.abs(currentHeight - this.lastHeight) > 50) {
           this.lastHeight = currentHeight;
@@ -249,7 +250,7 @@ export default class Calendar {
       this.heightObserver.disconnect();
       this.heightObserver = null;
     }
-    
+
     if (this.heightPolling) {
       clearInterval(this.heightPolling);
       this.heightPolling = null;
@@ -259,7 +260,7 @@ export default class Calendar {
   onPageTransition() {
     // Handle page transitions - refresh ScrollTrigger after calendar adjusts
     if (this.destroyed) return;
-    
+
     setTimeout(() => {
       if (!this.destroyed && this.calInstance) {
         ScrollTrigger.refresh();

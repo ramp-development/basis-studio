@@ -131,7 +131,6 @@ export default class index {
         .getPropertyValue("border-radius")
         .split("px");
       const rect = item.getBoundingClientRect();
-      console.log(rect);
       // Scale width and height independently
       const scaleX = 3.725; // Adjust width scaling
       const scaleY = 2.2; // Adjust height scaling

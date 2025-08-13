@@ -1,5 +1,6 @@
 import { gsap, ScrollTrigger, Draggable, InertiaPlugin } from "gsap/all";
 import { LoadImages } from "@utils/LoadImages.js";
+import VideoLoader from "@utils/VideoLoader.js";
 
 gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
 
@@ -27,6 +28,9 @@ export default class Marquee {
 
     this.wrappers = this.instance.querySelectorAll("[wrapper]");
     this.items = this.instance.querySelectorAll("[item]");
+
+    this.setupCardVisibility();
+
     this.partLength = this.items.length / this.wrappers.length;
     this.newOrderItems = [
       ...Array.from(this.items).slice(this.partLength / 2),
@@ -187,6 +191,38 @@ export default class Marquee {
 
   resize() {
     if (this.destroyed) return;
+  }
+
+  setupCardVisibility() {
+    this.items.forEach((card) => {
+      const imageContainer = card.querySelector(".s-card_image");
+      const videoContainer = card.querySelector(".s-card_video");
+
+      if (!imageContainer || !videoContainer) return;
+
+      const video = videoContainer.querySelector("video");
+      const videoSource = videoContainer.querySelector("source");
+      if (!videoSource || !video) return;
+
+      const hasVideoSrc =
+        videoSource.getAttribute("data-src") &&
+        videoSource.getAttribute("data-src").trim() !== "";
+
+      if (hasVideoSrc) {
+        imageContainer.style.display = "none";
+        videoContainer.style.display = "block";
+
+        const videoLoader = new VideoLoader(video);
+        videoLoader.on("error", () => {
+          console.warn("Video failed to load, falling back to image");
+          imageContainer.style.display = "block";
+          videoContainer.style.display = "none";
+        });
+      } else {
+        imageContainer.style.display = "block";
+        videoContainer.style.display = "none";
+      }
+    });
   }
 
   destroy() {

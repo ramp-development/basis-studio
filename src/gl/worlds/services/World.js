@@ -22,17 +22,16 @@ export default class World {
 
   load() {
     this.hero = this.main.querySelector(".h-services");
-    this.texture = this.hero
-      .querySelector(".h-services_bg")
-      .querySelector("img");
+    this.item = this.hero.querySelector(".h-services_bg");
+    // .querySelector("img");
     this.footerLogo = this.main.querySelector(".footer_logo");
 
     this.sources = [
-      {
-        type: "textureLoader",
-        url: this.texture.getAttribute("src"),
-        name: "hero",
-      },
+      // {
+      //   type: "textureLoader",
+      //   url: this.texture.getAttribute("src"),
+      //   name: "hero",
+      // },
     ];
     if (this.footerLogo) {
       const textures = this.getTextureAttributes(this.footerLogo);
@@ -54,14 +53,7 @@ export default class World {
   init() {
     this.gl.loaded = true;
 
-    this.hero = new Hero(
-      this.app,
-      this.gl,
-      this.scene,
-      this.main,
-      this.resources.items.hero,
-      this.texture
-    );
+    this.hero = new Hero(this.app, this.gl, this.scene, this.main, this.item);
 
     if (this.footerLogo) {
       this.footerMeshs = [];

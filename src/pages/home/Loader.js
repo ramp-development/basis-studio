@@ -69,7 +69,6 @@ export default class Loader {
     );
 
     this.meshs.forEach(({ mesh }, index) => {
-      console.log(mesh.position, "mesh.position");
       // this.tl
       //   .fromTo(
       //     mesh.scale,

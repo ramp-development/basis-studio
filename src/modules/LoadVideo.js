@@ -11,7 +11,6 @@ export default class LoadVideo {
     source.setAttribute("src", url);
     video.load();
     video.addEventListener("loadeddata", () => {
-      console.log("loadeddata, bonjour");
       video.play();
       video.classList.add("loaded");
     });
