@@ -195,32 +195,100 @@ export default class Marquee {
 
   setupCardVisibility() {
     this.items.forEach((card) => {
+      const isMobile = window.innerWidth <= 992;
+
+      // Handle .s-card_* classes (existing logic)
       const imageContainer = card.querySelector(".s-card_image");
       const videoContainer = card.querySelector(".s-card_video");
 
-      if (!imageContainer || !videoContainer) return;
+      if (imageContainer && videoContainer) {
+        const video = videoContainer.querySelector("video");
+        const videoSource = videoContainer.querySelector("source");
+        if (videoSource && video) {
+          const mobileUrl = videoSource.getAttribute("data-src-mobile");
+          const desktopUrl = videoSource.getAttribute("data-src");
+          const videoUrl = isMobile && mobileUrl ? mobileUrl : desktopUrl;
+          const hasVideoSrc = videoUrl && videoUrl.trim() !== "";
 
-      const video = videoContainer.querySelector("video");
-      const videoSource = videoContainer.querySelector("source");
-      if (!videoSource || !video) return;
+          if (hasVideoSrc) {
+            imageContainer.style.display = "none";
+            videoContainer.style.display = "block";
 
-      const hasVideoSrc =
-        videoSource.getAttribute("data-src") &&
-        videoSource.getAttribute("data-src").trim() !== "";
+            const videoLoader = new VideoLoader(video);
+            videoLoader.on("error", () => {
+              imageContainer.style.display = "block";
+              videoContainer.style.display = "none";
+            });
+          } else {
+            imageContainer.style.display = "block";
+            videoContainer.style.display = "none";
+          }
+        }
+      }
 
-      if (hasVideoSrc) {
-        imageContainer.style.display = "none";
-        videoContainer.style.display = "block";
+      // Handle .s-gallery_item classes (new logic)
+      const galleryItem = card.querySelector(".s-gallery_item_wrapper");
+      if (galleryItem) {
+        // Set width and aspect-ratio based on layout
+        const layout = galleryItem.dataset.layout;
+        const isBig = layout === "big";
 
-        const videoLoader = new VideoLoader(video);
-        videoLoader.on("error", () => {
-          console.warn("Video failed to load, falling back to image");
-          imageContainer.style.display = "block";
-          videoContainer.style.display = "none";
-        });
-      } else {
-        imageContainer.style.display = "block";
-        videoContainer.style.display = "none";
+        const width = isMobile
+          ? isBig
+            ? "25rem"
+            : "15rem"
+          : isBig
+            ? "45rem"
+            : "30rem";
+
+        const aspectRatio = isMobile
+          ? isBig
+            ? "395 / 295"
+            : "238 / 295"
+          : isBig
+            ? "725 / 545"
+            : "389 / 440";
+
+        galleryItem.style.setProperty("width", width, "important");
+        galleryItem.style.setProperty("aspect-ratio", aspectRatio, "important");
+
+        // Handle gallery image and video containers
+        const galleryImageContainer = card.querySelector(
+          ".s-gallery_item_image"
+        );
+        const galleryVideoContainer = card.querySelector(
+          ".s-gallery_item_video"
+        );
+
+        if (galleryImageContainer && galleryVideoContainer) {
+          const galleryVideo = galleryVideoContainer.querySelector("video");
+          const galleryVideoSource = galleryVideo?.querySelector("source");
+
+          if (galleryVideoSource && galleryVideo) {
+            const mobileUrl =
+              galleryVideoSource.getAttribute("data-src-mobile");
+            const desktopUrl = galleryVideoSource.getAttribute("data-src");
+            const videoUrl = isMobile && mobileUrl ? mobileUrl : desktopUrl;
+            const hasVideoSrc = videoUrl && videoUrl.trim() !== "";
+
+            if (hasVideoSrc) {
+              galleryImageContainer.style.display = "none";
+              galleryVideoContainer.style.display = "block";
+
+              const videoLoader = new VideoLoader(galleryVideo);
+              videoLoader.on("error", () => {
+                console.warn(
+                  "Gallery video failed to load, falling back to image"
+                );
+                galleryImageContainer.style.display = "block";
+                galleryVideoContainer.style.display = "none";
+              });
+            } else {
+              galleryImageContainer.style.display = "block";
+              galleryVideoContainer.style.display = "none";
+            }
+          }
+        }
       }
     });
   }

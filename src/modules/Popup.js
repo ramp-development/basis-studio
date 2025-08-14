@@ -8,8 +8,8 @@ export default class Popup {
     this.scroll = this.app.scroll.lenis;
 
     this.bodyMain = document.body;
-    this.btns = this.main.querySelectorAll(
-      '[data-popup-trigger="true"], [data-popup-trigger]:not(.btn)'
+    this.btns = this.bodyMain.querySelectorAll(
+      '[data-popup-trigger="true"]'
     );
     this.close = this.instance.querySelector(".btn");
     this.body = this.instance.querySelector(".popup_body");
@@ -19,6 +19,8 @@ export default class Popup {
     this.isOpen = false;
 
     this.init();
+
+    console.log(this.btns, "BUTTON");
   }
 
   init() {

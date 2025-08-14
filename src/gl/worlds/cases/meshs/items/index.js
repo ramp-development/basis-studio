@@ -30,6 +30,7 @@ export default class index {
       duration: 0.5,
       ease: "power2",
     });
+    console.log(this.items, "items");
 
     this.init();
   }
@@ -135,7 +136,8 @@ export default class index {
         .getComputedStyle(item)
         .getPropertyValue("border-radius")
         .split("px");
-      const name = item.querySelector(".f-28").textContent.trim();
+      const nameEl = item.querySelector(".f-28");
+      const name = nameEl ? nameEl.textContent.trim() || `case-${index}` : `case-${index}`;
       const videoParent = item.querySelector(".cases_video");
 
       let texture = null;

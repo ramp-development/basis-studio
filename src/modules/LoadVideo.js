@@ -6,7 +6,9 @@ export default class LoadVideo {
     const video = instance.querySelector("video") || instance;
 
     const source = video.querySelector("source");
-    const url = source.dataset.src;
+    const isMobile = window.innerWidth <= 992;
+    const mobileUrl = source.dataset.srcMobile;
+    const url = isMobile && mobileUrl ? mobileUrl : source.dataset.src;
 
     source.setAttribute("src", url);
     video.load();

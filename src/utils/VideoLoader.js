@@ -15,7 +15,9 @@ export default class VideoLoader extends EventEmitter
         this.loadingIndicator = null
 
         this.source = this.video.querySelector('source')
-        this.src = this.source.getAttribute('data-src')
+        const isMobile = window.innerWidth <= 992
+        const mobileUrl = this.source.getAttribute('data-src-mobile')
+        this.src = isMobile && mobileUrl ? mobileUrl : this.source.getAttribute('data-src')
         this.source.setAttribute('src', this.src)
 
         // Initialize
