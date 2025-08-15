@@ -14,6 +14,12 @@ export default class Enter
         this.loader = document.querySelector('.loader')
         this.once = false
         gsap.set(this.loader, {'--clip': 0, '--leftClip': 0, '--bottomClip': 0})
+        
+        // Ensure loader logos are visible for default transitions
+        const loaderLogos = this.loader.querySelectorAll('.loader_logo')
+        const loaderBasisLarge = this.loader.querySelector('.loader_basis_large')
+        loaderLogos.forEach(logo => gsap.set(logo, {autoAlpha: 1}))
+        if (loaderBasisLarge) gsap.set(loaderBasisLarge, {autoAlpha: 0})
 
         this.tl = gsap.timeline({paused: true, defaults: {duration: 0.8 , ease: 'power2.inOut'}})
 

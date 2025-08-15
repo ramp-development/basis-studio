@@ -15,6 +15,12 @@ export default class Leave
         this.loader.classList.remove('hidden')
         this.nav = document.querySelector('.nav')
         this.nav.classList.remove('active')
+        
+        // Ensure loader logos are visible for default transitions
+        const loaderLogos = this.loader.querySelectorAll('.loader_logo')
+        const loaderBasisLarge = this.loader.querySelector('.loader_basis_large')
+        loaderLogos.forEach(logo => gsap.set(logo, {autoAlpha: 1}))
+        if (loaderBasisLarge) gsap.set(loaderBasisLarge, {autoAlpha: 0})
 
         console.log('🚀 Normal Leave transition starting')
         gsap.set(this.loader, {'--clip': 0, '--leftClip': 100, '--bottomClip': 0})

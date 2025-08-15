@@ -26,8 +26,11 @@ export default class HomeToCase {
     this.loader.classList.remove("hidden");
     this.nav.classList.remove("active");
 
-    // Hide logo and show BASIS text for case transition
-    if (this.loaderLogo) this.loaderLogo.style.opacity = "0";
+    // Show large BASIS SVG and hide small logos for case transition
+    const loaderLogos = this.loader.querySelectorAll('.loader_logo')
+    const loaderBasisLarge = this.loader.querySelector('.loader_basis_large')
+    loaderLogos.forEach(logo => gsap.set(logo, {autoAlpha: 0}))
+    if (loaderBasisLarge) gsap.set(loaderBasisLarge, {autoAlpha: 0})
     this.createBasisText();
 
     // Add class for bottom transition and set initial state (like normal Leave.js)
