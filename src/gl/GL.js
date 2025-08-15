@@ -132,6 +132,13 @@ export default class GL extends EventEmitter {
         );
         break;
 
+      case "fintech":
+        await import("@gl/worlds/fintech/World.js").then(
+          (module) =>
+            (this.world = new module.default(this, this.app, this.scene, main))
+        );
+        break;
+
       default:
         await import("@gl/worlds/default/World.js").then(
           (module) =>

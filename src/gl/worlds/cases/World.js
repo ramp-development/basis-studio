@@ -27,7 +27,7 @@ export default class World {
 
   load() {
     this.videosLength = this.main.querySelectorAll(
-      ".cases_video:not(.w-condition-invisible"
+      ".cases_video_wrapper:not(.w-condition-invisible"
     ).length;
     this.videoTexetures = [];
     this.count = 0;
@@ -49,7 +49,7 @@ export default class World {
 
     this.items.forEach((item) => {
       const name = item.querySelector(".f-28").textContent.trim();
-      const videoParent = item.querySelector(".cases_video");
+      const videoParent = item.querySelector(".cases_video_wrapper");
 
       if (videoParent.classList.contains("w-condition-invisible")) return;
       const video = videoParent.querySelector("video");

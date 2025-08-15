@@ -65,3 +65,17 @@ a:is(.w-webflow-badge) {
     padding: 0 !important;
   }
 }
+
+.case_split-video {
+  @media screen and (max-width: 991px) {
+    order: -1;
+  }
+
+  order: 0;
+}
+
+.full_container {
+  @media screen and (max-width: 991px) {
+    padding: 0 !important;
+  }
+}

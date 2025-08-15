@@ -26,7 +26,9 @@ export default class index {
     this.sizes = this.app.sizes;
     this.time = this.app.time;
 
-    this.items = this.main.querySelectorAll(".cases_video_study");
+    this.items = this.main.querySelectorAll(
+      ".case_split-video, .double-video, .cases_video"
+    );
 
     this.init();
   }
@@ -131,15 +133,17 @@ export default class index {
         .getPropertyValue("border-radius")
         .split("px");
       const rect = item.getBoundingClientRect();
-      // Scale width and height independently
-      const scaleX = 3.725; // Adjust width scaling
-      const scaleY = 2.2; // Adjust height scaling
       const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
       const material = this.material.clone();
       material.uniforms.uSize.value.set(rect.width, rect.height);
       // material.uniforms.uTexture.value = this.gl.gradientTexture
       material.uniforms.uBorder.value = parseFloat(roots[0]);
       const mesh = new Mesh(geometry, material);
+
+      // Hide meshes from .cases_video elements
+      if (item.classList.contains("cases_video")) {
+        mesh.visible = false;
+      }
 
       const video = item.querySelector("video");
       if (video) {
@@ -155,8 +159,6 @@ export default class index {
       }
 
       this.scene.add(mesh);
-
-      mesh.visible = false;
 
       this.app.observer.instance.observe(item);
 
@@ -277,12 +279,15 @@ export default class index {
 
   setPosition() {
     this.meshs.forEach(({ mesh, item }) => {
-      if (item.dataset.visible == "false") {
+      if (
+        item.dataset.visible == "false" ||
+        item.classList.contains("cases_video")
+      ) {
         mesh.visible = false;
         return;
       }
       //! HERE FOR POSITION
-      // mesh.visible = true;
+      mesh.visible = true;
 
       const rect = item.getBoundingClientRect();
       mesh.position.x = rect.left + rect.width / 2 - this.sizes.width / 2;
