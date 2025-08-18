@@ -1,22 +1,29 @@
 import { gsap, ScrollTrigger, SplitText } from "@utils/GSAP.js";
+import BaseAnimation from "@utils/BaseAnimation.js";
 
-export default class StaggerAnimation {
+export default class StaggerAnimation extends BaseAnimation {
   constructor(instance, app) {
-    this.instance = instance;
-    this.app = app;
+    super(instance, app);
 
     this.destroyed = false;
     this.splits = [];
 
-    this.init();
+    // this.init();
     this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
   }
 
   init() {
     if (this.instance.dataset.scroll === "false") return;
 
     this.parentItems = this.instance.querySelectorAll(".stagger-animation");
+
+    // this.observeItem = this.instance.querySelectorAll(".case_split");
+
+    // console.log(this.observeItem, "observeItem");
+
+    // this.observeItem.forEach((item) => {
+    //   this.app.observer.instance.observe(item);
+    // });
 
     if (this.parentItems.length === 0) return;
 

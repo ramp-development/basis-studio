@@ -79,3 +79,73 @@ a:is(.w-webflow-badge) {
     padding: 0 !important;
   }
 }
+
+.full_container_asset {
+  @media screen and (max-width: 991px) {
+    padding: 0.5rem !important;
+  }
+}
+
+.mb-no-pb {
+  @media screen and (max-width: 991px) {
+    padding-bottom: 0 !important;
+  }
+}
+
+.mb-no-pt {
+  @media screen and (max-width: 991px) {
+    padding-top: 0 !important;
+  }
+}
+
+.mb-padding {
+  @media screen and (max-width: 991px) {
+    padding: 0 var(--size--24) !important;
+  }
+}
+
+.mb-padding-small-asset {
+  @media screen and (max-width: 991px) {
+    padding: 0 var(--size--24) !important;
+  }
+}
+
+.mb-padding-big-asset {
+  @media screen and (max-width: 991px) {
+    padding: 0 0.5rem !important;
+  }
+}
+
+.mb-padding-big-asset-text {
+  @media screen and (max-width: 991px) {
+    padding: 0 1rem !important;
+  }
+}
+
+.f-100-mb {
+  @media screen and (max-width: 991px) {
+    font-size: 4.25rem !important;
+    // font-weight: 500 !important;
+  }
+}
+.w-500 {
+  font-weight: 500 !important;
+}
+
+.cases_title {
+  @media screen and (max-width: 991px) {
+    width: inherit !important;
+  }
+}
+
+.big-heading {
+  @media screen and (max-width: 991px) {
+    font-size: var(--size--32) !important;
+  }
+}
+
+.marquee_body_space {
+  @media screen and (max-width: 991px) {
+    margin-bottom: var(--size--132) !important;
+  }
+}

@@ -119,10 +119,10 @@ export default class Talk {
       ),
       onUpdate: (self) => {
         // Hide title after 20% of circular animation begins
-        if (self.progress > 0.15 && !this.titleHidden) {
+        if (self.progress > 0.05 && !this.titleHidden) {
           this.hideTitleAnimation();
           this.titleHidden = true;
-        } else if (self.progress <= 0.15 && this.titleHidden) {
+        } else if (self.progress <= 0.05 && this.titleHidden) {
           this.showTitleAnimation();
           this.titleHidden = false;
         }
@@ -140,7 +140,6 @@ export default class Talk {
       rotateX: "65deg",
       duration: 0.6,
       ease: "power3.in",
-      stagger: 0.05,
     });
   }
 

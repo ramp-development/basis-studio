@@ -1,73 +1,86 @@
-import { gsap, ScrollTrigger } from "@utils/GSAP.js";
+import { gsap } from "@utils/GSAP.js";
 import { CSS } from "@utils/Easings.js";
+import BaseAnimation from "@utils/BaseAnimation.js";
 
-export default class LineAnimation {
+export default class LineAnimation extends BaseAnimation {
   constructor(instance, app) {
-    this.instance = instance;
-    this.app = app;
+    super(instance, app);
 
     this.destroyed = false;
 
     this.init();
     this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
   }
 
   init() {
     if (this.instance.dataset.scroll === "false") return;
 
-    // Set up parent with perspective
-    gsap.set(this.instance.parentElement, {
-      overflow: "hidden",
+    // Set perspective on .line-animation elements
+    const lineAnimationItems = this.instance.querySelectorAll(".line-animation");
+    gsap.set(lineAnimationItems, {
       perspective: 1000,
       perspectiveOrigin: "center center",
     });
 
-    // Set up the element with proper transform origin
-    gsap.set(this.instance, {
-      transformOrigin: "center bottom",
-      transformStyle: "preserve-3d",
+    // Get all .line-item elements and their parents for overflow setup
+    const lineItems = this.instance.querySelectorAll(".line-item");
+    this.animationTargets = [];
+
+    lineItems.forEach((item) => {
+      // Set overflow hidden on parent element
+      gsap.set(item.parentElement, {
+        overflow: "hidden",
+      });
+
+      // Set up the line item with proper transform origin
+      gsap.set(item, {
+        transformOrigin: "center bottom",
+        transformStyle: "preserve-3d",
+        y: "120%",
+        rotateX: "-90deg",
+      });
+
+      this.animationTargets.push(item);
     });
 
-    // Simple animation without SplitText to avoid conflicts with LinkAnimation
+    // Create timeline with optional delay
+    const delay = parseFloat(this.instance.dataset.delay) || 0;
     this.tl = gsap.timeline({
       paused: true,
+      delay: delay,
       defaults: { duration: 0.8, ease: CSS },
     });
 
-    this.tl.fromTo(
-      this.instance,
-      {
-        y: "120%",
-        rotateX: "-90deg",
-      },
-      {
-        y: "0%",
-        rotateX: "0deg",
-        stagger: 0.01,
-      }
-    );
-
-    this.scroll = ScrollTrigger.create({
-      trigger: this.instance,
-      start: window.innerWidth > 992 ? "top 90%" : "top 95%",
-      onEnter: () => this.tl.play(),
+    this.animationTargets.forEach((target, index) => {
+      this.tl.to(
+        target,
+        {
+          y: "0%",
+          rotateX: "0deg",
+        },
+        index * 0.05 // Stagger the animations
+      );
     });
+  }
 
-    this.scrollBack = ScrollTrigger.create({
-      trigger: this.instance,
-      start: "top bottom",
-      onLeaveBack: () => this.tl.pause(0),
-    });
+  animateIn() {
+    if (this.tl && !this.isVisible) {
+      this.tl.play();
+      super.animateIn(); // Sets this.isVisible = true
+    }
+  }
+
+  animateOut() {
+    if (this.tl && this.isVisible) {
+      this.tl.pause(0);
+      super.animateOut(); // Sets this.isVisible = false
+    }
   }
 
   resize() {
     if (this.destroyed) return;
 
     this.tl?.kill();
-    this.scroll?.kill();
-    this.scrollBack?.kill();
-
     this.init();
   }
 
@@ -76,7 +89,6 @@ export default class LineAnimation {
     this.destroyed = true;
 
     this.tl?.kill();
-    this.scroll?.kill();
-    this.scrollBack?.kill();
+    super.destroy();
   }
 }

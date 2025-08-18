@@ -164,18 +164,37 @@ export default class index {
       if (item.classList.contains("talk_full")) {
         // 3D scale + rotation animation for talk_full video
         mesh.scale.set(0.3, 0.3, 0.3); // Start small
-        
+
         tl.to(material.uniforms.uReveal, { value: 1, duration: 0.1 }) // Quick fade in
-          .to(mesh.scale, { 
-            x: 1, 
-            y: 1, 
-            z: 1, 
-            duration: 1.2, 
-            ease: "back.out(1.2)" 
-          }, "<0.1") // Scale up with bounce
-          .fromTo(material.uniforms.uRotate, { value: -0.3 }, { value: 0 }, "<0.1")
-          .fromTo(material.uniforms.uRotateY, { value: 0.8 }, { value: 0 }, "<0.1")
-          .fromTo(material.uniforms.uRotateX, { value: -0.8 }, { value: 0 }, "<0.1")
+          .to(
+            mesh.scale,
+            {
+              x: 1,
+              y: 1,
+              z: 1,
+              duration: 1.2,
+              ease: "back.out(1.2)",
+            },
+            "<0.1"
+          ) // Scale up with bounce
+          .fromTo(
+            material.uniforms.uRotate,
+            { value: -0.3 },
+            { value: 0 },
+            "<0.1"
+          )
+          .fromTo(
+            material.uniforms.uRotateY,
+            { value: 0.8 },
+            { value: 0 },
+            "<0.1"
+          )
+          .fromTo(
+            material.uniforms.uRotateX,
+            { value: -0.8 },
+            { value: 0 },
+            "<0.1"
+          )
           .fromTo(
             material.uniforms.uRadius,
             { value: 0 },
@@ -187,7 +206,12 @@ export default class index {
         tl.to(material.uniforms.uReveal, { value: 1 })
           .fromTo(material.uniforms.uRotate, { value: -0.3 }, { value: 0 }, "<")
           .fromTo(material.uniforms.uRotateY, { value: 0.8 }, { value: 0 }, "<")
-          .fromTo(material.uniforms.uRotateX, { value: -0.8 }, { value: 0 }, "<")
+          .fromTo(
+            material.uniforms.uRotateX,
+            { value: -0.8 },
+            { value: 0 },
+            "<"
+          )
           .fromTo(
             material.uniforms.uRadius,
             { value: 0 },
@@ -221,24 +245,24 @@ export default class index {
       });
 
       // Only apply parallax to .preview_img, not .talk_full
-      if (item.classList.contains("preview_img")) {
-        ScrollTrigger.create({
-          trigger: item,
-          start: "top bottom",
-          end: "bottom top",
-          onUpdate: (self) => {
-            const progress = self.progress;
-            const remappedProgress = gsap.utils.mapRange(
-              0,
-              1,
-              -0.2,
-              0.2,
-              progress
-            );
-            material.uniforms.uParallax.value = remappedProgress;
-          },
-        });
-      }
+      // if (item.classList.contains("preview_img")) {
+      //   ScrollTrigger.create({
+      //     trigger: item,
+      //     start: "top bottom",
+      //     end: "bottom top",
+      //     onUpdate: (self) => {
+      //       const progress = self.progress;
+      //       const remappedProgress = gsap.utils.mapRange(
+      //         0,
+      //         1,
+      //         -0.2,
+      //         0.2,
+      //         progress
+      //       );
+      //       material.uniforms.uParallax.value = remappedProgress;
+      //     },
+      //   });
+      // }
 
       return { mesh, item, material };
     });
