@@ -1,8 +1,10 @@
 export default class BaseAnimation {
-  constructor(instance, app) {
+  constructor(instance, app, reAnimate = true) {
     this.instance = instance;
     this.app = app;
     this.isVisible = false;
+    this.reAnimate = reAnimate;
+    this.hasAnimated = false;
     
     this.setupObserver();
     this.app.on("destroy", () => this.destroy());
@@ -20,8 +22,11 @@ export default class BaseAnimation {
       const isVisible = this.instance.dataset.animationVisible === 'true';
       
       if (isVisible && !this.isVisible) {
-        this.animateIn();
-      } else if (!isVisible && this.isVisible) {
+        // Only animate if reAnimate is true OR if we haven't animated yet
+        if (this.reAnimate || !this.hasAnimated) {
+          this.animateIn();
+        }
+      } else if (!isVisible && this.isVisible && this.reAnimate) {
         this.animateOut();
       }
       
@@ -34,6 +39,7 @@ export default class BaseAnimation {
   // Override these in child classes
   animateIn() {
     this.isVisible = true;
+    this.hasAnimated = true;
   }
 
   animateOut() {

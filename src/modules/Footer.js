@@ -1,19 +1,18 @@
 import LinkAnimation from "@utils/LinkAnimation.js";
-import { gsap, ScrollTrigger } from "@utils/GSAP.js";
+import { gsap } from "@utils/GSAP.js";
+import BaseAnimation from "@utils/BaseAnimation.js";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default class Footer {
+export default class Footer extends BaseAnimation {
   constructor(instance, app, main) {
-    this.instance = instance;
-    this.app = app;
+    super(instance, app, false); // reAnimate = false for one-time animation
     this.main = main;
 
+    this.init();
+  }
+
+  init() {
     this.clocks = this.instance.querySelectorAll(".footer_clock-item");
     this.clockLines = this.instance.querySelectorAll(".footer_clock-lines");
-    this.app.observer.instance.observe(this.instance);
-
-    this.hasAnimated = false;
 
     this.links = this.instance.querySelectorAll(".footer_link");
     // this.links.forEach((link) => new LinkAnimation(link, this.app));
@@ -36,38 +35,21 @@ export default class Footer {
       const timezone = timezoneMap[cityName];
 
       if (timezone) {
-        const { time, totalMinutes } = this.getTime(timezone);
-        timeDiv.textContent = time;
-
-        // Store data for scroll animation
+        // Store data for animation
         this.clockData.push({
           clock,
           timeDiv,
           timezone,
-          finalTime: totalMinutes,
           clockLines,
         });
 
         // Initially set clock hands to 0 for animation
         clock.style.setProperty("--time", 0);
-
-        const interval = setInterval(() => {
-          if (this.instance.dataset.visible == "true" && this.hasAnimated) {
-            const { time, totalMinutes } = this.getTime(timezone);
-            timeDiv.textContent = time;
-            clock.style.setProperty("--time", totalMinutes);
-          }
-
-          if (this.destroyed) clearInterval(interval);
-        }, 10000);
       }
     });
 
-    // Setup scroll trigger animation
-    this.setupScrollAnimation();
-
-    this.destroyed = false;
-    this.app.on("destroy", () => this.destroy());
+    // Start continuous time updates regardless of visibility
+    this.startTimeUpdates();
   }
 
   getTime(timezone) {
@@ -92,27 +74,50 @@ export default class Footer {
     };
   }
 
-  setupScrollAnimation() {
-    ScrollTrigger.create({
-      trigger: this.instance,
-      start: window.innerWidth < 992 ? "top+=20% 80%" : "top+=50% 80%",
-      once: true,
-      onEnter: () => {
-        if (!this.hasAnimated) {
-          this.animateClocks();
-          this.hasAnimated = true;
+  startTimeUpdates() {
+    // Update time continuously, regardless of visibility
+    const updateTime = () => {
+      this.clockData.forEach((clockInfo) => {
+        const { timeDiv, timezone, clock } = clockInfo;
+        const { time, totalMinutes } = this.getTime(timezone);
+
+        timeDiv.textContent = time;
+
+        // Only update clock hands if already animated
+        if (this.hasAnimated) {
+          clock.style.setProperty("--time", totalMinutes);
         }
-      },
-    });
+      });
+    };
+
+    // Initial time update
+    updateTime();
+
+    // Update every 10 seconds
+    const interval = setInterval(() => {
+      updateTime();
+      if (this.destroyed) clearInterval(interval);
+    }, 10000);
+  }
+
+  animateIn() {
+    if (!this.hasAnimated) {
+      this.animateClocks();
+    }
+    super.animateIn();
+  }
+
+  animateOut() {
+    // Do nothing on animate out since reAnimate = false
+    super.animateOut();
   }
 
   animateClocks() {
     this.clockData.forEach((clockInfo, index) => {
-      const { clock, timeDiv, timezone, clockLines } = clockInfo;
+      const { clock, timezone } = clockInfo;
 
       // Get current correct time
-      const { time, totalMinutes } = this.getTime(timezone);
-      timeDiv.textContent = time;
+      const { totalMinutes } = this.getTime(timezone);
 
       // Create spinning animation that lands on correct time
       const spinAmount = 360 + totalMinutes; // 2 full rotations + final position
@@ -130,7 +135,7 @@ export default class Footer {
   }
 
   destroy() {
-    if (this.destroyed) return;
     this.destroyed = true;
+    super.destroy();
   }
 }

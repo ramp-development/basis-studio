@@ -9,6 +9,7 @@ export default class Loader {
     this.hero = this.main.querySelector(".inner-hero");
     // this.meshs = this.app.gl.world.items.meshs
     this.title = this.hero.querySelector("h1");
+    this.scrollBtn = this.hero.querySelector(".btn_scroll");
 
     this.titleSplit = new SplitText(this.title, { type: "lines" });
     this.titleSplitSecond = new SplitText(this.title, {
@@ -29,6 +30,14 @@ export default class Loader {
     this.app.on("destroy", () => this.destroy());
   }
   init() {
+    // Set initial state for scroll button if it exists
+    if (this.scrollBtn && window.innerWidth <= 992) {
+      gsap.set(this.scrollBtn, {
+        opacity: 0,
+        y: -20,
+      });
+    }
+
     this.tl = gsap.timeline({
       defaults: { ease: def.ease, duration: 1.4 },
       onComplete: () => {
@@ -62,6 +71,20 @@ export default class Loader {
         },
         "<"
       );
+
+    // Add scroll button animation on mobile only
+    if (this.scrollBtn && window.innerWidth <= 992) {
+      this.tl.to(
+        this.scrollBtn,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2",
+        },
+        "-=0.2" // Start slightly before title animation ends
+      );
+    }
   }
 
   resize() {
