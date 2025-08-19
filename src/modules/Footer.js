@@ -1,4 +1,3 @@
-import LinkAnimation from "@utils/LinkAnimation.js";
 import { gsap } from "@utils/GSAP.js";
 import BaseAnimation from "@utils/BaseAnimation.js";
 

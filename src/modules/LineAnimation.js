@@ -18,10 +18,12 @@ export default class LineAnimation extends BaseAnimation {
     // Set perspective on .line-animation elements
     const lineAnimationItems =
       this.instance.querySelectorAll(".line-animation");
-    gsap.set(lineAnimationItems, {
-      perspective: 1000,
-      perspectiveOrigin: "center center",
-    });
+    if (lineAnimationItems.length > 0) {
+      gsap.set(lineAnimationItems, {
+        perspective: 1000,
+        perspectiveOrigin: "center center",
+      });
+    }
 
     // Get all .line-item elements and their parents for overflow setup
     const lineItems = this.instance.querySelectorAll(".line-item");

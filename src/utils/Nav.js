@@ -1,5 +1,3 @@
-import LinkAnimation from "@utils/LinkAnimation.js";
-
 export default class Nav {
   constructor(app) {
     this.app = app;
@@ -13,8 +11,6 @@ export default class Nav {
     this.items.forEach((item, index) => {
       const delay = 0.05 * index + 0.1;
       item.style.setProperty("--delay", `${delay}s`);
-
-      new LinkAnimation(item, this.app);
     });
 
     this.setupEventListeners();

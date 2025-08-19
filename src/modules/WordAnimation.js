@@ -8,6 +8,7 @@ export default class WordAnimation {
     this.destroyed = false;
 
     this.init();
+
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
   }
