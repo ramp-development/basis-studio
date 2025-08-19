@@ -16,22 +16,18 @@ export default class GlobalLoader {
     this.loaderText = this.loader.querySelectorAll(".f-48");
     this.loaderLayer = this.loader.querySelectorAll(".loader_layer");
     this.loaderLogo = this.loaderLayer[0].querySelector(".loader_logo");
-    this.loaderLogoSecond = this.loaderLayer[1].querySelector(".loader_logo");
-    this.loaderBasisLarge = this.loader.querySelector(".loader_basis_large");
     this.progress = { value: 0 };
-    if (this.loaderLogo) gsap.set(this.loaderLogo, { autoAlpha: 0 });
-    if (this.loaderLogoSecond)
-      gsap.set(this.loaderLogoSecond, { autoAlpha: 0 });
 
     gsap.to([this.main], { autoAlpha: 1 });
-
-    // Hide small loader logo and nav initially
-    gsap.set(this.nav, { autoAlpha: 0 });
 
     this.tl = gsap.timeline({
       defaults: { ease: "power2", duration: 1 },
       paused: true,
-      onComplete: () => this.animateToNav(),
+      onComplete: () => {
+        this.loader.classList.add("loaded");
+        this.loader.classList.add("hidden");
+        gsap.to(this.nav, { autoAlpha: 1 });
+      },
     });
 
     // this.tl.fromTo(this.loaderLayer, {'--clip': 0}, {'--clip': 70})
@@ -56,8 +52,13 @@ export default class GlobalLoader {
           onUpdate: () => this.updateTextProgress(),
         },
         ">"
+      )
+      .fromTo(
+        this.loader,
+        { "--clip": 0 },
+        { "--clip": 100, duration: 0.8 },
+        "<0.5"
       );
-    // No clip animation here - will be handled in animateToNav
 
     this.tl.tweenTo("start");
   }
@@ -74,86 +75,5 @@ export default class GlobalLoader {
 
   async load() {
     await this.toLoad(this.main, this.app);
-  }
-
-  animateToNav() {
-    if (!this.loaderBasisLarge) {
-      // Fallback to original behavior if no large logo
-      this.loader.classList.add("loaded");
-      this.loader.classList.add("hidden");
-      gsap.to(this.nav, { autoAlpha: 1 });
-      return;
-    }
-
-    // Get nav logo position and size
-    const navRect = this.navLogo.getBoundingClientRect();
-    const currentRect = this.loaderBasisLarge.getBoundingClientRect();
-
-    // Calculate transform values to move from center to nav position
-    const translateX =
-      navRect.left +
-      navRect.width / 2 -
-      (currentRect.left + currentRect.width / 2);
-    const translateY =
-      navRect.top +
-      navRect.height / 2 -
-      (currentRect.top + currentRect.height / 2);
-    const scaleRatio = navRect.width / currentRect.width;
-
-    // Create animation timeline
-    const finishTl = gsap.timeline({
-      onComplete: () => {
-        this.loader.classList.add("loaded");
-        this.loader.classList.add("hidden");
-        // Reset large logo for next time
-        gsap.set(this.loaderBasisLarge, {
-          x: 0,
-          y: 0,
-          scale: 1,
-          color: "white",
-        });
-      },
-    });
-
-    finishTl
-      // Animate large logo to nav position
-      .to(
-        this.loaderBasisLarge,
-        {
-          x: translateX,
-          y: translateY,
-          scale: scaleRatio,
-          duration: 0.8,
-          ease: "power2.inOut",
-        },
-        0
-      )
-      // Change color from black to white near the end
-      .to(
-        this.loaderBasisLarge,
-        {
-          color: "white",
-          duration: 0.1,
-          ease: "none",
-        },
-        0.65
-      )
-      // Show nav earlier so logo can "land" on it
-      .to(
-        this.nav,
-        {
-          autoAlpha: 1,
-          duration: 0.1,
-          ease: "none",
-        },
-        0.5
-      )
-      // Simultaneously animate clip reveal
-      .fromTo(
-        this.loader,
-        { "--clip": 0 },
-        { "--clip": 100, duration: 0.8, ease: "power2.inOut" },
-        0.3
-      );
   }
 }

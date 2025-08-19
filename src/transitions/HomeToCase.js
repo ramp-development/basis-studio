@@ -27,10 +27,7 @@ export default class HomeToCase {
     this.nav.classList.remove("active");
 
     // Show large BASIS SVG and hide small logos for case transition
-    const loaderLogos = this.loader.querySelectorAll('.loader_logo')
-    const loaderBasisLarge = this.loader.querySelector('.loader_basis_large')
-    loaderLogos.forEach(logo => gsap.set(logo, {autoAlpha: 0}))
-    if (loaderBasisLarge) gsap.set(loaderBasisLarge, {autoAlpha: 0})
+    if (this.loaderLogo) this.loaderLogo.style.opacity = "0";
     this.createBasisText();
 
     // Add class for bottom transition and set initial state (like normal Leave.js)
@@ -42,7 +39,7 @@ export default class HomeToCase {
       "--bottomClip": 0,
       duration: 0.8,
       ease: "power2.inOut",
-      onComplete: () => this.leave(),
+      // onComplete: () => this.leave(),
     });
   }
 
@@ -60,16 +57,16 @@ export default class HomeToCase {
           <path d="M90.5 11.4328H95.8693C96.0426 12.2276 96.7354 12.5809 97.4282 12.5809H110.592C111.458 12.5809 111.718 12.2276 111.718 11.6978C111.718 11.1679 111.371 10.8147 110.592 10.8147L96.1292 10.5497C92.6651 10.4614 90.5 8.60685 90.5 5.69255C90.5 2.77825 92.6651 0.74707 96.2158 0.74707H110.245C113.969 0.74707 116.394 2.95487 116.567 5.78086H111.111C111.025 4.98605 110.332 4.72112 109.726 4.72112H96.9952C96.2158 4.72112 95.7827 5.07436 95.7827 5.60424C95.7827 6.13411 96.2158 6.48736 96.9952 6.48736L111.458 6.75229C115.008 6.84061 117 8.69516 117 11.6095C117 14.4354 115.008 16.5549 111.371 16.5549H96.9952C93.1847 16.4666 90.5866 14.3471 90.5 11.4328Z" fill="#000000"></path>
         </svg>
       `;
+      const isMobile = window.innerWidth <= 992;
       basisSvg.style.cssText = `
                 position: absolute;
-                bottom: 2rem;
-                left: 50%;
-                transform: translateX(-50%);
+                ${isMobile ? 'top: 50%; left: 50%; transform: translate(-50%, -50%);' : 'bottom: 2rem; left: 50%; transform: translateX(-50%);'}
                 width: 90vw;
                 height: auto;
                 z-index: 10;
                 aspect-ratio: 117 / 17;
             `;
+
       this.loaderLayers[0].appendChild(basisSvg.cloneNode(true));
       this.loaderLayers[1].appendChild(basisSvg.cloneNode(true));
     }
