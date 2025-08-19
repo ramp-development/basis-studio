@@ -39,7 +39,7 @@ export default class HomeToCase {
       "--bottomClip": 0,
       duration: 0.8,
       ease: "power2.inOut",
-      // onComplete: () => this.leave(),
+      onComplete: () => this.leave(),
     });
   }
 
@@ -60,7 +60,7 @@ export default class HomeToCase {
       const isMobile = window.innerWidth <= 992;
       basisSvg.style.cssText = `
                 position: absolute;
-                ${isMobile ? 'top: 50%; left: 50%; transform: translate(-50%, -50%);' : 'bottom: 2rem; left: 50%; transform: translateX(-50%);'}
+                ${isMobile ? "top: 80%; left: 50%; transform: translate(-50%, -50%);" : "bottom: 2rem; left: 50%; transform: translateX(-50%);"}
                 width: 90vw;
                 height: auto;
                 z-index: 10;
