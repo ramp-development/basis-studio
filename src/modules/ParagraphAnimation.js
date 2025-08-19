@@ -42,17 +42,14 @@ export default class ParagraphAnimation extends BaseAnimation {
       );
 
       if (hasTextContent) {
-        // Double split like StaggerAnimation
         const split = new SplitText(textChildren, { type: "lines" });
         const splitSecond = new SplitText(textChildren, { type: "lines" });
 
         this.splits.push(split);
-        this.splits.push(splitSecond);
 
         gsap.set(splitSecond.lines, {
           overflow: "clip",
         });
-
         gsap.set(split.lines, { y: "120%" });
         this.animationTargets.push(split.lines);
       } else {

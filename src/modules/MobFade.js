@@ -2,7 +2,7 @@ import { gsap, ScrollTrigger } from "gsap/all";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default class Fade {
+export default class MobFade {
   constructor(instance, app) {
     this.instance = instance;
     this.app = app;

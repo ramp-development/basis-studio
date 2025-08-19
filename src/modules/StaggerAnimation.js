@@ -1,15 +1,16 @@
 import { gsap, ScrollTrigger, SplitText } from "@utils/GSAP.js";
-import BaseAnimation from "@utils/BaseAnimation.js";
 
-export default class StaggerAnimation extends BaseAnimation {
+export default class StaggerAnimation {
   constructor(instance, app) {
-    super(instance, app);
+    this.instance = instance;
+    this.app = app;
 
     this.destroyed = false;
     this.splits = [];
 
-    // this.init();
+    this.init();
     this.app.on("resize", () => this.resize());
+    this.app.on("destroy", () => this.destroy());
   }
 
   init() {
@@ -17,21 +18,15 @@ export default class StaggerAnimation extends BaseAnimation {
 
     this.parentItems = this.instance.querySelectorAll(".stagger-animation");
 
-    // this.observeItem = this.instance.querySelectorAll(".case_split");
-
-    // console.log(this.observeItem, "observeItem");
-
-    // this.observeItem.forEach((item) => {
-    //   this.app.observer.instance.observe(item);
-    // });
-
     if (this.parentItems.length === 0) return;
 
     gsap.set(this.parentItems, {
       overflow: "hidden",
     });
 
-    this.items = this.instance.querySelectorAll(".stagger-item");
+    this.items = this.instance.querySelectorAll(
+      ".stagger-item, .paragraph-item"
+    );
     this.animationTargets = [];
 
     this.items.forEach((item) => {
@@ -55,7 +50,7 @@ export default class StaggerAnimation extends BaseAnimation {
         const splitSecond = new SplitText(textChildren, { type: "lines" });
 
         this.splits.push(split);
-        this.splits.push(splitSecond);
+        // this.splits.push(splitSecond);
 
         gsap.set(splitSecond.lines, {
           overflow: "clip",
@@ -117,11 +112,11 @@ export default class StaggerAnimation extends BaseAnimation {
         onEnter: () => this.tl.play(),
       });
 
-      this.scrollBack = ScrollTrigger.create({
-        trigger: this.instance,
-        start: "top bottom",
-        onLeaveBack: () => this.tl.pause(0),
-      });
+      // this.scrollBack = ScrollTrigger.create({
+      //   trigger: this.instance,
+      //   start: "top bottom",
+      //   onLeaveBack: () => this.tl.pause(0),
+      // });
     }
   }
 

@@ -82,7 +82,7 @@ export default class Loader {
           duration: 0.6,
           ease: "power2",
         },
-        "-=0.2" // Start slightly before title animation ends
+        "-=0.6" // Start slightly before title animation ends
       );
     }
   }

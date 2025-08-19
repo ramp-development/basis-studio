@@ -4,7 +4,7 @@ import BaseAnimation from "@utils/BaseAnimation.js";
 
 export default class Footer extends BaseAnimation {
   constructor(instance, app, main) {
-    super(instance, app, false); // reAnimate = false for one-time animation
+    super(instance, app);
     this.main = main;
 
     this.init();

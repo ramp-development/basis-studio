@@ -1,5 +1,5 @@
 export default class BaseAnimation {
-  constructor(instance, app, reAnimate = true) {
+  constructor(instance, app, reAnimate = false) {
     this.instance = instance;
     this.app = app;
     this.isVisible = false;
