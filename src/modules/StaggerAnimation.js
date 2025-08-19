@@ -18,6 +18,8 @@ export default class StaggerAnimation {
 
     this.parentItems = this.instance.querySelectorAll(".stagger-animation");
 
+    console.log("this.parentItems", this.parentItems);
+
     if (this.parentItems.length === 0) return;
 
     gsap.set(this.parentItems, {

@@ -16,7 +16,8 @@ export default class LineAnimation extends BaseAnimation {
     if (this.instance.dataset.scroll === "false") return;
 
     // Set perspective on .line-animation elements
-    const lineAnimationItems = this.instance.querySelectorAll(".line-animation");
+    const lineAnimationItems =
+      this.instance.querySelectorAll(".line-animation");
     gsap.set(lineAnimationItems, {
       perspective: 1000,
       perspectiveOrigin: "center center",
@@ -58,7 +59,7 @@ export default class LineAnimation extends BaseAnimation {
           y: "0%",
           rotateX: "0deg",
         },
-        index * 0.05 // Stagger the animations
+        index * 0.1 // Stagger the animations
       );
     });
   }

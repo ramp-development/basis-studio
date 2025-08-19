@@ -72,9 +72,9 @@ export default class ParagraphAnimation extends BaseAnimation {
           y: "0%",
           duration: 0.6,
           ease: "power2.out",
-          stagger: Array.isArray(target) ? 0.05 : 0,
+          stagger: Array.isArray(target) ? 0.1 : 0,
         },
-        index * 0.05
+        index * 0.1
       );
     });
   }
