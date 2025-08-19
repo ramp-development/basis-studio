@@ -32,8 +32,8 @@ export default class World {
     this.videoTexetures = [];
     this.count = 0;
     this.videoLoaded = false;
-    this.items = this.main.querySelectorAll(".cases_item");
-    this.sources = [...this.items]
+    this.itemElements = this.main.querySelectorAll(".cases_item");
+    this.sources = [...this.itemElements]
       .map((item) => {
         const name = item.querySelector(".f-28").textContent.trim();
         const image = item.querySelector("img");
@@ -47,7 +47,7 @@ export default class World {
 
     this.resources = new Resources(this.sources);
 
-    this.items.forEach((item) => {
+    this.itemElements.forEach((item) => {
       const name = item.querySelector(".f-28").textContent.trim();
       const videoParent = item.querySelector(".cases_video_wrapper");
 
@@ -88,7 +88,7 @@ export default class World {
       this.main,
       this.resources.items,
       this.videoTexetures,
-      this.items
+      this.itemElements
     );
 
     this.app.trigger("loadedWorld");

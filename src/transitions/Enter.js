@@ -24,6 +24,7 @@ export default class Enter {
       "--clip": 100,
       onComplete: () => this.complete(),
     });
+    // Don't play loader animation immediately - wait for modules to be ready
     this.start();
   }
 
@@ -58,7 +59,10 @@ export default class Enter {
         if (this.once) return;
 
         this.checkPages(this.app, this.container);
-        this.app.moduleLoader.loadModules(this.container);
+        await this.app.moduleLoader.loadModules(this.container);
+        
+        // Small delay to ensure all initial states are set
+        await new Promise(resolve => setTimeout(resolve, 50));
 
         this.app.scroll.init();
         this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
@@ -67,12 +71,17 @@ export default class Enter {
         this.once = true;
       });
     } else {
-      this.checkPages(this.app, this.container);
-      this.app.moduleLoader.loadModules(this.container);
+      (async () => {
+        this.checkPages(this.app, this.container);
+        await this.app.moduleLoader.loadModules(this.container);
+      
+      // Small delay to ensure all initial states are set
+      await new Promise(resolve => setTimeout(resolve, 50));
 
-      this.app.scroll.init();
-      this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
-      this.tl.play();
+        this.app.scroll.init();
+        this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
+        this.tl.play();
+      })();
     }
 
     ScrollTrigger.refresh();

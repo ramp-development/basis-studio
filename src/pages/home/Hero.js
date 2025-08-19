@@ -20,7 +20,9 @@ export default class Hero {
         onUpdate: () => {
           if (index !== 0 || this.destroyed) return;
 
-          this.app.gl.world.hero.setPosition();
+          if (this.app.gl?.world?.hero?.setPosition) {
+            this.app.gl.world.hero.setPosition();
+          }
         },
       });
       const y = gsap.quickTo(image, "y", { duration: 0.5, ease: "power2" });

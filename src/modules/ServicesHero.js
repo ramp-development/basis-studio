@@ -70,9 +70,9 @@ export default class ServicesHero {
       scrub: true,
       onUpdate: (self) => {
         if (window.innerWidth > 992) {
-          if (this.app.gl.world.hero)
-            this.app.gl.world.hero.material.uniforms.uScroll.value =
-              self.progress;
+          if (this.app.gl?.world?.hero?.material?.uniforms?.uScroll) {
+            this.app.gl.world.hero.material.uniforms.uScroll.value = self.progress;
+          }
         }
 
         this.bg.style.setProperty("--progress", self.progress);

@@ -36,9 +36,50 @@ export default class Loader {
 
     this.destroyed = false;
 
+    // Set initial states immediately to prevent flash of content
+    this.setInitialStates();
+
     this.checkInit();
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
+  }
+
+  setInitialStates() {
+    // Set initial animation states to prevent flash of content during transitions
+    gsap.set(this.titleSplit.lines, {
+      y: "120%",
+      rotateX: "-35deg",
+      rotateY: "-5deg",
+      z: "-1rem",
+      transformStyle: "preserve-3d",
+      transformOrigin: "50% 0",
+    });
+
+    gsap.set(this.descrSplit.lines, {
+      y: "120%",
+    });
+
+    gsap.set(this.btn, {
+      opacity: 0,
+      filter: "blur(10px)",
+    });
+
+    // Mobile specific states
+    if (window.innerWidth <= 992) {
+      console.log("mobile, je suis la");
+      // Ensure images are completely hidden during transitions
+      gsap.set(this.imagesParent, {
+        yPercent: 20,
+        scale: 0.6,
+        autoAlpha: 0, // Use autoAlpha for visibility: hidden + opacity: 0
+      });
+
+      gsap.set(this.images, {
+        scale: 0.8,
+        opacity: 0,
+        autoAlpha: 0, // Double ensure they're hidden
+      });
+    }
   }
 
   checkInit() {
@@ -185,16 +226,17 @@ export default class Loader {
 
       .fromTo(
         this.imagesParent,
-        { yPercent: 20, scale: 0.6 },
-        { yPercent: 0, scale: 1, duration: 2, ease: "power1", force3D: true },
+        { yPercent: 20, scale: 0.6, autoAlpha: 0 },
+        { yPercent: 0, scale: 1, autoAlpha: 1, duration: 2, ease: "power1", force3D: true },
         0.6
       )
       .fromTo(
         this.images,
-        { scale: 0.8, opacity: 0 },
+        { scale: 0.8, opacity: 0, autoAlpha: 0 },
         {
           scale: 1,
           opacity: 1,
+          autoAlpha: 1,
           duration: 2,
           ease: "power1",
           stagger: 0.15,

@@ -115,9 +115,12 @@ export default class HomeToCase {
     }
   }
 
-  complete() {
+  async complete() {
     this.checkPages(this.app, this.container);
-    this.app.moduleLoader.loadModules(this.container);
+    await this.app.moduleLoader.loadModules(this.container);
+    
+    // Small delay to ensure all initial states are set
+    await new Promise(resolve => setTimeout(resolve, 50));
 
     this.app.scroll.init();
     this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
@@ -141,9 +144,10 @@ export default class HomeToCase {
         if (this.loaderLogo) this.loaderLogo.style.opacity = "1";
         const basisTexts = this.loader.querySelectorAll(".loader_basis_svg");
         basisTexts.forEach((text) => text.remove());
+        
+        // Refresh ScrollTrigger after transition completes
+        setTimeout(() => ScrollTrigger.refresh(), 100);
       },
     });
-
-    ScrollTrigger.refresh();
   }
 }

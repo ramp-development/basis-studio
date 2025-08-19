@@ -28,6 +28,11 @@ export default class Loader {
     });
 
     this.destroyed = false;
+    
+    // Set initial states for mobile to prevent conflicts with MobFade
+    if (window.innerWidth <= 992) {
+      this.setMobileInitialStates();
+    }
 
     this.init();
     this.handleMobileWrapperText();
@@ -72,7 +77,10 @@ export default class Loader {
         },
         "<"
       )
-      .fromTo(
+      
+    // Only animate items on desktop - MobFade handles mobile animations
+    if (window.innerWidth > 992) {
+      this.tl.fromTo(
         this.firstTwoItems,
         { yPercent: 20, opacity: 0 },
         {
@@ -82,15 +90,19 @@ export default class Loader {
         },
         "<0.2"
       );
+    }
 
-    this.firstTwoMeshs.forEach(({ material }) => {
-      this.tl.fromTo(
-        material.uniforms.uLoading,
-        { value: 0 },
-        { value: 1, duration: 1 },
-        "<0.1"
-      );
-    });
+    // Only animate WebGL meshes on desktop
+    if (window.innerWidth > 992) {
+      this.firstTwoMeshs.forEach(({ material }) => {
+        this.tl.fromTo(
+          material.uniforms.uLoading,
+          { value: 0 },
+          { value: 1, duration: 1 },
+          "<0.1"
+        );
+      });
+    }
   }
 
   handleMobileWrapperText() {
@@ -123,5 +135,20 @@ export default class Loader {
     this.destroyed = true;
 
     this.tl?.kill();
+  }
+  
+  setMobileInitialStates() {
+    // Set initial states for title animation (same for all devices)
+    gsap.set(this.titleSplit.lines, {
+      y: "120%",
+      rotateX: "-35deg",
+      rotateY: "-5deg",
+      z: "-1rem",
+      transformStyle: "preserve-3d",
+      transformOrigin: "50% 0",
+    });
+    
+    // Don't set initial states for items - let MobFade handle them
+    // MobFade will set: autoAlpha: 0, rotationZ: -18, rotationY: 45, rotationX: -45, scale: 0.4
   }
 }

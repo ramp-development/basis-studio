@@ -22,6 +22,9 @@ export default class BaseAnimation {
       const isVisible = this.instance.dataset.animationVisible === 'true';
       
       if (isVisible && !this.isVisible) {
+        // Don't animate during page transitions
+        if (this.app.isTransitioning) return;
+        
         // Only animate if reAnimate is true OR if we haven't animated yet
         if (this.reAnimate || !this.hasAnimated) {
           this.animateIn();

@@ -213,7 +213,9 @@ export default class FullBleed {
             }
             return;
           }
-          this.app.gl.world.full.meshs[index].tl.play();
+          if (this.app.gl?.world?.full?.meshs?.[index]?.tl) {
+            this.app.gl.world.full.meshs[index].tl.play();
+          }
         },
         onEnterBack: () => {
           // Reset all items and their text animations
@@ -259,7 +261,9 @@ export default class FullBleed {
             }
             return;
           }
-          this.app.gl.world.full.meshs[index].tl.reverse();
+          if (this.app.gl?.world?.full?.meshs?.[index]?.tl) {
+            this.app.gl.world.full.meshs[index].tl.reverse();
+          }
         },
       });
     });

@@ -45,6 +45,30 @@ export default class EventEmitter
         return this
     }
 
+    once(_names, callback)
+    {
+        // Errors
+        if(typeof _names === 'undefined' || _names === '')
+        {
+            console.warn('wrong names')
+            return false
+        }
+
+        if(typeof callback === 'undefined')
+        {
+            console.warn('wrong callback')
+            return false
+        }
+
+        // Create a wrapper function that removes the listener after first call
+        const onceWrapper = (...args) => {
+            this.off(_names)
+            callback.apply(this, args)
+        }
+
+        return this.on(_names, onceWrapper)
+    }
+
     off(_names)
     {
         // Errors

@@ -6,7 +6,7 @@ export const caseTransition = (app, CheckPages) =>
     return {
         name: 'case-transition',
         from: {
-            namespace: ['home', 'services', 'cases', 'fintech']
+            namespace: ['home', 'services', 'cases', 'fintech', 'case-inner']
         },
         to: {
             namespace: ['case-inner']

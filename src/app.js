@@ -71,7 +71,7 @@ export default class app extends EventEmitter {
       });
     });
 
-    barba.hooks.enter((data) => {
+    barba.hooks.enter(async (data) => {
       console.log("📄 Barba page info:", {
         from: data.current?.namespace,
         to: data.next?.namespace,
@@ -80,12 +80,12 @@ export default class app extends EventEmitter {
         ),
         toRoute: data.next?.container?.getAttribute("data-transition-page"),
       });
+      
+      // Restart Webflow BEFORE loading modules and content
+      await RestartWebflow();
+      
       const videos = data.next.container.querySelectorAll("video");
       if (videos.length > 0) videos.forEach((video) => video.load());
-    });
-
-    barba.hooks.after(async (data) => {
-      await RestartWebflow();
     });
   }
 

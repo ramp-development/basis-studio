@@ -32,12 +32,19 @@ export default class Hero
         //     return {x, y, random}
         // })
 
-        this.quicks = [...this.items].map((item, index) =>
-        {
-            const mesh = this.app.gl.world.items.meshs[index].mesh
+        // Safety check for GL world before accessing
+        if (!this.app.gl?.world?.items?.meshs) {
+            console.warn('GL world items not ready, skipping parallax setup');
+            this.quicks = [];
+        } else {
+            this.quicks = [...this.items].map((item, index) =>
+            {
+                const mesh = this.app.gl.world.items.meshs[index]?.mesh;
+                if (!mesh) return null;
 
-            return gsap.quickTo(mesh.material.uniforms.uParallax, 'value', {duration: 0.3, ease: 'power2'})
-        })
+                return gsap.quickTo(mesh.material.uniforms.uParallax, 'value', {duration: 0.3, ease: 'power2'})
+            }).filter(Boolean); // Remove null values
+        }
 
         this.init()
         this.app.on('resize', () => this.resize())
@@ -74,7 +81,8 @@ export default class Hero
 
         this.items.forEach((item, index) =>
         {
-            const mesh = this.app.gl.world.items.meshs[index].mesh
+            const mesh = this.app.gl?.world?.items?.meshs?.[index]?.mesh;
+            if (!mesh) return;
 
             this.scrolls[index] = ScrollTrigger.create(
             {
