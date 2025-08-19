@@ -26,7 +26,7 @@ export default class index {
     this.sizes = this.app.sizes;
     this.time = this.app.time;
 
-    this.items = this.main.querySelectorAll(".double-video");
+    this.items = this.main.querySelectorAll(".cases_video, .double-video");
 
     this.init();
   }
@@ -138,6 +138,11 @@ export default class index {
       material.uniforms.uBorder.value = parseFloat(roots[0]);
       const mesh = new Mesh(geometry, material);
 
+      // Hide mesh if item has cases_video class
+      if (item.classList.contains('cases_video')) {
+        mesh.visible = false;
+      }
+
       const video = item.querySelector("video");
       if (video) {
         const videoLoader = new VideoLoader(video);
@@ -204,7 +209,7 @@ export default class index {
 
   setPosition() {
     this.meshs.forEach(({ mesh, item }) => {
-      if (item.dataset.visible == "false") {
+      if (item.dataset.visible == "false" || item.classList.contains('cases_video')) {
         mesh.visible = false;
         return;
       }
