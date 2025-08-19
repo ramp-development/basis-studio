@@ -149,3 +149,25 @@ a:is(.w-webflow-badge) {
     margin-bottom: var(--size--132) !important;
   }
 }
+
+.double-img_wrap.regular {
+  flex-direction: row;
+
+  @media screen and (max-width: 991px) {
+    flex-direction: column;
+  }
+}
+
+.double-img_wrap.reversed {
+  flex-direction: row-reverse;
+
+  @media screen and (max-width: 991px) {
+    flex-direction: column-reverse;
+  }
+}
+
+.double-video {
+  @media screen and (max-width: 991px) {
+    aspect-ratio: auto;
+  }
+}
