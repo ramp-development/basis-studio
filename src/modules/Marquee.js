@@ -14,6 +14,7 @@ export default class Marquee {
 
     this.destroyed = false;
 
+    this.axis = this.instance.dataset.axis === "vertical" ? "y" : "x";
     this.multiDirection = this.instance.dataset.direction === "1" ? 1 : -1;
     this.direction = 1 * this.multiDirection;
     this.prevDirection = this.direction;
@@ -29,6 +30,9 @@ export default class Marquee {
     this.wrappers = this.instance.querySelectorAll("[wrapper]");
     this.items = this.instance.querySelectorAll("[item]");
 
+    // For vertical marquees, duplicate wrappers with data-duplicate attribute
+    this.duplicateMarqueeWrappers();
+
     this.setupCardVisibility();
 
     this.partLength = this.items.length / this.wrappers.length;
@@ -40,7 +44,7 @@ export default class Marquee {
     LoadImages(this.instance);
 
     this.quicks = [...this.wrappers].map((el) =>
-      gsap.quickSetter(el, "x", "%")
+      gsap.quickSetter(el, this.axis, "%")
     );
     this.draggbleQuick = gsap.quickTo(this.draggableMove, "value", {
       duration: 0.2,
@@ -150,18 +154,59 @@ export default class Marquee {
     this.app.on("destroy", () => this.destroy());
   }
 
+  duplicateMarqueeWrappers() {
+    // Find elements with data-duplicate attribute within this marquee instance
+    const elementsToduplicate =
+      this.instance.querySelectorAll("[data-duplicate]");
+
+    elementsToduplicate.forEach((element) => {
+      const parent = element.parentNode;
+
+      // Create two additional copies of the entire element
+      for (let copy = 0; copy < 2; copy++) {
+        const duplicatedElement = element.cloneNode(true);
+        
+        // Add responsive margin based on axis direction
+        const isMobile = window.innerWidth <= 992;
+        const marginValue = isMobile ? "2.75rem" : "7.5rem";
+        
+        if (this.axis === "y") {
+          // Vertical marquee - use margin-top
+          duplicatedElement.style.marginTop = marginValue;
+        } else {
+          // Horizontal marquee - use margin-left
+          duplicatedElement.style.marginLeft = marginValue;
+        }
+        
+        parent.appendChild(duplicatedElement);
+      }
+    });
+
+    // Update wrappers and items references to include duplicated elements
+    this.wrappers = this.instance.querySelectorAll("[wrapper]");
+    this.items = this.instance.querySelectorAll("[item]");
+  }
+
   initDraggable() {
     this.draggable = Draggable.create(this.proxy, {
-      type: "x",
+      type: this.axis,
       inertia: true,
       trigger: this.instance,
       onDrag: () => {
         if (this.destroyed) return;
-        this.draggbleQuick(this.draggable[0].deltaX);
+        const delta =
+          this.axis === "y"
+            ? this.draggable[0].deltaY
+            : this.draggable[0].deltaX;
+        this.draggbleQuick(delta);
       },
       onThrowUpdate: () => {
         if (this.destroyed) return;
-        this.draggbleQuick(this.draggable[0].deltaX);
+        const delta =
+          this.axis === "y"
+            ? this.draggable[0].deltaY
+            : this.draggable[0].deltaX;
+        this.draggbleQuick(delta);
       },
     });
   }
