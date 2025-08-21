@@ -162,6 +162,7 @@
 
     @media screen and (max-width: 479px) {
       clip-path: inset(0 calc(100% - 100% * var(--progress)) 0 0 round 0.5rem);
+      border-radius: 0.5rem;
     }
   }
 }
