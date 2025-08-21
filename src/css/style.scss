@@ -171,3 +171,35 @@ a:is(.w-webflow-badge) {
     aspect-ratio: auto;
   }
 }
+
+.no-mb {
+  margin-bottom: 0 !important;
+}
+
+.no-mt {
+  margin-top: 0 !important;
+}
+
+.no-mb-mt {
+  @media screen and (max-width: 991px) {
+    margin-top: 0 !important;
+  }
+}
+
+.mt-mb-130 {
+  @media screen and (max-width: 991px) {
+    margin-top: var(--size--132) !important;
+  }
+}
+
+.mb-mb-48 {
+  @media screen and (max-width: 991px) {
+    margin-bottom: var(--size--48) !important;
+  }
+}
+
+.gap-mb-32 {
+  @media screen and (max-width: 991px) {
+    gap: var(--size--32) !important;
+  }
+}

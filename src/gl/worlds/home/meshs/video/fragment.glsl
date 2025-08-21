@@ -12,6 +12,7 @@ uniform float uRotateY;
 uniform float uRadius; // Add this uniform for border radius control
 uniform float uZoom;
 uniform float uParallax;
+uniform float uAlpha;
 
 varying vec2 vUv;
 varying vec2 screenUv;
@@ -65,6 +66,9 @@ void main()
     color.rgb = applyOverlayTint(color.rgb, uColor, tintAmount);
     vec3 blurColor = fastGaussianBlur(uTexture, coverUv, cursor * 5.).rgb;
     color.rgb = mix(color.rgb, blurColor, cursor * 0.5);
+
+    // Apply alpha uniform for opacity control
+    color.a *= uAlpha;
 
     gl_FragColor = color;
 }

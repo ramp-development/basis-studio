@@ -96,6 +96,15 @@ export default class index {
           ({ material }) => (material.uniforms.uZoom.value = value)
         );
       });
+
+    this.folder
+      .add(this.material.uniforms.uAlpha, "value", 0, 1, 0.01)
+      .name("uAlpha")
+      .onChange((value) => {
+        this.meshs.forEach(
+          ({ material }) => (material.uniforms.uAlpha.value = value)
+        );
+      });
   }
 
   setMaterial() {
@@ -120,6 +129,7 @@ export default class index {
         uFluid: new Uniform(null),
         uParallax: new Uniform(0),
         uColor: new Uniform(new Color(255 / 255, 118 / 255, 162 / 255)),
+        uAlpha: new Uniform(1.0),
       },
     });
   }

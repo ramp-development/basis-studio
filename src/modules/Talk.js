@@ -118,13 +118,44 @@ export default class Talk {
         { rotateX: 270, ease: "none" } // Complete cylinder rotation
       ),
       onUpdate: (self) => {
-        // Hide title after 20% of circular animation begins
-        if (self.progress > 0.05 && !this.titleHidden) {
+        // Hide title after minimal progress to avoid collision
+        if (self.progress > 0.001 && !this.titleHidden) {
           this.hideTitleAnimation();
           this.titleHidden = true;
-        } else if (self.progress <= 0.05 && this.titleHidden) {
+        } else if (self.progress <= 0.001 && this.titleHidden) {
           this.showTitleAnimation();
           this.titleHidden = false;
+        }
+
+        // Decrease video opacity during rotation for better text visibility
+        // Mobile: start fading earlier for better text visibility
+        const mobileProgress = Math.max(0, self.progress - 0.1); // Start 10% earlier
+        const desktopProgress = self.progress;
+
+        const mobileOpacity = 1.0 - mobileProgress * 0.8; // Fade more aggressively
+        const desktopOpacity = 1.0 - desktopProgress * 0.7;
+
+        const mobileFinalOpacity = Math.max(0.2, mobileOpacity);
+        const desktopFinalOpacity = Math.max(0.3, desktopOpacity);
+
+        if (window.innerWidth >= 991) {
+          // Desktop: 3D WebGL videos - control via uAlpha uniform
+          if (this.app.gl?.world?.video?.meshs) {
+            this.app.gl.world.video.meshs.forEach((meshData, index) => {
+              // Check if this is a .talk_full mesh
+              if (meshData.item?.classList.contains("talk_full")) {
+                if (meshData.material?.uniforms?.uAlpha) {
+                  meshData.material.uniforms.uAlpha.value = desktopFinalOpacity;
+                }
+              }
+            });
+          }
+        } else {
+          // Mobile: target .talk_full instead of individual videos
+          const talkFull = document.querySelector(".talk_full");
+          if (talkFull) {
+            talkFull.style.opacity = mobileFinalOpacity;
+          }
         }
       },
     });

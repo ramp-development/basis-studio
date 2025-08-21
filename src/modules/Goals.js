@@ -131,6 +131,7 @@ export default class Goals {
               y: "120%",
               transformStyle: "preserve-3d",
               transformOrigin: "50% 0",
+              duration: 1.2, // Slower duration for number hiding
             },
             0
           );
@@ -180,11 +181,12 @@ export default class Goals {
           },
           "<0.2"
         )
+        // Add slower number animations back to main timeline
         .fromTo(
           item.querySelector(".goals_number"),
           { y: "120%" },
-          { y: "0%", ease: "power3" },
-          "<0.1"
+          { y: "0%", ease: "power3", duration: 2 }, // Slower duration for numbers
+          "<0.2"
         )
         .fromTo(
           item.querySelector(".goals_number"),
@@ -198,8 +200,9 @@ export default class Goals {
             rotateX: "0deg",
             z: "0rem",
             ease: "power2",
+            duration: 2, // Slower duration for numbers
           },
-          "<0.2"
+          "<0.3"
         );
 
       const start = index === 0 ? 0 : ">0.2";
@@ -216,11 +219,12 @@ export default class Goals {
     //   0
     // );
 
+    // Main scroll trigger for everything - slower speed
     this.scroll = ScrollTrigger.create({
       trigger: this.instance,
       start: "top top",
-      end: "bottom bottom+=100%",
-      scrub: true,
+      end: "bottom bottom+=150%", // Longer scroll distance for slower animation
+      scrub: 2, // Slower scrub value (higher = slower)
       animation: this.mastelTL,
     });
   }

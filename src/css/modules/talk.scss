@@ -41,6 +41,12 @@
 //   position: absolute;
 // }
 
+.talk_full {
+  @media screen and (max-width: 991px) {
+    transform: scale(0.5);
+  }
+}
+
 .talk_item {
   width: 100%;
   height: 100%;

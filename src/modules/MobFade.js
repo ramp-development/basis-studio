@@ -13,6 +13,8 @@ export default class MobFade {
 
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
+
+    console.log(this.instance, "MobFade instance");
   }
 
   init() {
@@ -34,6 +36,11 @@ export default class MobFade {
       defaults: { ease: "power3.out", duration: 1 },
     });
 
+    // Check if this is a .talk_full element for different scaling
+    const isTalkFull = this.instance.classList.contains("talk_full");
+    const startScale = isTalkFull ? 0.1 : 0.4;
+    const endScale = isTalkFull ? 0.5 : 1;
+
     // Mimic the 3D GL reveal effect in 2D
     this.tl.fromTo(
       this.instance,
@@ -42,14 +49,14 @@ export default class MobFade {
         rotationZ: -18, // equivalent to uRotate: -0.3
         rotationY: 45, // equivalent to uRotateY: 0.8
         rotationX: -45, // equivalent to uRotateX: -0.8
-        scale: 0.4,
+        scale: startScale,
       },
       {
         autoAlpha: 1,
         rotationZ: 0,
         rotationY: 0,
         rotationX: 0,
-        scale: 1,
+        scale: endScale,
       }
     );
 

@@ -25,7 +25,7 @@ export default class FullBleed {
     // gsap.set(this.wrapper, {height: this.items.length * 100 + 'vh'})
 
     // EXTENDED HEIGHT - much more space for each video to dwell
-    gsap.set(this.wrapper, { height: this.items.length * 100 + 100 + "svh" });
+    gsap.set(this.wrapper, { height: this.items.length * 200 + 200 + "svh" });
     ScrollTrigger.refresh();
 
     this.height = this.instance.getBoundingClientRect().height;
@@ -33,7 +33,7 @@ export default class FullBleed {
     // this.itemPart = this.height / (this.items.length + 1)
 
     // EXTENDED TIMING - much longer duration per video
-    this.itemPart = this.height / (this.items.length + 0.5);
+    this.itemPart = this.height / (this.items.length + 0.1);
 
     this.items.forEach((item, index) => {
       const title = item.querySelector(".f-64");
@@ -96,8 +96,8 @@ export default class FullBleed {
             ease: "power3.out",
             stagger: 0.1,
           },
-          0.3
-        ) // Start after video
+          0
+        ) // Start immediately with video
         .to(
           descrLines,
           {
@@ -107,8 +107,8 @@ export default class FullBleed {
             ease: "power3.out",
             stagger: 0.1,
           },
-          0.3
-        ); // Start after title
+          0.05
+        ); // Start shortly after title
 
       // Add button animation for mobile
       if (button && window.innerWidth <= 991) {
@@ -127,8 +127,8 @@ export default class FullBleed {
             duration: 0.6,
             ease: "power3.out",
           },
-          1.6
-        ); // Start after description
+          ">"
+        ); // Start shortly after description
       }
 
       // Store timeline for later use
@@ -194,11 +194,6 @@ export default class FullBleed {
           item.classList.add("active");
           item.classList.add("show-bg");
 
-          // Play text animation only for active item
-          if (item.textTl) {
-            item.textTl.play();
-          }
-
           if (window.innerWidth < 991) {
             // Mobile: hide all videos and reset their animations
             this.items.forEach((el) => {
@@ -207,14 +202,22 @@ export default class FullBleed {
                 el.mobileTl.pause(0);
               }
             });
-            // Show current video with 3D animation
+            // Show current video with 3D animation and text simultaneously
             if (item.mobileTl) {
               item.mobileTl.play();
             }
+            if (item.textTl) {
+              item.textTl.play();
+            }
             return;
           }
+
+          // Desktop: play video and text simultaneously
           if (this.app.gl?.world?.full?.meshs?.[index]?.tl) {
             this.app.gl.world.full.meshs[index].tl.play();
+          }
+          if (item.textTl) {
+            item.textTl.play();
           }
         },
         onEnterBack: () => {
@@ -228,13 +231,8 @@ export default class FullBleed {
 
           item.classList.add("active");
 
-          // Play text animation only for active item
-          if (item.textTl) {
-            item.textTl.play();
-          }
-
           if (window.innerWidth < 991) {
-            // Mobile: reset all animations and play current
+            // Mobile: reset all animations and play current video and text simultaneously
             this.items.forEach((el) => {
               if (el.mobileTl) {
                 el.mobileTl.pause(0);
@@ -243,7 +241,15 @@ export default class FullBleed {
             if (item.mobileTl) {
               item.mobileTl.play();
             }
+            if (item.textTl) {
+              item.textTl.play();
+            }
             return;
+          }
+
+          // Desktop: play text simultaneously (video handled by WebGL)
+          if (item.textTl) {
+            item.textTl.play();
           }
         },
         onLeaveBack: () => {
