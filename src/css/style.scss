@@ -145,11 +145,11 @@ a:is(.w-webflow-badge) {
   }
 }
 
-.marquee_body_space {
-  @media screen and (max-width: 991px) {
-    margin-bottom: var(--size--132) !important;
-  }
-}
+// .marquee_body_space {
+//   @media screen and (max-width: 991px) {
+//     margin-bottom: var(--size--132) !important;
+//   }
+// }
 
 .double-img_wrap.regular {
   flex-direction: row;
