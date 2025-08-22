@@ -204,3 +204,15 @@ a:is(.w-webflow-badge) {
     gap: var(--size--32) !important;
   }
 }
+
+.gap-mb-24 {
+  @media screen and (max-width: 991px) {
+    gap: var(--size--24) !important;
+  }
+}
+
+.gap-mb-16 {
+  @media screen and (max-width: 991px) {
+    gap: var(--size--16) !important;
+  }
+}

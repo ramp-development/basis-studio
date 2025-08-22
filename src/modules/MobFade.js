@@ -13,8 +13,6 @@ export default class MobFade {
 
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
-
-    console.log(this.instance, "MobFade instance");
   }
 
   init() {
