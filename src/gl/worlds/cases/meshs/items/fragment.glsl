@@ -39,11 +39,9 @@ void main()
 
     float tintAmount = smoothstep(0.0, 1.0, cursor) * 0.1;
 
-    // color.rgb = mix(color.rgb, 1.0 - color.rgb, cursor);
-    // vec3 blurColor = 1.0 - fastGaussianBlur(uTexture, coverUv, oldCursor * 5.).rgb;
-    // vec3 blurColor = fastGaussianBlur(uTexture, coverUv, oldCursor * 5.).rgb;
-    // blurColor = applyOverlayTint(blurColor, uColor, cursor * 0.2);
-    // color.rgb = mix(color.rgb, blurColor, cursor * 2.0);
+    color.rgb = applyOverlayTint(color.rgb, uColor, tintAmount);
+    vec3 blurColor = fastGaussianBlur(uTexture, coverUv, cursor * 5.).rgb;
+    color.rgb = mix(color.rgb, blurColor, cursor * 0.5);
 
     // Enhanced gradient to match CSS gradient effect
     float fadeArea = smoothstep(0.0, 0.6, uv.y);
@@ -51,5 +49,4 @@ void main()
     color.rgb = gradientColor;
 
     gl_FragColor = color;
-    // gl_FragColor = vec4(cursor, 0.0, 0.0, 1.0);
 }

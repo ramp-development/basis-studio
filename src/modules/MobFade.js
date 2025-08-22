@@ -45,14 +45,14 @@ export default class MobFade {
     const isCasesPage =
       document.querySelector("main").dataset.transitionPage === "cases";
     const isCasesItem = this.instance.classList.contains("cases_item");
-    
+
     let isFirstTwoCases = false;
     if (isCasesPage && isCasesItem) {
       const allCaseItems = document.querySelectorAll(".cases_item");
       const currentIndex = Array.from(allCaseItems).indexOf(this.instance);
       isFirstTwoCases = currentIndex < 2; // First two items (index 0 and 1)
     }
-    
+
     const delay = isFirstTwoCases ? 1.2 : 0;
 
     // Mimic the 3D GL reveal effect in 2D
@@ -82,11 +82,11 @@ export default class MobFade {
       onEnter: () => this.tl.play(),
     });
 
-    this.scrollBack = ScrollTrigger.create({
-      trigger: this.instance,
-      start: "top bottom",
-      onLeaveBack: () => this.tl.pause(0),
-    });
+    // this.scrollBack = ScrollTrigger.create({
+    //   trigger: this.instance,
+    //   start: "top bottom",
+    //   onLeaveBack: () => this.tl.pause(0),
+    // });
   }
 
   resize() {

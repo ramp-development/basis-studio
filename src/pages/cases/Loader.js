@@ -28,7 +28,7 @@ export default class Loader {
     });
 
     this.destroyed = false;
-    
+
     // Set initial states for mobile to prevent conflicts with MobFade
     if (window.innerWidth <= 992) {
       this.setMobileInitialStates();
@@ -76,8 +76,8 @@ export default class Loader {
           stagger: 0.1,
         },
         "<"
-      )
-      
+      );
+
     // Only animate items on desktop - MobFade handles mobile animations
     if (window.innerWidth > 992) {
       this.tl.fromTo(
@@ -94,13 +94,28 @@ export default class Loader {
 
     // Only animate WebGL meshes on desktop
     if (window.innerWidth > 992) {
-      this.firstTwoMeshs.forEach(({ material }) => {
-        this.tl.fromTo(
-          material.uniforms.uLoading,
-          { value: 0 },
-          { value: 1, duration: 1 },
-          "<0.1"
-        );
+      this.firstTwoMeshs.forEach(({ mesh, material }) => {
+        // Add 3D mesh rotation like home videos
+        mesh.rotation.set(-0.8, 0.8, -0.3); // Start rotated - more dramatic
+        mesh.scale.set(0.4, 0.4, 0.4); // Start small
+
+        this.tl
+          .fromTo(
+            material.uniforms.uLoading,
+            { value: 0 },
+            { value: 1, duration: 1 },
+            "<0.1"
+          )
+          .to(
+            mesh.rotation,
+            { x: 0, y: 0, z: 0, duration: 1, ease: "power3.out" },
+            "<"
+          )
+          .to(
+            mesh.scale,
+            { x: 1, y: 1, z: 1, duration: 1, ease: "back.out(1.2)" },
+            "<"
+          );
       });
     }
   }
@@ -136,7 +151,7 @@ export default class Loader {
 
     this.tl?.kill();
   }
-  
+
   setMobileInitialStates() {
     // Set initial states for title animation (same for all devices)
     gsap.set(this.titleSplit.lines, {
@@ -147,7 +162,7 @@ export default class Loader {
       transformStyle: "preserve-3d",
       transformOrigin: "50% 0",
     });
-    
+
     // Don't set initial states for items - let MobFade handle them
     // MobFade will set: autoAlpha: 0, rotationZ: -18, rotationY: 45, rotationX: -45, scale: 0.4
   }
