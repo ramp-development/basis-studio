@@ -36,7 +36,7 @@ void main()
     vec2 coverUv = getCoverUv(uv, uAspect, uSize);
 
     coverUv -= 0.5;
-    coverUv *= 0.9;
+    coverUv *= uZoom;
     coverUv += 0.5;
 
     // coverUv.y += 0.1;

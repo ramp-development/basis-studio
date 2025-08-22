@@ -136,10 +136,14 @@ export default class index {
       material.uniforms.uSize.value.set(rect.width, rect.height);
       // material.uniforms.uTexture.value = this.gl.gradientTexture
       material.uniforms.uBorder.value = parseFloat(roots[0]);
+
+      // Set different zoom for .double-video elements (no zoom = 1.0, default zoom = 0.9)
+      const isDoubleVideo = item.classList.contains("double-video");
+      material.uniforms.uZoom.value = isDoubleVideo ? 1.0 : 0.9;
       const mesh = new Mesh(geometry, material);
 
       // Hide mesh if item has cases_video class
-      if (item.classList.contains('cases_video')) {
+      if (item.classList.contains("cases_video")) {
         mesh.visible = false;
       }
 
@@ -205,11 +209,16 @@ export default class index {
     });
 
     this.setPosition();
+
+    console.log(this.meshs, "meshs");
   }
 
   setPosition() {
     this.meshs.forEach(({ mesh, item }) => {
-      if (item.dataset.visible == "false" || item.classList.contains('cases_video')) {
+      if (
+        item.dataset.visible == "false" ||
+        item.classList.contains("cases_video")
+      ) {
         mesh.visible = false;
         return;
       }
