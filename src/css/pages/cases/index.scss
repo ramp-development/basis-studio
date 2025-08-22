@@ -1,24 +1,27 @@
-@media screen and (min-width: 991px)
-{
-    .cases
-    {
-        height: calc(50vh * var(--length));
-    }
+@media screen and (min-width: 991px) {
+  .cases {
+    height: calc(50vh * var(--length));
+  }
 
-    [data-transition-page="cases"]
-    {
-        .cases_image
-        {
-            opacity: 0;
-        }
+  [data-transition-page="cases"] {
+    .cases_image {
+      opacity: 0;
     }
+  }
 }
 
-.cases_item
-{
-    .f-28
-    {
-        position: relative;
-        z-index: 2;
-    }
+// Mobile: case images controlled by MobFade.js
+
+.cases_item {
+  .f-28 {
+    position: relative;
+    z-index: 2;
+  }
+
+  // Gradient handled by WebGL shader on desktop
+  // No gradient needed on mobile (text is below images)
+}
+
+.cases_text_wrapper {
+  z-index: 3;
 }

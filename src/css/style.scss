@@ -135,6 +135,7 @@ a:is(.w-webflow-badge) {
 .cases_title {
   @media screen and (max-width: 991px) {
     width: inherit !important;
+    padding-left: var(--size--24) !important;
   }
 }
 

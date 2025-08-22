@@ -41,6 +41,20 @@ export default class MobFade {
     const startScale = isTalkFull ? 0.1 : 0.4;
     const endScale = isTalkFull ? 0.5 : 1;
 
+    // Check if we're on cases page and this is one of the first two case items
+    const isCasesPage =
+      document.querySelector("main").dataset.transitionPage === "cases";
+    const isCasesItem = this.instance.classList.contains("cases_item");
+    
+    let isFirstTwoCases = false;
+    if (isCasesPage && isCasesItem) {
+      const allCaseItems = document.querySelectorAll(".cases_item");
+      const currentIndex = Array.from(allCaseItems).indexOf(this.instance);
+      isFirstTwoCases = currentIndex < 2; // First two items (index 0 and 1)
+    }
+    
+    const delay = isFirstTwoCases ? 1.2 : 0;
+
     // Mimic the 3D GL reveal effect in 2D
     this.tl.fromTo(
       this.instance,
@@ -57,6 +71,7 @@ export default class MobFade {
         rotationY: 0,
         rotationX: 0,
         scale: endScale,
+        delay: delay, // Delay for case items on cases page
       }
     );
 
