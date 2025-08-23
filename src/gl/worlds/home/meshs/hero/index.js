@@ -226,7 +226,7 @@ export default class index {
       // Remove from group, not scene directly
       this.group.remove(mesh);
     });
-    
+
     // Remove the entire group from the scene
     if (this.group) {
       this.scene.remove(this.group);

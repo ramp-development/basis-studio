@@ -209,8 +209,6 @@ export default class index {
     });
 
     this.setPosition();
-
-    console.log(this.meshs, "meshs");
   }
 
   setPosition() {

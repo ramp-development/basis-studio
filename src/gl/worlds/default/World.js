@@ -3,6 +3,7 @@ import gsap from "gsap";
 import Resources from "@utils/Resources";
 import FluidMask from "@gl/utils/fluidMask/index.js";
 
+import Hero from "./meshs/hero/index.js";
 import Video from "./meshs/video/index.js";
 
 export default class World {
@@ -21,6 +22,10 @@ export default class World {
   }
 
   load() {
+    this.isCasesPage =
+      document.querySelector("main").dataset.transitionPage === "case-inner";
+    this.heroInner = this.main.querySelector(".inner-hero");
+    this.heroItem = this.heroInner.querySelector(".inner-hero_bg");
     this.footerLogo = this.main.querySelector(".footer_logo");
     this.sources = [];
 
@@ -65,6 +70,16 @@ export default class World {
       });
     }
 
+    if (this.isCasesPage) {
+      this.hero = new Hero(
+        this.app,
+        this.gl,
+        this.scene,
+        this.main,
+        this.heroItem
+      );
+    }
+
     this.app.trigger("loadedWorld");
 
     if (!this.app.onceLoaded) {
@@ -75,12 +90,14 @@ export default class World {
 
   setScroll(e) {
     this.video?.setPosition();
+    this.hero?.setPosition(e);
     this.footerMeshs?.forEach((mesh) => mesh.setPosition(e));
   }
 
   update() {
     // this.footerFluid?.update()
     this.video?.update();
+    this.hero?.update();
     this.footerMeshs?.forEach((mesh) => mesh.update());
   }
 
@@ -95,6 +112,7 @@ export default class World {
   resize() {
     // this.footerFluid?.resize()
     this.video?.resize();
+    this.hero?.resize();
     this.footerMeshs?.forEach((mesh) => mesh.resize());
   }
 
@@ -102,6 +120,7 @@ export default class World {
 
   destroy() {
     this.video?.destroy();
+    this.hero?.destroy();
     // this.footerFluid?.destroy()
     this.footerMeshs?.forEach((mesh) => mesh.destroy());
   }

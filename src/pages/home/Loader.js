@@ -66,7 +66,6 @@ export default class Loader {
 
     // Mobile specific states
     if (window.innerWidth <= 992) {
-      console.log("mobile, je suis la");
       // Ensure images are completely hidden during transitions
       gsap.set(this.imagesParent, {
         yPercent: 20,
@@ -227,7 +226,14 @@ export default class Loader {
       .fromTo(
         this.imagesParent,
         { yPercent: 20, scale: 0.6, autoAlpha: 0 },
-        { yPercent: 0, scale: 1, autoAlpha: 1, duration: 2, ease: "power1", force3D: true },
+        {
+          yPercent: 0,
+          scale: 1,
+          autoAlpha: 1,
+          duration: 2,
+          ease: "power1",
+          force3D: true,
+        },
         0.6
       )
       .fromTo(

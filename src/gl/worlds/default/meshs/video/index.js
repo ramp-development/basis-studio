@@ -26,9 +26,7 @@ export default class index {
     this.sizes = this.app.sizes;
     this.time = this.app.time;
 
-    this.items = this.main.querySelectorAll(
-      ".case_split-video, .double-video, .cases_video"
-    );
+    this.items = this.main.querySelectorAll(".double-video, .cases_video");
 
     this.init();
   }
@@ -138,6 +136,25 @@ export default class index {
       material.uniforms.uSize.value.set(rect.width, rect.height);
       // material.uniforms.uTexture.value = this.gl.gradientTexture
       material.uniforms.uBorder.value = parseFloat(roots[0]);
+
+      // Set zoom based on class:
+      // .cases_video: use uZoom (0.55 from default)
+      // .case_split-video and .double-video: normal zoom (1.0)
+      const isCasesVideo = item.classList.contains("cases_video");
+      // const isCaseSplitVideo = item.classList.contains("case_split-video");
+      const isDoubleVideo = item.classList.contains("double-video");
+
+      if (isCasesVideo) {
+        // Keep default uZoom value (0.55)
+        material.uniforms.uZoom.value = 0.55;
+      } else if (isDoubleVideo) {
+        // Normal zoom (no crop)
+        material.uniforms.uZoom.value = 1.0;
+      } else {
+        // Default zoom for other elements
+        material.uniforms.uZoom.value = 0.9;
+      }
+
       const mesh = new Mesh(geometry, material);
 
       // Hide meshes from .cases_video elements

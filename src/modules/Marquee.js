@@ -14,6 +14,13 @@ export default class Marquee {
 
     this.destroyed = false;
 
+    // Check if parent element is hidden by Webflow
+    if (
+      this.instance.parentElement?.classList.contains("w-condition-invisible")
+    ) {
+      return; // Exit early if hidden
+    }
+
     this.axis = this.instance.dataset.axis === "vertical" ? "y" : "x";
     this.multiDirection = this.instance.dataset.direction === "1" ? 1 : -1;
     this.direction = 1 * this.multiDirection;
@@ -36,10 +43,18 @@ export default class Marquee {
     this.setupCardVisibility();
 
     this.partLength = this.items.length / this.wrappers.length;
-    this.newOrderItems = [
-      ...Array.from(this.items).slice(this.partLength / 2),
-      ...Array.from(this.items).slice(0, this.partLength / 2),
-    ];
+
+    // Different logic for vertical vs horizontal marquees
+    if (this.axis === "y") {
+      // For vertical marquees: use original items order (duplication handles the layout)
+      this.newOrderItems = Array.from(this.items);
+    } else {
+      // For horizontal marquees: use the original slice logic
+      this.newOrderItems = [
+        ...Array.from(this.items).slice(this.partLength / 2),
+        ...Array.from(this.items).slice(0, this.partLength / 2),
+      ];
+    }
 
     LoadImages(this.instance);
 
@@ -165,11 +180,11 @@ export default class Marquee {
       // Create two additional copies of the entire element
       for (let copy = 0; copy < 2; copy++) {
         const duplicatedElement = element.cloneNode(true);
-        
+
         // Add responsive margin based on axis direction
         const isMobile = window.innerWidth <= 992;
         const marginValue = isMobile ? "2.75rem" : "7.5rem";
-        
+
         if (this.axis === "y") {
           // Vertical marquee - use margin-top
           duplicatedElement.style.marginTop = marginValue;
@@ -177,7 +192,7 @@ export default class Marquee {
           // Horizontal marquee - use margin-left
           duplicatedElement.style.marginLeft = marginValue;
         }
-        
+
         parent.appendChild(duplicatedElement);
       }
     });

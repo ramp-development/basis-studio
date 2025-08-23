@@ -29,6 +29,9 @@ export default class Popup {
 
         this.scroll.stop();
         this.bodyMain.classList.add("hide-nav");
+        
+        // Lower canvas z-index when popup opens
+        this.handleCanvasZIndex(false);
       },
       onComplete: () => {
         this.isAnimating = false;
@@ -68,6 +71,9 @@ export default class Popup {
         this.isAnimating = false;
         this.isOpen = false;
         this.instance.classList.remove("active");
+        
+        // Restore canvas z-index when popup closes (only if on case study)
+        this.handleCanvasZIndex(true);
       },
     });
 
@@ -97,5 +103,20 @@ export default class Popup {
   closePopup() {
     if (this.isAnimating || !this.isOpen) return;
     this.leaveTl.restart();
+  }
+
+  handleCanvasZIndex(restore) {
+    const canvasContainer = document.querySelector('.canvas-container');
+    if (!canvasContainer) return;
+
+    const isCaseStudy = document.querySelector('main').dataset.transitionPage === 'case-inner';
+
+    if (restore && isCaseStudy) {
+      // Restore to case study z-index when popup closes
+      canvasContainer.style.zIndex = '2';
+    } else {
+      // Lower canvas when popup opens or when not on case study
+      canvasContainer.style.zIndex = '-1';
+    }
   }
 }

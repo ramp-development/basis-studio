@@ -9,18 +9,19 @@ import {
 } from "three";
 import { gsap, ScrollTrigger } from "@utils/GSAP.js";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
+import VideoLoader from "@utils/VideoLoader.js";
 
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
 export default class index {
-  constructor(app, gl, scene, main, texture, item) {
+  constructor(app, gl, scene, main, item, resources) {
     this.app = app;
     this.gl = gl;
     this.scene = scene;
     this.main = main;
-    this.texture = texture;
     this.item = item;
+    this.resources = resources?.items || null;
 
     this.sizes = this.app.sizes;
     this.time = this.app.time;
@@ -42,7 +43,7 @@ export default class index {
       transparent: true,
       depthTest: false,
       uniforms: {
-        uTexture: new Uniform(this.texture),
+        uTexture: new Uniform(null),
         uRes: new Uniform(new Vector2(this.sizes.width, this.sizes.height)),
         uAspect: new Uniform(new Vector2(16, 9)),
         uSize: new Uniform(new Vector2(0, 0)),
@@ -68,12 +69,27 @@ export default class index {
     this.mesh = new Mesh(this.geometry, this.material);
     this.material.uniforms.uSize.value.set(this.rect.width, this.rect.height);
 
+    // Only handle video content
+    const video = this.item.querySelector("video");
+    if (video && !video.parentElement.classList.contains("w-condition-invisible")) {
+      video.style.opacity = 0;
+      const videoLoader = new VideoLoader(video);
+      videoLoader.on("loaded", () => {
+        const texture = new VideoTexture(video);
+        this.material.uniforms.uTexture.value = texture;
+        this.material.uniforms.uAspect.value.set(
+          videoLoader.width,
+          videoLoader.height
+        );
+      });
+    }
+
     this.scene.add(this.mesh);
 
     this.setPosition();
   }
 
-  setPosition(e) {
+  setPosition() {
     this.rect = this.item.getBoundingClientRect();
     this.mesh.position.x =
       this.rect.left + this.rect.width / 2 - this.sizes.width / 2;

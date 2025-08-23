@@ -4,7 +4,7 @@
   pointer-events: none;
 
   &.active {
-    z-index: 2;
+    z-index: 3;
     visibility: visible;
     pointer-events: auto;
   }

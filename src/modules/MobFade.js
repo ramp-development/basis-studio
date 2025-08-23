@@ -76,7 +76,6 @@ export default class MobFade {
     this.scroll = ScrollTrigger.create({
       trigger: this.instance,
       start: "top 85%",
-
       onEnter: () => this.tl.play(),
     });
 
