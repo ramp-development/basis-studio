@@ -1,9 +1,9 @@
 import { Uniform, PlaneGeometry, ShaderMaterial, Mesh, Vector2, Color } from 'three'
 import { gsap, ScrollTrigger } from 'gsap/all'
+import { UpdateGeometry } from '@gl/UpdateGeometry.js'
 
 import vertex from './vertex.glsl'
 import fragment from './fragment.glsl'
-import { UpdateGeometry } from '@gl/UpdateGeometry.js'
 
 gsap.registerPlugin(ScrollTrigger)
 

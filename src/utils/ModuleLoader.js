@@ -32,7 +32,8 @@ export default class ModuleLoader extends EventEmitter {
             return;
           }
 
-          const module = await import(`@modules/${value}.js`).then((module) => {
+          try {
+            const module = await import(`@modules/${value}.js`);
             new module.default(element, this.app, main);
 
             count++;
@@ -40,7 +41,16 @@ export default class ModuleLoader extends EventEmitter {
               loaded = true;
               this.trigger("loaded");
             }
-          });
+          } catch (importError) {
+            console.warn(`Failed to load module "${value}": ${importError.message}`);
+            
+            // Still increment count so loading doesn't hang
+            count++;
+            if (count === elements.length && !loaded) {
+              loaded = true;
+              this.trigger("loaded");
+            }
+          }
         }
       });
     } catch (error) {

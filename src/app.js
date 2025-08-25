@@ -84,8 +84,7 @@ export default class app extends EventEmitter {
       // Restart Webflow BEFORE loading modules and content
       await RestartWebflow();
       
-      const videos = data.next.container.querySelectorAll("video");
-      if (videos.length > 0) videos.forEach((video) => video.load());
+      // Remove force video loading - let VideoLoader module handle it with lazy loading
     });
   }
 

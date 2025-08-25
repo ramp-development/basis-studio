@@ -53,19 +53,45 @@ export default class World {
 
       if (videoParent.classList.contains("w-condition-invisible")) return;
       const video = videoParent.querySelector("video");
-      const videoLoader = new VideoLoader(video);
-
-      videoLoader.on("loaded", () => {
-        const texture = new VideoTexture(video);
-
-        this.videoTexetures.push({
-          name,
-          texture,
-          width: videoLoader.width,
-          height: videoLoader.height,
+      
+      // Use existing VideoLoader instance if available (from data-module)
+      if (video._videoLoaderInstance) {
+        const videoLoader = video._videoLoaderInstance;
+        if (videoLoader.isLoaded) {
+          const texture = new VideoTexture(video);
+          this.videoTexetures.push({
+            name,
+            texture,
+            width: videoLoader.width || video.videoWidth,
+            height: videoLoader.height || video.videoHeight,
+          });
+          this.checkLoaded();
+        } else {
+          videoLoader.on("loaded", () => {
+            const texture = new VideoTexture(video);
+            this.videoTexetures.push({
+              name,
+              texture,
+              width: videoLoader.width,
+              height: videoLoader.height,
+            });
+            this.checkLoaded();
+          });
+        }
+      } else {
+        // Fallback: create VideoLoader if module doesn't exist
+        const videoLoader = new VideoLoader(video, { lazyLoad: false });
+        videoLoader.on("loaded", () => {
+          const texture = new VideoTexture(video);
+          this.videoTexetures.push({
+            name,
+            texture,
+            width: videoLoader.width,
+            height: videoLoader.height,
+          });
+          this.checkLoaded();
         });
-        this.checkLoaded();
-      });
+      }
     });
 
     this.resources.on("ready", () => this.checkLoaded());

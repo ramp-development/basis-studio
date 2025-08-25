@@ -70,15 +70,38 @@ export default class index {
 
       const video = item.querySelector("video");
       if (video) {
-        const videoLoader = new VideoLoader(video);
-        videoLoader.on("loaded", () => {
-          const texture = new VideoTexture(video);
-          material.uniforms.uTexture.value = texture;
-          material.uniforms.uAspect.value.set(
-            videoLoader.width,
-            videoLoader.height
-          );
-        });
+        // Use existing VideoLoader instance if available (from data-module)
+        if (video._videoLoaderInstance) {
+          const videoLoader = video._videoLoaderInstance;
+          if (videoLoader.isLoaded) {
+            const texture = new VideoTexture(video);
+            material.uniforms.uTexture.value = texture;
+            material.uniforms.uAspect.value.set(
+              videoLoader.width || video.videoWidth,
+              videoLoader.height || video.videoHeight
+            );
+          } else {
+            videoLoader.on("loaded", () => {
+              const texture = new VideoTexture(video);
+              material.uniforms.uTexture.value = texture;
+              material.uniforms.uAspect.value.set(
+                videoLoader.width,
+                videoLoader.height
+              );
+            });
+          }
+        } else {
+          // Fallback: create VideoLoader if module doesn't exist
+          const videoLoader = new VideoLoader(video, { lazyLoad: false });
+          videoLoader.on("loaded", () => {
+            const texture = new VideoTexture(video);
+            material.uniforms.uTexture.value = texture;
+            material.uniforms.uAspect.value.set(
+              videoLoader.width,
+              videoLoader.height
+            );
+          });
+        }
       }
 
       mesh.renderOrder = index;

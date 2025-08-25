@@ -116,15 +116,37 @@ export default class index {
 
       if (video) {
         // Handle video content
-        const videoLoader = new VideoLoader(video);
-        videoLoader.on("loaded", () => {
-          const texture = new VideoTexture(video);
-          material.uniforms.uTexture.value = texture;
-          material.uniforms.uAspect.value.set(
-            videoLoader.width,
-            videoLoader.height
-          );
-        });
+        if (video._videoLoaderInstance) {
+          const videoLoader = video._videoLoaderInstance;
+          if (videoLoader.isLoaded) {
+            const texture = new VideoTexture(video);
+            material.uniforms.uTexture.value = texture;
+            material.uniforms.uAspect.value.set(
+              videoLoader.width || video.videoWidth,
+              videoLoader.height || video.videoHeight
+            );
+          } else {
+            videoLoader.on("loaded", () => {
+              const texture = new VideoTexture(video);
+              material.uniforms.uTexture.value = texture;
+              material.uniforms.uAspect.value.set(
+                videoLoader.width,
+                videoLoader.height
+              );
+            });
+          }
+        } else {
+          // Fallback: create VideoLoader if module doesn't exist
+          const videoLoader = new VideoLoader(video, { lazyLoad: false });
+          videoLoader.on("loaded", () => {
+            const texture = new VideoTexture(video);
+            material.uniforms.uTexture.value = texture;
+            material.uniforms.uAspect.value.set(
+              videoLoader.width,
+              videoLoader.height
+            );
+          });
+        }
       } else if (image) {
         // Handle image content (existing logic)
         material.uniforms.uTexture.value = this.resources[resourceIndex];
