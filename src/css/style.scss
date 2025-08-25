@@ -168,8 +168,10 @@ a:is(.w-webflow-badge) {
 }
 
 .double-video {
+  aspect-ratio: 1739 / 1303;
+
   @media screen and (max-width: 991px) {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 359 / 269;
   }
 }
 

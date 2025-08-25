@@ -41,6 +41,12 @@
 //   position: absolute;
 // }
 
+.talk_wrapper {
+  @media screen and (max-width: 991px) {
+    background-color: black;
+  }
+}
+
 .talk_full {
   @media screen and (max-width: 991px) {
     transform: scale(0.5);

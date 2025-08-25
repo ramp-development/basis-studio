@@ -44,7 +44,7 @@ void main()
     color.rgb = mix(color.rgb, blurColor, cursor * 0.5);
 
     // Enhanced gradient to match CSS gradient effect
-    float fadeArea = smoothstep(0.0, 0.6, uv.y);
+    float fadeArea = smoothstep(0.0, 0.3, uv.y);
     vec3 gradientColor = mix(vec3(0.0, 0.0, 0.0), color.rgb, fadeArea);
     color.rgb = gradientColor;
 

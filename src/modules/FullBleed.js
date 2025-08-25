@@ -25,7 +25,7 @@ export default class FullBleed {
     // gsap.set(this.wrapper, {height: this.items.length * 100 + 'vh'})
 
     // EXTENDED HEIGHT - much more space for each video to dwell
-    gsap.set(this.wrapper, { height: this.items.length * 200 + 200 + "svh" });
+    gsap.set(this.wrapper, { height: this.items.length * 150 + 150 + "svh" });
     ScrollTrigger.refresh();
 
     this.height = this.instance.getBoundingClientRect().height;
@@ -33,7 +33,7 @@ export default class FullBleed {
     // this.itemPart = this.height / (this.items.length + 1)
 
     // EXTENDED TIMING - much longer duration per video
-    this.itemPart = this.height / (this.items.length + 0.1);
+    this.itemPart = this.height / (this.items.length + 0.3);
 
     this.items.forEach((item, index) => {
       const title = item.querySelector(".f-64");

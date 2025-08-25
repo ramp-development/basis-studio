@@ -21,9 +21,6 @@ export default class VideoLoader extends EventEmitter {
       app = null;
     }
 
-    // console.log(app, "app");
-    console.log(options, "options");
-
     // Handle both cases: data-module on wrapper div OR directly on video element
     this.video =
       videoElement.tagName === "VIDEO"
@@ -53,14 +50,6 @@ export default class VideoLoader extends EventEmitter {
     // Determine if this video needs WebGL treatment
     this.isWebGLVideo = this.detectWebGLVideo();
 
-    console.log("🎬 VideoLoader created:", {
-      isWebGL: this.isWebGLVideo,
-      isMobile: this.isMobile,
-      lazyLoad: this.options.lazyLoad,
-      willLoadImmediately: !this.isMobile && (this.isWebGLVideo || !this.options.lazyLoad),
-      video: this.video,
-    });
-
     this.source = this.video.querySelector("source");
     const mobileUrl =
       this.source.getAttribute("data-src-mobile") ||
@@ -73,14 +62,6 @@ export default class VideoLoader extends EventEmitter {
     if (!this.options.lazyLoad || this.isWebGLVideo) {
       this.source.setAttribute("src", this.src);
     }
-
-    // console.log("🎬 VideoLoader created:", {
-    //   video: this.video,
-    //   isWebGL: this.isWebGLVideo,
-    //   isMobile: this.isMobile,
-    //   src: this.src,
-    // });
-
     // Initialize
     this.init();
   }
@@ -114,6 +95,132 @@ export default class VideoLoader extends EventEmitter {
     });
   }
 
+  getCustomAspectRatio() {
+    // Selectors that support custom aspect ratios
+    const aspectSelectors = [".double-video", ".case_split-video"];
+
+    // Find the container element
+    const elementToCheck =
+      this.video === this.instance ? this.video.parentElement : this.instance;
+
+    // Check if video is in a container that supports custom aspect ratios
+    const container = this.findContainerWithClass(
+      elementToCheck,
+      aspectSelectors
+    );
+    if (!container) return null;
+
+    // Try data attributes first (priority: mobile-specific > desktop > fallback)
+    const mobileAspect = container.dataset.aspectMobile;
+    const desktopAspect = container.dataset.aspect;
+
+    let aspectValue;
+    let source;
+
+    if (this.isMobile && mobileAspect) {
+      aspectValue = mobileAspect;
+      source = "data-aspect-mobile";
+    } else if (desktopAspect) {
+      aspectValue = desktopAspect;
+      source = "data-aspect";
+    }
+
+    if (aspectValue) {
+      // Parse aspect ratio (support formats like "16:9", "1.78", "16/9")
+      const parsed = this.parseAspectRatio(aspectValue);
+      if (parsed) {
+        return {
+          width: parsed.width,
+          height: parsed.height,
+          ratio: parsed.ratio,
+          source,
+        };
+      }
+    }
+
+    // Fallback: try to get aspect ratio from CSS
+    const cssAspect = this.getAspectRatioFromCSS(container);
+    if (cssAspect) {
+      return {
+        width: cssAspect.width,
+        height: cssAspect.height,
+        ratio: cssAspect.ratio,
+        source: "CSS aspect-ratio",
+      };
+    }
+
+    return null;
+  }
+
+  findContainerWithClass(element, selectors) {
+    let current = element;
+    while (current) {
+      for (const selector of selectors) {
+        const className = selector.substring(1);
+        if (current.classList && current.classList.contains(className)) {
+          return current;
+        }
+      }
+      current = current.parentElement;
+    }
+    return null;
+  }
+
+  parseAspectRatio(aspectString) {
+    if (!aspectString) return null;
+
+    // Handle "16:9" or "1739:1303" format
+    if (aspectString.includes(":")) {
+      const [width, height] = aspectString.split(":").map(Number);
+      if (width && height) {
+        return {
+          width,
+          height,
+          ratio: width / height,
+        };
+      }
+    }
+
+    // Handle "16/9" or "1739/1303" format
+    if (aspectString.includes("/")) {
+      const [width, height] = aspectString.split("/").map(Number);
+      if (width && height) {
+        return {
+          width,
+          height,
+          ratio: width / height,
+        };
+      }
+    }
+
+    // Handle decimal format "1.78" - can't extract width/height
+    const ratio = parseFloat(aspectString);
+    if (!isNaN(ratio) && ratio > 0) {
+      return {
+        ratio,
+        width: null,
+        height: null,
+      };
+    }
+
+    return null;
+  }
+
+  getAspectRatioFromCSS(element) {
+    try {
+      const computedStyle = window.getComputedStyle(element);
+      const aspectRatio = computedStyle.getPropertyValue("aspect-ratio");
+
+      if (!aspectRatio || aspectRatio === "auto") return null;
+
+      // Parse CSS aspect-ratio value (e.g., "359 / 269", "16 / 9", "1.78")
+      return this.parseAspectRatio(aspectRatio.replace(/\s+/g, ""));
+    } catch (error) {
+      console.warn("Failed to read CSS aspect-ratio:", error);
+      return null;
+    }
+  }
+
   init() {
     // Check if video is already loaded
     if (this.video.readyState >= 3) {
@@ -126,10 +233,8 @@ export default class VideoLoader extends EventEmitter {
     // On mobile: force lazy loading for ALL videos to prevent crashes
     // On desktop: WebGL videos load immediately, others use lazy loading
     if (!this.isMobile && (this.isWebGLVideo || !this.options.lazyLoad)) {
-      //   console.log("init: Desktop WebGL or not lazy loading", this.video);
       this.startLoading();
     } else {
-      //   console.log("init: Mobile or lazy loading", this.video);
       this.setupIntersectionObserver();
     }
   }
@@ -167,7 +272,6 @@ export default class VideoLoader extends EventEmitter {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !this.isLoaded && !this.isInView) {
-            console.log("VideoLoader: Video is in view", entry, this.video);
             this.isInView = true;
             this.startLoading();
           }
@@ -280,9 +384,18 @@ export default class VideoLoader extends EventEmitter {
       this.observer = null;
     }
 
-    this.width = this.video.videoWidth;
-    this.height = this.video.videoHeight;
+    // Get custom aspect ratio if specified (mobile only)
+    const customAspect = this.isMobile ? this.getCustomAspectRatio() : null;
 
+    if (customAspect && customAspect.width && customAspect.height) {
+      // Use explicit width/height values from aspect ratio (mobile only)
+      this.width = customAspect.width;
+      this.height = customAspect.height;
+    } else {
+      // Use natural video dimensions
+      this.width = this.video.videoWidth;
+      this.height = this.video.videoHeight;
+    }
     // Handle DOM playback for non-WebGL videos
     this.setupDOMPlayback();
 

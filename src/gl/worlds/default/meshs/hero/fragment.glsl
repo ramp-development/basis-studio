@@ -44,8 +44,8 @@ void main()
     vec3 blurColor = fastGaussianBlur(uTexture, coverUv, cursor * 5.).rgb;
     color.rgb = mix(color.rgb, blurColor, cursor * 0.5);
 
-    float fadeArea = smoothstep(0.0, 0.5, uv.y);
-    color.rgb = mix(color.rgb * 0.2, color.rgb, fadeArea);
+    // float fadeArea = smoothstep(0.0, 0.5, uv.y);
+    // color.rgb = mix(mix(vec3(0.0), color.rgb, 0.2), color.rgb, fadeArea);
 
     float alphaFade = step(uScroll, uv.y);
     color.a *= alphaFade;
