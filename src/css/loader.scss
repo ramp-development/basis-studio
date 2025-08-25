@@ -5,6 +5,12 @@
     clip-path: inset(
       calc(var(--topClip, 0) * 1%) 0 calc(var(--bottomClip, 0) * 1%) 0
     );
+    
+    .loader_layer:nth-child(2) {
+      clip-path: inset(
+        calc(var(--topClip, 0) * 1%) 0 calc(var(--bottomClip, 0) * 1%) 0
+      );
+    }
   }
 
   .loader_layer {
