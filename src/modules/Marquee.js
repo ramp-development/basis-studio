@@ -1,6 +1,6 @@
 import { gsap, ScrollTrigger, Draggable, InertiaPlugin } from "gsap/all";
 import { LoadImages } from "@utils/LoadImages.js";
-import VideoLoader from "@utils/VideoLoader.js";
+import VideoLoader from "@modules/VideoLoader.js";
 
 gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
 

@@ -6,7 +6,7 @@ import {
 } from "three";
 import Resources from "@utils/Resources";
 import gsap from "gsap";
-import VideoLoader from "@utils/VideoLoader.js";
+import VideoLoader from "@modules/VideoLoader.js";
 
 import Items from "./meshs/items/index.js";
 

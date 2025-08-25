@@ -8,7 +8,7 @@ import {
   Color,
 } from "three";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
-import VideoLoader from "@utils/VideoLoader.js";
+import VideoLoader from "@modules/VideoLoader.js";
 
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
