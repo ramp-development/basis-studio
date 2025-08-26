@@ -26,32 +26,16 @@
   z-index: 3;
 }
 
-// .cases_item {
-//   width: 20.375rem;
-//   height: 40rem;
-//   flex: none;
-// }
-
-// /* Only use flex + aspect-ratio if both are well supported */
-// @supports (aspect-ratio: 1) and (flex-basis: content) {
-//   .cases_item {
-//     width: auto;
-//     height: auto;
-//     flex: 1;
-//     aspect-ratio: 326 / 640;
-//   }
-// }
-
 .cases_list {
   display: flex;
   gap: var(--size--24);
-  width: fit-content; /* Key change */
+  width: fit-content; /* FOR SAFARI */
 }
 
 .cases_item {
-  width: 20.375rem; /* Fixed width in rem */
-  height: 40rem; /* Fixed height in rem */
-  flex: none; /* Don't let flex resize */
-  /* Keep aspect-ratio as fallback */
+  width: 20.375rem;
+  height: 40rem;
+  flex: none; /* SAFARI I HATE YOU */
+  /* Keep aspect-ratio as fallback for chrome */
   aspect-ratio: 326 / 640;
 }

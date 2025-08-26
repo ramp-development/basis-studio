@@ -27,7 +27,7 @@ export default class World {
 
   load() {
     this.videosLength = this.main.querySelectorAll(
-      ".cases_video_wrapper:not(.w-condition-invisible"
+      ".cases_video_wrapper:not(.w-condition-invisible)"
     ).length;
     this.videoTexetures = [];
     this.count = 0;
@@ -53,7 +53,7 @@ export default class World {
 
       if (videoParent.classList.contains("w-condition-invisible")) return;
       const video = videoParent.querySelector("video");
-      
+
       // Use existing VideoLoader instance if available (from data-module)
       if (video._videoLoaderInstance) {
         const videoLoader = video._videoLoaderInstance;
@@ -99,7 +99,7 @@ export default class World {
 
   checkLoaded() {
     this.count++;
-    if (this.count == this.videosLength + 1) {
+    if (this.count >= this.videosLength + 1) {
       this.init();
     }
   }
