@@ -30,24 +30,32 @@ export default class index {
     this.mouse = new Vector2(0, 0);
     this.offset = new Vector2(0, 0);
     this.outputOffset = new Vector2(0, 0);
+    this.mouseEnabled = false; // Disable mouse interactions initially
 
     this.offsetQuicks = {
       x: gsap.quickTo(this.outputOffset, "x", {
         duration: 0.4,
         ease: "power2",
-        onUpdate: () =>
+        onUpdate: () => {
+          if (!this.mouseEnabled) return;
           this.meshs.forEach(({ material }) =>
             material.uniforms.uMouse.value.set(
               this.outputOffset.x,
               this.outputOffset.y
             )
-          ),
+          )
+        },
       }),
       y: gsap.quickTo(this.outputOffset, "y", {
         duration: 0.4,
         ease: "power2",
       }),
     };
+
+    // Enable mouse interactions after home animation completes
+    this.app.on('homeAnimationComplete', () => {
+      this.mouseEnabled = true;
+    });
 
     this.init();
   }
@@ -104,7 +112,8 @@ export default class index {
         .getComputedStyle(item)
         .getPropertyValue("border-radius");
       const rect = item.getBoundingClientRect();
-      const geometry = new PlaneGeometry(rect.width, rect.height, 200, 200);
+      // Reduce geometry complexity for better performance
+      const geometry = new PlaneGeometry(rect.width, rect.height, 50, 50);
       const material = this.material.clone();
 
       material.uniforms.uSize.value.set(rect.width, rect.height);
@@ -206,6 +215,8 @@ export default class index {
   }
 
   onMouseMove(e) {
+    if (!this.mouseEnabled) return;
+    
     this.mouse.x = e.clientX - window.innerWidth / 2;
     this.mouse.y = e.clientY - window.innerHeight / 2;
 
@@ -221,7 +232,7 @@ export default class index {
       const rect = item.getBoundingClientRect();
       UpdateGeometry(
         mesh,
-        new PlaneGeometry(rect.width, rect.height, 200, 200)
+        new PlaneGeometry(rect.width, rect.height, 50, 50)
       );
       mesh.material.uniforms.uSize.value.set(rect.width, rect.height);
 

@@ -46,26 +46,12 @@ export default class Loader {
 
   setInitialStates() {
     // Set initial animation states to prevent flash of content during transitions
-    gsap.set(this.titleSplit.lines, {
-      y: "120%",
-      rotateX: "-35deg",
-      rotateY: "-5deg",
-      z: "-1rem",
-      transformStyle: "preserve-3d",
-      transformOrigin: "50% 0",
-    });
-
-    gsap.set(this.descrSplit.lines, {
-      y: "120%",
-    });
-
-    gsap.set(this.btn, {
-      opacity: 0,
-      filter: "blur(10px)",
-    });
-
-    // Mobile specific states
     if (window.innerWidth <= 992) {
+      // Mobile: Simple initial states - no 3D transforms
+      gsap.set(this.titleSplit.lines, {
+        y: "120%",
+      });
+      
       // Ensure images are completely hidden during transitions
       gsap.set(this.imagesParent, {
         yPercent: 20,
@@ -78,7 +64,26 @@ export default class Loader {
         opacity: 0,
         autoAlpha: 0, // Double ensure they're hidden
       });
+    } else {
+      // Desktop: Full 3D transforms
+      gsap.set(this.titleSplit.lines, {
+        y: "120%",
+        rotateX: "-35deg",
+        rotateY: "-5deg",
+        z: "-1rem",
+        transformStyle: "preserve-3d",
+        transformOrigin: "50% 0",
+      });
     }
+
+    gsap.set(this.descrSplit.lines, {
+      y: "120%",
+    });
+
+    gsap.set(this.btn, {
+      opacity: 0,
+      filter: "blur(10px)",
+    });
   }
 
   checkInit() {
@@ -98,6 +103,8 @@ export default class Loader {
       onComplete: () => {
         this.titleSplit.revert();
         this.descrSplit.revert();
+        // Enable mouse interactions after animation completes
+        this.app.trigger("homeAnimationComplete");
       },
     });
 
@@ -109,24 +116,17 @@ export default class Loader {
     );
 
     this.meshs.forEach(({ mesh }, index) => {
-      // this.tl
-      //   .fromTo(
-      //     mesh.scale,
-      //     { x: 0.6, y: 0.6, z: 0.6 },
-      //     { x: 1, y: 1, z: 1, duration: 3.5, ease: "power1" },
-      //     index * 0.1 + 0.4
-      //   )
       this.tl
         .fromTo(
           mesh.position,
           { z: 600 },
-          { z: 0, stagger: 0.1, duration: 3.5, ease: "power1" },
+          { z: 0, stagger: 0.1, duration: 2.5, ease: "power1" },
           index * 0.2 + 0.4
         )
         .fromTo(
           mesh.material.uniforms.uOpacity,
           { value: 0 },
-          { value: 1, duration: 4.5 },
+          { value: 1, duration: 3.5 },
           "<"
         );
     });
@@ -179,10 +179,13 @@ export default class Loader {
       onComplete: () => {
         this.titleSplit.revert();
         this.descrSplit.revert();
+        // Enable mouse interactions after animation completes
+        this.app.trigger("homeAnimationComplete");
       },
     });
 
     this.tl
+      // Simplified mobile text animation - no 3D transforms
       .fromTo(
         this.titleSplit.lines,
         { y: "120%" },
@@ -190,39 +193,17 @@ export default class Loader {
         0.6
       )
       .fromTo(
-        this.titleSplit.lines,
-        {
-          rotateX: "-35deg",
-          rotateY: "-5deg",
-          z: "-1rem",
-          transformStyle: "preserve-3d",
-          transformOrigin: "50% 0",
-        },
-        {
-          rotateX: "0deg",
-          rotateY: "0deg",
-          z: "0rem",
-          stagger: 0.1,
-          ease: "power2",
-          stagger: 0.1,
-        },
-        "<"
-      )
-
-      .fromTo(
         this.descrSplit.lines,
         { y: "120%" },
         { y: "0%", stagger: 0.1, ease: "power3" },
         "<0.2"
       )
-
       .fromTo(
         this.btn,
         { opacity: 0, filter: "blur(10px)" },
         { opacity: 1, filter: "blur(0px)" },
         "<0.3"
       )
-
       .fromTo(
         this.imagesParent,
         { yPercent: 20, scale: 0.6, autoAlpha: 0 },

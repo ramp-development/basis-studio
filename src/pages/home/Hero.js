@@ -10,6 +10,7 @@ export default class Hero {
     this.button = this.hero.querySelector(".hero_button");
 
     this.destroyed = false;
+    this.mouseEnabled = false; // Disable mouse interactions initially
 
     this.quicks = [...this.images].map((image, index) => {
       if (window.innerWidth < 992) return;
@@ -34,6 +35,11 @@ export default class Hero {
 
     this.main.addEventListener("mousemove", (e) => this.mouseMove(e));
 
+    // Enable mouse interactions after home animation completes
+    this.app.on('homeAnimationComplete', () => {
+      this.mouseEnabled = true;
+    });
+
     // Add click handler for hero button
     if (this.button) {
       this.button.addEventListener("click", (e) => this.handleButtonClick(e));
@@ -45,7 +51,7 @@ export default class Hero {
   }
 
   mouseMove(e) {
-    if (this.destroyed) return;
+    if (this.destroyed || !this.mouseEnabled) return;
     if (window.innerWidth < 992) return;
 
     const mouse = {

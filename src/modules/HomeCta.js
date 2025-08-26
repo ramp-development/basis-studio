@@ -33,56 +33,77 @@ export default class HomeCta {
 
     this.tls = [...this.items].map((item, index) => {
       const split = this.splits[index];
+      const isMobile = window.innerWidth <= 992;
+      
       gsap.set(split.lines, {
         overflow: "clip",
         paddingBottom: "0.1em",
         marginBottom: "-0.1em",
-        perspective: 1000,
+        perspective: isMobile ? "none" : 1000, // No perspective on mobile
       });
+      
       const tl = gsap.timeline({ defaults: { ease: "power3", duration: 1 } });
 
       if (index > 0) {
-        tl.to(
-          this.splits[index - 1].words,
-          // {yPercent: 0, opacity: 1, filter: 'blur(0px)', scale: 1},
-          {
-            rotateX: "-35deg",
-            rotateY: "-5deg",
-            z: "-1rem",
-            y: "120%",
-            transformStyle: "preserve-3d",
-            transformOrigin: "50% 0",
-            stagger: 0.1,
-            duration: 0.8,
-          },
-          0
-        );
+        if (isMobile) {
+          // Mobile: Simple animation - just y transform
+          tl.to(
+            this.splits[index - 1].words,
+            {
+              y: "120%",
+              stagger: 0.1,
+              duration: 0.8,
+            },
+            0
+          );
+        } else {
+          // Desktop: Full 3D animation
+          tl.to(
+            this.splits[index - 1].words,
+            {
+              rotateX: "-35deg",
+              rotateY: "-5deg",
+              z: "-1rem",
+              y: "120%",
+              transformStyle: "preserve-3d",
+              transformOrigin: "50% 0",
+              stagger: 0.1,
+              duration: 0.8,
+            },
+            0
+          );
+        }
       }
+      
       tl.fromTo(
         split.words,
         { y: "120%" },
         { y: "0%", stagger: 0.1, ease: "power3", stagger: 0.1 },
         "<50%"
       );
-      tl.fromTo(
-        split.words,
-        {
-          rotateX: "-35deg",
-          rotateY: "-5deg",
-          z: "-1rem",
-          transformStyle: "preserve-3d",
-          transformOrigin: "50% 0",
-        },
-        {
-          rotateX: "0deg",
-          rotateY: "0deg",
-          z: "0rem",
-          stagger: 0.1,
-          ease: "power2",
-          stagger: 0.1,
-        },
-        "<0.2"
-      );
+      
+      if (!isMobile) {
+        // Desktop: Add 3D transform animation
+        tl.fromTo(
+          split.words,
+          {
+            rotateX: "-35deg",
+            rotateY: "-5deg",
+            z: "-1rem",
+            transformStyle: "preserve-3d",
+            transformOrigin: "50% 0",
+          },
+          {
+            rotateX: "0deg",
+            rotateY: "0deg",
+            z: "0rem",
+            stagger: 0.1,
+            ease: "power2",
+            stagger: 0.1,
+          },
+          "<0.2"
+        );
+      }
 
       const start = index === 0 ? 0 : ">0.2";
 
