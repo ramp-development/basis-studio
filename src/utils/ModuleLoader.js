@@ -19,8 +19,9 @@ export default class ModuleLoader extends EventEmitter {
       let count = 0;
       let loaded = false;
 
-      elements.forEach(async (element) => {
+      elements.forEach(async (element, index) => {
         const moduleName = element.getAttribute("data-module");
+        
         const values = moduleName.split(" ");
         for (const value of values) {
           if (value === "" || value === " ") {
@@ -34,7 +35,7 @@ export default class ModuleLoader extends EventEmitter {
 
           try {
             const module = await import(`@modules/${value}.js`);
-            new module.default(element, this.app, main);
+            const moduleInstance = new module.default(element, this.app, main);
 
             count++;
             if (count === elements.length && !loaded) {
@@ -42,7 +43,7 @@ export default class ModuleLoader extends EventEmitter {
               this.trigger("loaded");
             }
           } catch (importError) {
-            console.warn(`Failed to load module "${value}": ${importError.message}`);
+            console.warn(`❌ ModuleLoader: Failed to load module "${value}": ${importError.message}`);
             
             // Still increment count so loading doesn't hang
             count++;
@@ -54,7 +55,7 @@ export default class ModuleLoader extends EventEmitter {
         }
       });
     } catch (error) {
-      console.warn(`Error loading modules: ${error.message}`);
+      console.warn(`❌ ModuleLoader: Error loading modules: ${error.message}`);
     }
   }
 }

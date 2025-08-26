@@ -69,29 +69,39 @@ export default class index {
 
     const video = this.item.querySelector("video");
     if (video) {
-      // Use existing VideoLoader instance if available (from data-module)
-      if (video._videoLoaderInstance) {
-        const videoLoader = video._videoLoaderInstance;
-        if (videoLoader.isLoaded) {
-          const texture = new VideoTexture(video);
-          this.material.uniforms.uTexture.value = texture;
-          this.material.uniforms.uAspect.value.set(
-            videoLoader.width || video.videoWidth,
-            videoLoader.height || video.videoHeight
-          );
-        } else {
-          videoLoader.on("loaded", () => {
-            const texture = new VideoTexture(video);
-            this.material.uniforms.uTexture.value = texture;
-            this.material.uniforms.uAspect.value.set(
-              videoLoader.width,
-              videoLoader.height
-            );
-          });
-        }
+      // Wait for modules to be loaded before checking for VideoLoader instance
+      if (this.app.moduleLoaded) {
+        // Add small delay to ensure VideoLoader constructors finish setting _videoLoaderInstance
+        setTimeout(() => {
+          this.setupVideoTexture(video);
+        }, 50);
       } else {
-        // Fallback: create VideoLoader if module doesn't exist
-        const videoLoader = new VideoLoader(video, { lazyLoad: false });
+        this.app.on('modulesLoaded', () => {
+          // Add small delay to ensure VideoLoader constructors finish
+          setTimeout(() => {
+            this.setupVideoTexture(video);
+          }, 50);
+        });
+      }
+    }
+
+    this.scene.add(this.mesh);
+    this.setPosition();
+  }
+
+  setupVideoTexture(video) {
+    // Use existing VideoLoader instance if available (from data-module)
+    if (video._videoLoaderInstance) {
+      const videoLoader = video._videoLoaderInstance;
+      
+      if (videoLoader.isLoaded) {
+        const texture = new VideoTexture(video);
+        this.material.uniforms.uTexture.value = texture;
+        this.material.uniforms.uAspect.value.set(
+          videoLoader.width || video.videoWidth,
+          videoLoader.height || video.videoHeight
+        );
+      } else {
         videoLoader.on("loaded", () => {
           const texture = new VideoTexture(video);
           this.material.uniforms.uTexture.value = texture;
@@ -101,11 +111,18 @@ export default class index {
           );
         });
       }
+    } else {
+      // Fallback: create VideoLoader if module doesn't exist
+      const videoLoader = new VideoLoader(video, { lazyLoad: false });
+      videoLoader.on("loaded", () => {
+        const texture = new VideoTexture(video);
+        this.material.uniforms.uTexture.value = texture;
+        this.material.uniforms.uAspect.value.set(
+          videoLoader.width,
+          videoLoader.height
+        );
+      });
     }
-
-    this.scene.add(this.mesh);
-
-    this.setPosition();
   }
 
   setPosition(e) {

@@ -60,30 +60,30 @@ export default class app extends EventEmitter {
       ],
     });
 
-    barba.hooks.before((data) => {
-      console.log("🔍 Before transition:", {
-        from: data.current?.namespace,
-        to: data.next?.namespace,
-        fromRoute: data.current?.container?.getAttribute(
-          "data-transition-page"
-        ),
-        toRoute: data.next?.container?.getAttribute("data-transition-page"),
-      });
-    });
+    // barba.hooks.before((data) => {
+    //   console.log("🔍 Before transition:", {
+    //     from: data.current?.namespace,
+    //     to: data.next?.namespace,
+    //     fromRoute: data.current?.container?.getAttribute(
+    //       "data-transition-page"
+    //     ),
+    //     toRoute: data.next?.container?.getAttribute("data-transition-page"),
+    //   });
+    // });
 
     barba.hooks.enter(async (data) => {
-      console.log("📄 Barba page info:", {
-        from: data.current?.namespace,
-        to: data.next?.namespace,
-        fromRoute: data.current?.container?.getAttribute(
-          "data-transition-page"
-        ),
-        toRoute: data.next?.container?.getAttribute("data-transition-page"),
-      });
-      
+      // console.log("📄 Barba page info:", {
+      //   from: data.current?.namespace,
+      //   to: data.next?.namespace,
+      //   fromRoute: data.current?.container?.getAttribute(
+      //     "data-transition-page"
+      //   ),
+      //   toRoute: data.next?.container?.getAttribute("data-transition-page"),
+      // });
+
       // Restart Webflow BEFORE loading modules and content
       await RestartWebflow();
-      
+
       // Remove force video loading - let VideoLoader module handle it with lazy loading
     });
   }
@@ -124,8 +124,8 @@ export default class app extends EventEmitter {
     app.nav = new Nav.default(app);
 
     await CheckPages(app, main);
-    app.gl = new GL.default(document.querySelector(".canvas"), app, main);
     await app.moduleLoader.loadModules(main);
+    app.gl = new GL.default(document.querySelector(".canvas"), app, main);
 
     app.moduleLoader.on("loaded", () => {
       app.trigger("modulesLoaded");

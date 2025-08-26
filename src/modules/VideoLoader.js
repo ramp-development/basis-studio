@@ -222,11 +222,30 @@ export default class VideoLoader extends EventEmitter {
   }
 
   init() {
+    const isHeroVideo = this.video.closest(
+      ".hero, .h-home_hero, .h-services_hero, .h-services_bg"
+    );
+    const isAlreadyLoading = this.source.getAttribute("src");
+
     // Check if video is already loaded
     if (this.video.readyState >= 3) {
       this.isLoaded = true;
       this.trigger("loaded");
       this.setupDOMPlayback();
+      return;
+    }
+
+    // Check if GlobalLoader already started loading this hero video
+    if (isHeroVideo && isAlreadyLoading) {
+      // If video is already ready, mark as loaded immediately
+      if (this.video.readyState >= 1) {
+        // HAVE_METADATA
+        this.onVideoLoaded();
+        return;
+      }
+
+      // Otherwise add listeners to catch when it loads
+      this.addEventListeners();
       return;
     }
 
@@ -287,6 +306,8 @@ export default class VideoLoader extends EventEmitter {
   }
 
   startLoading() {
+    const startTime = performance.now();
+
     // Set video source if not set yet
     if (!this.source.getAttribute("src")) {
       this.source.setAttribute("src", this.src);
@@ -319,7 +340,7 @@ export default class VideoLoader extends EventEmitter {
   }
 
   setupUserInteractionUpgrade() {
-    const upgradePreload = () => {
+    const upgradePreload = (eventType) => {
       this.video.preload = "auto";
       this.video.load();
 
@@ -332,15 +353,17 @@ export default class VideoLoader extends EventEmitter {
     };
 
     // Upgrade preload on any user interaction
-    document.addEventListener("touchstart", upgradePreload, {
+    document.addEventListener("touchstart", (e) => upgradePreload("touch"), {
       passive: true,
       once: true,
     });
-    document.addEventListener("scroll", upgradePreload, {
+    document.addEventListener("scroll", (e) => upgradePreload("scroll"), {
       passive: true,
       once: true,
     });
-    document.addEventListener("click", upgradePreload, { once: true });
+    document.addEventListener("click", (e) => upgradePreload("click"), {
+      once: true,
+    });
   }
 
   addEventListeners() {
@@ -375,6 +398,10 @@ export default class VideoLoader extends EventEmitter {
   onVideoLoaded() {
     if (this.isLoaded) return;
 
+    const isHeroVideo = this.video.closest(
+      ".hero, .h-home_hero, .h-services_hero, .h-services_bg"
+    );
+
     this.isLoaded = true;
     clearTimeout(this.timeout);
 
@@ -396,6 +423,7 @@ export default class VideoLoader extends EventEmitter {
       this.width = this.video.videoWidth;
       this.height = this.video.videoHeight;
     }
+
     // Handle DOM playback for non-WebGL videos
     this.setupDOMPlayback();
 
