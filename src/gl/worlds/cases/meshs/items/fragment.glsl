@@ -45,7 +45,7 @@ void main()
 
     // Enhanced gradient to match CSS gradient effect
     float fadeArea = smoothstep(0.0, 0.3, uv.y);
-    vec3 gradientColor = mix(vec3(0.0, 0.0, 0.0), color.rgb, fadeArea);
+    vec3 gradientColor = mix(color.rgb * 0.2, color.rgb, fadeArea);
     color.rgb = gradientColor;
 
     gl_FragColor = color;
