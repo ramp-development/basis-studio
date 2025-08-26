@@ -69,20 +69,7 @@ export default class index {
 
     const video = this.item.querySelector("video");
     if (video) {
-      // Wait for modules to be loaded before checking for VideoLoader instance
-      if (this.app.moduleLoaded) {
-        // Add small delay to ensure VideoLoader constructors finish setting _videoLoaderInstance
-        setTimeout(() => {
-          this.setupVideoTexture(video);
-        }, 50);
-      } else {
-        this.app.on('modulesLoaded', () => {
-          // Add small delay to ensure VideoLoader constructors finish
-          setTimeout(() => {
-            this.setupVideoTexture(video);
-          }, 50);
-        });
-      }
+      this.setupVideoTexture(video);
     }
 
     this.scene.add(this.mesh);

@@ -222,30 +222,11 @@ export default class VideoLoader extends EventEmitter {
   }
 
   init() {
-    const isHeroVideo = this.video.closest(
-      ".hero, .h-home_hero, .h-services_hero, .h-services_bg"
-    );
-    const isAlreadyLoading = this.source.getAttribute("src");
-
     // Check if video is already loaded
     if (this.video.readyState >= 3) {
       this.isLoaded = true;
       this.trigger("loaded");
       this.setupDOMPlayback();
-      return;
-    }
-
-    // Check if GlobalLoader already started loading this hero video
-    if (isHeroVideo && isAlreadyLoading) {
-      // If video is already ready, mark as loaded immediately
-      if (this.video.readyState >= 1) {
-        // HAVE_METADATA
-        this.onVideoLoaded();
-        return;
-      }
-
-      // Otherwise add listeners to catch when it loads
-      this.addEventListeners();
       return;
     }
 
@@ -397,10 +378,6 @@ export default class VideoLoader extends EventEmitter {
 
   onVideoLoaded() {
     if (this.isLoaded) return;
-
-    const isHeroVideo = this.video.closest(
-      ".hero, .h-home_hero, .h-services_hero, .h-services_bg"
-    );
 
     this.isLoaded = true;
     clearTimeout(this.timeout);
