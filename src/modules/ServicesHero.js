@@ -8,6 +8,7 @@ export default class ServicesHero {
     this.app = app;
 
     this.destroyed = false;
+    this.isMobile = window.innerWidth < 992;
 
     this.title = this.instance.querySelector(".h-services_title");
     this.text = this.title.querySelector("h1");
@@ -20,98 +21,116 @@ export default class ServicesHero {
   }
 
   init() {
+    if (this.isMobile) {
+      this.initMobile();
+    } else {
+      this.initDesktop();
+    }
+  }
+
+  initMobile() {
+    // Simplified mobile version with minimal animations
+    this.tl = gsap.timeline({ paused: true });
+    
+    // Calculate Y movement to create proper spacing (simplified calculation)
+    const titleHeight = this.title.offsetHeight;
+    const minYMovement = Math.min(titleHeight * 0.5, 150); // Increased movement and cap
+    
+    this.tl
+      .fromTo(
+        this.title,
+        { y: 0 },
+        { y: -minYMovement, ease: "power2.out", duration: 1 }
+      )
+      .fromTo(
+        this.text,
+        { scale: 1 },
+        { scale: 1.05, ease: "power2.out", duration: 1 },
+        "<"
+      )
+      .fromTo(
+        this.btn,
+        { yPercent: 100, opacity: 0 },
+        { yPercent: 0, opacity: 1, ease: "power2.out", duration: 0.4 },
+        0.3
+      );
+
+    // Lighter scroll trigger for mobile
+    this.scroll = ScrollTrigger.create({
+      trigger: this.instance,
+      start: "top top",
+      end: "bottom center",
+      animation: this.tl,
+      scrub: 1, // Smoother scrubbing
+      onUpdate: (self) => {
+        // Only update CSS custom property, no WebGL or complex calculations
+        this.bg.style.setProperty("--progress", self.progress);
+      },
+    });
+  }
+
+  initDesktop() {
     this.tl = gsap.timeline({ paused: true });
     const middleY = window.innerHeight / 2;
-    let top =
-      this.title.getBoundingClientRect().top +
-      this.title.getBoundingClientRect().height / 2 -
-      middleY;
-    
-    // Cap mobile Y movement to reduce gap
-    if (window.innerWidth < 992) {
-      top = Math.min(Math.abs(top), 202) * Math.sign(top);
-    }
+    const titleRect = this.title.getBoundingClientRect();
+    const top = titleRect.top + titleRect.height / 2 - middleY;
 
-    gsap.matchMedia().add(
-      {
-        isDesktop: `(min-width: 992px)`,
-        isMobile: `(max-width: 991px)`,
-      },
-      (context) => {
-        const { isDesktop, isMobile } = context.conditions;
-
-        this.tl
-          .fromTo(
-            this.title,
-            { y: 0 },
-            { y: -top, ease: "power3", duration: 1 }
-          )
-          .fromTo(
-            this.text,
-            { scale: 1 },
-            { scale: isDesktop ? 1.4 : 1.1, ease: "power3", duration: 1 },
-            "<"
-          )
-          .fromTo(
-            this.btn,
-            { yPercent: 100, opacity: 0 },
-            { yPercent: 0, opacity: 1, ease: "power3", duration: 0.5 },
-            0.5
-          );
-      }
-    );
+    this.tl
+      .fromTo(
+        this.title,
+        { y: 0 },
+        { y: -top, ease: "power3", duration: 1 }
+      )
+      .fromTo(
+        this.text,
+        { scale: 1 },
+        { scale: 1.4, ease: "power3", duration: 1 },
+        "<"
+      )
+      .fromTo(
+        this.btn,
+        { yPercent: 100, opacity: 0 },
+        { yPercent: 0, opacity: 1, ease: "power3", duration: 0.5 },
+        0.5
+      );
 
     this.scroll = ScrollTrigger.create({
       trigger: this.instance,
       start: "top top",
       end: "bottom bottom",
-      // end: window.innerWidth < 992 ? "bottom center" : "bottom bottom",
       animation: this.tl,
       scrub: true,
       onUpdate: (self) => {
-        if (window.innerWidth > 992) {
-          if (this.app.gl?.world?.hero?.material?.uniforms?.uScroll) {
-            this.app.gl.world.hero.material.uniforms.uScroll.value = self.progress;
-          }
+        if (this.app.gl?.world?.hero?.material?.uniforms?.uScroll) {
+          this.app.gl.world.hero.material.uniforms.uScroll.value = self.progress;
         }
-
         this.bg.style.setProperty("--progress", self.progress);
-        // this.updateSizePos(self.progress)
       },
     });
   }
 
-  updateSizePos(progress) {
-    const middleY = window.innerHeight / 2;
-    const top =
-      this.title.getBoundingClientRect().top +
-      this.title.getBoundingClientRect().height / 2 -
-      middleY;
-
-    this.setters[0].y(-top * progress);
-    // this.setters.scale(1 + progress * 0.2)
-  }
 
   resize() {
     if (this.destroyed) return;
 
-    this.tl?.kill();
-    this.scroll?.kill();
-
-    this.init();
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth < 992;
+    
+    // Only reinitialize if device type changed
+    if (wasMobile !== this.isMobile) {
+      this.tl?.kill();
+      this.scroll?.kill();
+      this.init();
+    }
   }
 
   destroy() {
     if (this.destroyed) return;
     this.destroyed = true;
-  }
-
-  getTop(el) {
-    let top = 0;
-    while (el && el !== document.body) {
-      top += el.offsetTop || 0;
-      el = el.offsetParent;
-    }
-    return top;
+    
+    this.tl?.kill();
+    this.scroll?.kill();
+    this.tl = null;
+    this.scroll = null;
   }
 }
