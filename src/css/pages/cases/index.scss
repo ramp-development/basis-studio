@@ -43,6 +43,7 @@
   flex: none; /* SAFARI I HATE YOU */
   /* Keep aspect-ratio as fallback for chrome */
   aspect-ratio: 326 / 640;
+  padding-bottom: var(--size--24);
 
   @media screen and (max-width: 991px) {
     width: 100%;
