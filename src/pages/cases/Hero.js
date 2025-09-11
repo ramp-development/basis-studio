@@ -114,7 +114,7 @@ export default class Hero {
       mesh.scale.set(0.4, 0.4, 0.4); // Start small
 
       this.innerTls[index]
-        .fromTo(mesh.material.uniforms.uLoading, { value: 0 }, { value: 1 })
+        .fromTo(mesh.material.uniforms.uLoading, { value: 0.5 }, { value: 1 })
         .to(
           mesh.rotation,
           { x: 0, y: 0, z: 0, duration: 1, ease: "power3.out" },
