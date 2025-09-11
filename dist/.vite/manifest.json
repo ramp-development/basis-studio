@@ -199,6 +199,12 @@
       "_ScrollTrigger-BWsqEc1I.js"
     ]
   },
+  "src/modules/AspectRatio.js": {
+    "file": "AspectRatio-CiEsY__a.js",
+    "name": "AspectRatio",
+    "src": "src/modules/AspectRatio.js",
+    "isDynamicEntry": true
+  },
   "src/modules/AssetReveal.js": {
     "file": "AssetReveal-DlBw8XLl.js",
     "name": "AssetReveal",
@@ -486,7 +492,7 @@
     ]
   },
   "src/pages/cases/index.js": {
-    "file": "index-DR3-YKab.js",
+    "file": "index-D-ycncME.js",
     "name": "index",
     "src": "src/pages/cases/index.js",
     "isDynamicEntry": true,
@@ -513,7 +519,7 @@
     ]
   },
   "src/pages/home/index.js": {
-    "file": "index-Bbgu-nLO.js",
+    "file": "index-Bp-_bsUE.js",
     "name": "index",
     "src": "src/pages/home/index.js",
     "isDynamicEntry": true,
@@ -601,7 +607,7 @@
     ]
   },
   "src/utils/ModuleLoader.js": {
-    "file": "ModuleLoader-DWWx62Hu.js",
+    "file": "ModuleLoader-Dg2XeFzv.js",
     "name": "ModuleLoader",
     "src": "src/utils/ModuleLoader.js",
     "isDynamicEntry": true,
@@ -610,6 +616,7 @@
     ],
     "dynamicImports": [
       "src/utils/PageScrollProgress.js",
+      "src/modules/AspectRatio.js",
       "src/modules/AssetReveal.js",
       "src/modules/Button.js",
       "src/modules/Calendar.js",

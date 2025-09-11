@@ -6,11 +6,11 @@ The template uses a singleton app instance that provides access to core function
 
 ```javascript
 // Available on this.app in modules and pages
-this.app.scroll.lenis    // Access to Lenis smooth scrolling instance
-this.app.sizes           // Viewport size tracking
-this.app.page            // Current page instance
-this.app.moduleLoader    // Module loader utility
-this.app.tick            // Animation tick/frame handler
+this.app.scroll.lenis; // Access to Lenis smooth scrolling instance
+this.app.sizes; // Viewport size tracking
+this.app.page; // Current page instance
+this.app.moduleLoader; // Module loader utility
+this.app.tick; // Animation tick/frame handler
 ```
 
 ### Event System
@@ -19,12 +19,12 @@ The app instance extends the EventEmitter class, providing a pub/sub pattern for
 
 ```javascript
 // Listen for events (in modules/components)
-this.app.on('resize', () => this.resize());
-this.app.on('destroy', () => this.destroy());
-this.app.on('tick', () => this.animate());
+this.app.on("resize", () => this.resize());
+this.app.on("destroy", () => this.destroy());
+this.app.on("tick", () => this.animate());
 
 // Trigger events (usually from core systems)
-this.app.trigger('resize');
+this.app.trigger("resize");
 ```
 
 ### Key Events
@@ -38,6 +38,7 @@ this.app.trigger('resize');
 Modules are reusable components that can be attached to HTML elements. They follow a standardized structure:
 
 1. **HTML Structure**: Add the `data-module` attribute to any element
+
    ```html
    <div data-module="Accordion">
      <!-- Module content here -->
@@ -45,6 +46,7 @@ Modules are reusable components that can be attached to HTML elements. They foll
    ```
 
 2. **Multiple Modules**: Attach multiple modules by separating with spaces
+
    ```html
    <div data-module="Accordion Slider">
      <!-- Will load both Accordion.js and Slider.js -->
@@ -52,40 +54,36 @@ Modules are reusable components that can be attached to HTML elements. They foll
    ```
 
 3. **Creating Modules**: Create modules as classes in `src/modules/`
+
    ```javascript
    // src/modules/MyModule.js
-   export default class MyModule 
-   {
-        constructor(element, main, app) 
-        {
-            this.element = element  // The element with data-module
-            this.main = main        // The main container
-            this.app = app          // The app instance
+   export default class MyModule {
+     constructor(element, main, app) {
+       this.element = element; // The element with data-module
+       this.main = main; // The main container
+       this.app = app; // The app instance
 
-            this.destroyed = false
-            
-            this.init()
-            this.app.on('resize', () => this.resize())
-            this.app.on('destroy', () => this.destroy())
-        }
-        
-        init() 
-        {
-            // Initialize module
-        }
-        
-        resize() 
-        {
-            // Handle resize events
-            if(this.destroyed) return
-        }
-        
-        destroy() 
-        {
-            // Clean up when module is destroyed
-            if(this.destroyed) return
-            this.destroyed = true
-        }
+       this.destroyed = false;
+
+       this.init();
+       this.app.on("resize", () => this.resize());
+       this.app.on("destroy", () => this.destroy());
+     }
+
+     init() {
+       // Initialize module
+     }
+
+     resize() {
+       // Handle resize events
+       if (this.destroyed) return;
+     }
+
+     destroy() {
+       // Clean up when module is destroyed
+       if (this.destroyed) return;
+       this.destroyed = true;
+     }
    }
    ```
 
@@ -94,6 +92,7 @@ Modules are reusable components that can be attached to HTML elements. They foll
 Pages represent different content views with their own components and logic:
 
 1. **Page Structure**: Add page identifier to main container
+
    ```html
    <main data-transition-page="home">
      <!-- Page content here -->
@@ -101,23 +100,21 @@ Pages represent different content views with their own components and logic:
    ```
 
 2. **Creating Pages**: Create pages in `src/pages/[pageName]/index.js`
+
    ```javascript
    // src/pages/about/index.js
-    export default class index 
-    {
-        constructor(main, app) 
-        {
-            this.main = main
-            this.app = app
-            
-            this.triggerLoad = async () => this.load()
-        }
-        
-        load() 
-        {
-            // Initialize page-specific components
-        }
-    }
+   export default class index {
+     constructor(main, app) {
+       this.main = main;
+       this.app = app;
+
+       this.triggerLoad = async () => this.load();
+     }
+
+     load() {
+       // Initialize page-specific components
+     }
+   }
    ```
 
 3. **Add to Router**: Update `CheckPages.js` with the new page
@@ -142,15 +139,18 @@ The project uses SCSS for styling with a modular architecture:
 2. **Module Styling**:
    - Create module-specific styles in `src/css/modules/[moduleName].scss`
    - Import new modules in `style.scss`:
-     ```scss
+     ````scss
      // style.scss
      @import './modules/myModule.scss';
      ```# Stabondar Template
+     ````
 
 ## Overview
+
 A modern web development template built with Vite for creating dynamic websites with smooth page transitions and animations. This template provides a structured architecture with class-based components, event-driven communication, and seamless page transitions using Barba.js.
 
 ## Directory Structure
+
 ```
 /
 ├── index.html          # Main HTML entry point
