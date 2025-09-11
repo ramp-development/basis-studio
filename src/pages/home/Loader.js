@@ -51,7 +51,7 @@ export default class Loader {
       gsap.set(this.titleSplit.lines, {
         y: "120%",
       });
-      
+
       // Ensure images are completely hidden during transitions
       gsap.set(this.imagesParent, {
         yPercent: 20,
@@ -100,6 +100,15 @@ export default class Loader {
 
     this.tl = gsap.timeline({
       defaults: { ease: def.ease, duration: 1.4 },
+      onStart: () => {
+        // Play videos 85% through the animation
+        const duration = this.tl.duration();
+        const staticMultiplier = 0.85;
+        const timeout = duration * staticMultiplier * 1000;
+        setTimeout(() => {
+          this.app.trigger("homeAnimationStatic");
+        }, timeout);
+      },
       onComplete: () => {
         this.titleSplit.revert();
         this.descrSplit.revert();
@@ -176,6 +185,15 @@ export default class Loader {
   mobInit() {
     this.tl = gsap.timeline({
       defaults: { ease: def.ease, duration: 1.4 },
+      onStart: () => {
+        // Play videos 85% through the animation
+        const duration = this.tl.duration();
+        const staticMultiplier = 0.85;
+        const timeout = duration * staticMultiplier * 1000;
+        setTimeout(() => {
+          this.app.trigger("homeAnimationStatic");
+        }, timeout);
+      },
       onComplete: () => {
         this.titleSplit.revert();
         this.descrSplit.revert();

@@ -411,11 +411,22 @@ export default class VideoLoader extends EventEmitter {
   setupDOMPlayback() {
     // Only handle DOM playback for non-WebGL videos
     if (!this.isWebGLVideo) {
-      this.video.play().catch((error) => {
-        console.warn("Video autoplay failed:", error);
-      });
+      const autoplay = this.video.getAttribute("autoplay");
+      if (autoplay === "true") {
+        this.playVideo();
+      } else {
+        this.video.currentTime = 0;
+        this.video.pause();
+      }
     }
     this.video.classList.add("loaded");
+  }
+
+  playVideo() {
+    if (!this.video.paused) return;
+    this.video.play().catch((error) => {
+      console.warn("Video autoplay failed:", error);
+    });
   }
 
   onVideoError(error) {

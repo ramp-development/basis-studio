@@ -7,6 +7,7 @@ export default class Hero {
 
     this.hero = this.main.querySelector(".hero");
     this.images = this.hero.querySelectorAll(".hero_image, .hero_video");
+    this.videos = this.hero.querySelectorAll(".hero_video video");
     this.button = this.hero.querySelector(".hero_button");
 
     this.destroyed = false;
@@ -35,8 +36,13 @@ export default class Hero {
 
     this.main.addEventListener("mousemove", (e) => this.mouseMove(e));
 
+    // Play videos once home animation is static
+    this.app.on("homeAnimationStatic", () => {
+      this.playHeroVideos();
+    });
+
     // Enable mouse interactions after home animation completes
-    this.app.on('homeAnimationComplete', () => {
+    this.app.on("homeAnimationComplete", () => {
       this.mouseEnabled = true;
     });
 
@@ -67,6 +73,13 @@ export default class Hero {
 
       quick.x(x * -1);
       quick.y(y * -1);
+    });
+  }
+
+  playHeroVideos() {
+    this.videos.forEach((video) => {
+      const instance = video._videoLoaderInstance;
+      if (instance) instance.playVideo();
     });
   }
 
