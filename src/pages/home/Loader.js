@@ -144,7 +144,7 @@ export default class Loader {
       .fromTo(
         this.titleSplit.lines,
         { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3", stagger: 0.1 },
+        { y: "0%", stagger: 0.1, ease: "power3" },
         "<0.2"
       )
       .fromTo(
@@ -204,16 +204,22 @@ export default class Loader {
 
     this.tl
       // Simplified mobile text animation - no 3D transforms
+      .from(this.images, {
+        yPercent: -80,
+        duration: 3.5,
+        ease: "power1",
+        stagger: 0.2,
+      })
       .fromTo(
         this.titleSplit.lines,
         { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3", stagger: 0.1 },
-        0.6
+        { y: "0%", duration: 2, stagger: 0.1, ease: "power3" },
+        "<0.6"
       )
       .fromTo(
         this.descrSplit.lines,
         { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3" },
+        { y: "0%", duration: 2, stagger: 0.1, ease: "power3" },
         "<0.2"
       )
       .fromTo(
@@ -224,7 +230,7 @@ export default class Loader {
       )
       .fromTo(
         this.imagesParent,
-        { yPercent: 20, scale: 0.6, autoAlpha: 0 },
+        { yPercent: -20, scale: 0.6, autoAlpha: 0 },
         {
           yPercent: 0,
           scale: 1,
