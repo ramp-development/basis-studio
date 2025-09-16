@@ -15,27 +15,18 @@ export default class Hero {
 
     this.destroyed = false;
 
-    // this.quicks = [...this.images].map((image, index) =>
-    // {
-    //     const x = gsap.quickTo(image, 'x', { duration: 0.5, ease: 'power2', onUpdate: () =>
-    //         {
-    //             if(index !== 0) return
-    //             this.app.gl.world.hero.setPosition()
-    //         }
-    //     })
-    //     const y = gsap.quickTo(image, 'y', { duration: 0.5, ease: 'power2' })
+    // Set sizes immediately for Safari - before WebGL initialization
+    this.setSizes();
 
-    //     const random = gsap.utils.random(0.8, 1.2, 0.1)
+    // Setup parallax after GL world is ready
+    this.quicks = [];
 
-    //     return {x, y, random}
-    // })
+    const setupParallax = () => {
+      if (!this.app.gl?.world?.items?.meshs) {
+        console.warn("GL world items not ready, skipping parallax setup");
+        return;
+      }
 
-    // Safety check for GL world before accessing
-    if (!this.app.gl?.world?.items?.meshs) {
-      console.warn("GL world items not ready, skipping parallax setup");
-      this.quicks = [];
-    } else {
-      this.setSizes();
       this.quicks = [...this.items]
         .map((item, index) => {
           const mesh = this.app.gl.world.items.meshs[index]?.mesh;
@@ -46,7 +37,19 @@ export default class Hero {
             ease: "power2",
           });
         })
-        .filter(Boolean); // Remove null values
+        .filter(Boolean);
+    };
+
+    // Try to setup parallax immediately if world is ready
+    setupParallax();
+
+    // Also listen for world load event if not ready yet
+    if (!this.app.gl?.world?.items?.meshs) {
+      this.app.once("loadedWorld", () => {
+        setupParallax();
+        // Re-set sizes after WebGL is ready
+        this.setSizes();
+      });
     }
 
     this.init();
@@ -55,7 +58,7 @@ export default class Hero {
   }
 
   init() {
-    this.setSizes();
+    // Sizes already set in constructor
     this.hero.style.setProperty("--length", this.items.length);
     const left = this.hero.getBoundingClientRect().left;
     const start = this.wrapper.getBoundingClientRect().left;
