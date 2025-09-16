@@ -12,41 +12,41 @@
 
 // Mobile: case images controlled by MobFade.js
 
-.cases_item {
-  .f-28 {
-    position: relative;
-    z-index: 2;
-  }
+// .cases_item {
+//   // .f-28 {
+//   //   position: relative;
+//   //   z-index: 2;
+//   // }
 
-  // Gradient handled by WebGL shader on desktop
-  // No gradient needed on mobile (text is below images)
-}
-
-.cases_text_wrapper {
-  z-index: 3;
-}
-
-// .cases_list_all {
-//   display: flex;
-//   gap: var(--size--24);
-//   width: fit-content; /* FOR SAFARI */
-
-//   @media screen and (max-width: 991px) {
-//     flex-direction: column;
-//     gap: var(--size--40);
-//   }
+//   // Gradient handled by WebGL shader on desktop
+//   // No gradient needed on mobile (text is below images)
 // }
 
-.cases_item_all {
-  // width: 20.375rem;
-  // height: 40rem;
-  flex: none; /* SAFARI I HATE YOU */
-  /* Keep aspect-ratio as fallback for chrome */
-  aspect-ratio: 326 / 640;
+// .cases_text_wrapper {
+//   z-index: 3;
+// }
 
-  @media screen and (max-width: 991px) {
-    width: 100%;
-    height: auto;
-    aspect-ratio: auto;
-  }
-}
+// .cases_list_all {
+//   // display: flex;
+//   // gap: var(--size--24);
+//   width: fit-content; /* FOR SAFARI */
+
+//   // @media screen and (max-width: 991px) {
+//   //   flex-direction: column;
+//   //   gap: var(--size--40);
+//   // }
+// }
+
+// .cases_item_all {
+//   // width: 20.375rem;
+//   // height: 40rem;
+//   // flex: none; /* SAFARI I HATE YOU */
+//   /* Keep aspect-ratio as fallback for chrome */
+//   // aspect-ratio: 326 / 640;
+
+//   @media screen and (max-width: 991px) {
+//     width: 100%;
+//     height: auto;
+//     aspect-ratio: auto;
+//   }
+// }

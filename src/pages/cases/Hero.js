@@ -84,6 +84,11 @@ export default class Hero {
       const mesh = this.app.gl?.world?.items?.meshs?.[index]?.mesh;
       if (!mesh) return;
 
+      const height = item.getBoundingClientRect().height;
+      const width = (height / 640) * 326;
+      item.style.width = `${width}px`;
+      item.style.aspectRatio = `${width} / ${height}`;
+
       this.scrolls[index] = ScrollTrigger.create({
         trigger: item,
         containerAnimation: this.tl,

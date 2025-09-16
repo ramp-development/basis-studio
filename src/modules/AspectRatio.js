@@ -14,7 +14,11 @@ export default class AspectRatio {
   init() {
     // Initialize module
     const aspect = this.getCustomAspectRatio();
-    this.element.style.aspectRatio = aspect.ratio;
+    if (aspect && aspect.ratio) {
+      this.element.style.aspectRatio = aspect.ratio;
+    } else {
+      this.element.style.aspectRatio = "auto";
+    }
   }
 
   resize() {
@@ -46,6 +50,7 @@ export default class AspectRatio {
 
     if (aspectValue) {
       // Parse aspect ratio (support formats like "16:9", "1.78", "16/9")
+      if (aspectValue === "auto") return null;
       const parsed = this.parseAspectRatio(aspectValue);
       if (parsed) {
         return {
