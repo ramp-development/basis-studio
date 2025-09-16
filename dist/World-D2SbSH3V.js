@@ -1,4 +1,4 @@
-import{g as A}from"./index-Cn1KrK_M.js";import{R as S}from"./Resources-DqIBCYYJ.js";import{i as T}from"./index-BnYIZcmD.js";import{S as x,U as n,C as R,V as l,P as m,M as y,a as v,b as w}from"./GL-Dvc-z8VT.js";import"./GSAP-km8nWVCW.js";import U from"./VideoLoader-DDzJuXJh.js";import{g as p}from"./all-Cn1KrK_M.js";import{S as f}from"./ScrollTrigger-BWsqEc1I.js";import"./CSSPlugin-YLlZY2Jb.js";import"./app.js";import"./SplitText-n_eiQhs4.js";var P=`uniform float uOffset;
+import{g as A}from"./index-Cn1KrK_M.js";import{R as S}from"./Resources-D3YOWmqU.js";import{i as T}from"./index-D6vIQYEb.js";import{S as x,U as n,C as R,V as l,P as m,M as y,a as v,b as w}from"./GL-CDqIT4UW.js";import"./GSAP-km8nWVCW.js";import U from"./VideoLoader-DDzJuXJh.js";import{g as p}from"./all-Cn1KrK_M.js";import{S as f}from"./ScrollTrigger-BWsqEc1I.js";import"./CSSPlugin-YLlZY2Jb.js";import"./app.js";import"./SplitText-n_eiQhs4.js";var P=`uniform float uOffset;
 
 varying vec2 vUv;
 varying vec2 screenUv;

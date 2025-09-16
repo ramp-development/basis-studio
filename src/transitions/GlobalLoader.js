@@ -27,6 +27,7 @@ export default class GlobalLoader {
         this.loader.classList.add("loaded");
         this.loader.classList.add("hidden");
         gsap.to(this.nav, { autoAlpha: 1 });
+        this.app.onceLoaded = true;
       },
     });
 
@@ -73,6 +74,8 @@ export default class GlobalLoader {
   }
 
   async load() {
+    console.log("[GlobalLoader] Starting load, calling toLoad callback");
     await this.toLoad(this.main, this.app);
+    console.log("[GlobalLoader] toLoad completed");
   }
 }
