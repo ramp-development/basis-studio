@@ -90,11 +90,8 @@ export default class GL extends EventEmitter {
     this.camera.update();
     this.displacement?.update();
 
-    // Reduce fluid update frequency on Safari
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (!isSafari || this.app.tick.frame % 2 === 0) {
-      this.fluid?.update();
-    }
+    // Always update fluid for distortion effect
+    this.fluid?.update();
 
     if (this.world && this.loaded) this.world.update();
 

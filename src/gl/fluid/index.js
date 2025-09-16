@@ -38,14 +38,15 @@ export default class FluidSimulation {
     this.splats = [];
 
     // Simulation settings - tunable parameters
-    // Reduced resolution for better Safari performance
+    // Balanced settings for Safari performance while maintaining effect
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    this.simRes = isSafari ? 64 : 128; // Fluid simulation resolution
-    this.dyeRes = isSafari ? 256 : 512; // Fluid visualization resolution (higher = more detailed)
+    this.simRes = isSafari ? 96 : 128; // Fluid simulation resolution
+    this.dyeRes = isSafari ? 384 : 512; // Fluid visualization resolution (higher = more detailed)
     this.iterations = isSafari ? 2 : 3; // Pressure solver iterations (higher = more accurate)
-    this.densityDissipation = 0.95; // How quickly dye fades (0.95-0.99)
-    this.velocityDissipation = 0.95; // How quickly velocity fades (0.95-0.99)
-    this.pressureDissipation = 0.8; // Pressure dissipation (0.7-0.9)
+    // Adjusted for better visibility on Safari
+    this.densityDissipation = 0.97; // How quickly dye fades (0.95-0.99)
+    this.velocityDissipation = 0.96; // How quickly velocity fades (0.95-0.99)
+    this.pressureDissipation = 0.85; // Pressure dissipation (0.7-0.9)
     this.curlStrength = 36; // Vorticity strength (10-30)
     this.radius = 0.3 * window.innerWidth * 0.0007; // Splat radius (0.1-0.3)
     this.splatForce = 2000; // Amplifies mouse movement impact (3000-10000)
@@ -62,9 +63,7 @@ export default class FluidSimulation {
   createFramebuffers() {
     // Define texture formats
     this.format = THREE.RGBAFormat;
-    // Use lower precision on Safari for better performance
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    this.type = isSafari ? THREE.UnsignedByteType : THREE.HalfFloatType;
+    this.type = THREE.FloatType;
 
     // Set up texel size uniform for shaders
     this.texelSize = new Vector2(1 / this.simRes, 1 / this.simRes);
