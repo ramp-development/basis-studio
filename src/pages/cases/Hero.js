@@ -35,12 +35,15 @@ export default class Hero {
       console.warn("GL world items not ready, skipping parallax setup");
       this.quicks = [];
     } else {
-      this.items.forEach((item) => {
-        const height = item.getBoundingClientRect().height;
-        const width = (height / 640) * 326;
-        item.style.width = `${width}px`;
-        item.style.aspectRatio = `${width} / ${height}`;
-        item.style.height = `${height}px`;
+      // Defer size calculation for Safari
+      requestAnimationFrame(() => {
+        this.items.forEach((item) => {
+          const height = item.getBoundingClientRect().height;
+          const width = (height / 640) * 326;
+          item.style.width = `${width}px`;
+          item.style.aspectRatio = `${width} / ${height}`;
+          item.style.height = `${height}px`;
+        });
       });
 
       this.quicks = [...this.items]
@@ -92,11 +95,7 @@ export default class Hero {
       const mesh = this.app.gl?.world?.items?.meshs?.[index]?.mesh;
       if (!mesh) return;
 
-      const height = item.getBoundingClientRect().height;
-      const width = (height / 640) * 326;
-      item.style.width = `${width}px`;
-      item.style.aspectRatio = `${width} / ${height}`;
-      item.style.height = `${height}px`;
+      // Size calculation moved to constructor with requestAnimationFrame
 
       this.scrolls[index] = ScrollTrigger.create({
         trigger: item,
