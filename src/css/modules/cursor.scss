@@ -14,11 +14,11 @@
 }
 
 .cursor_wrapper.loaded {
+  display: none;
+
   @media screen and (hover: hover) and (min-width: 992px) {
     display: flex;
   }
-
-  display: none;
 
   .btn_scroll-arrow {
     display: none;
