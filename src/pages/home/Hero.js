@@ -17,7 +17,9 @@ export default class Hero {
       if (window.innerWidth < 992) return;
 
       // Slower animations for better Safari performance
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      const isSafari = /^((?!chrome|android).)*safari/i.test(
+        navigator.userAgent
+      );
       const x = gsap.quickTo(image, "x", {
         duration: isSafari ? 0.7 : 0.5,
         ease: "power2.out",
@@ -29,7 +31,10 @@ export default class Hero {
           }
         },
       });
-      const y = gsap.quickTo(image, "y", { duration: isSafari ? 0.7 : 0.5, ease: "power2.out" });
+      const y = gsap.quickTo(image, "y", {
+        duration: isSafari ? 0.7 : 0.5,
+        ease: "power2.out",
+      });
 
       const random = gsap.utils.random(0.8, 1.2, 0.1);
 

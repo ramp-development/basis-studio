@@ -43,7 +43,7 @@ export default class index {
               this.outputOffset.x,
               this.outputOffset.y
             )
-          )
+          );
         },
       }),
       y: gsap.quickTo(this.outputOffset, "y", {
@@ -53,7 +53,7 @@ export default class index {
     };
 
     // Enable mouse interactions after home animation completes
-    this.app.on('homeAnimationComplete', () => {
+    this.app.on("homeAnimationComplete", () => {
       this.mouseEnabled = true;
     });
 
@@ -113,9 +113,16 @@ export default class index {
         .getPropertyValue("border-radius");
       const rect = item.getBoundingClientRect();
       // Reduce geometry complexity for better performance, especially on Safari
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      const isSafari = /^((?!chrome|android).)*safari/i.test(
+        navigator.userAgent
+      );
       const subdivisions = isSafari ? 20 : 30;
-      const geometry = new PlaneGeometry(rect.width, rect.height, subdivisions, subdivisions);
+      const geometry = new PlaneGeometry(
+        rect.width,
+        rect.height,
+        subdivisions,
+        subdivisions
+      );
       const material = this.material.clone();
 
       material.uniforms.uSize.value.set(rect.width, rect.height);
@@ -218,7 +225,7 @@ export default class index {
 
   onMouseMove(e) {
     if (!this.mouseEnabled) return;
-    
+
     this.mouse.x = e.clientX - window.innerWidth / 2;
     this.mouse.y = e.clientY - window.innerHeight / 2;
 
@@ -232,10 +239,7 @@ export default class index {
   resize() {
     this.meshs.forEach(({ mesh, item }) => {
       const rect = item.getBoundingClientRect();
-      UpdateGeometry(
-        mesh,
-        new PlaneGeometry(rect.width, rect.height, 50, 50)
-      );
+      UpdateGeometry(mesh, new PlaneGeometry(rect.width, rect.height, 50, 50));
       mesh.material.uniforms.uSize.value.set(rect.width, rect.height);
 
       const borderRadius = window

@@ -417,6 +417,7 @@ export default class VideoLoader extends EventEmitter {
       } else {
         this.video.currentTime = 0;
         this.video.pause();
+        this.playVideo();
       }
     }
     this.video.classList.add("loaded");
