@@ -35,31 +35,7 @@ export default class Hero {
       console.warn("GL world items not ready, skipping parallax setup");
       this.quicks = [];
     } else {
-      // Set dimensions after meshes are ready (Safari fix)
-      const setSizes = () => {
-        this.items.forEach((item) => {
-          const height = item.getBoundingClientRect().height;
-          const width = (height / 640) * 326;
-          item.style.width = `${width}px`;
-          item.style.aspectRatio = `${width} / ${height}`;
-          item.style.height = `${height}px`;
-        });
-      };
-
-      // Try multiple strategies for Safari
-      // 1. Immediate set for other browsers
-      setSizes();
-
-      // 2. After next frame
-      requestAnimationFrame(() => {
-        setSizes();
-      });
-
-      // 3. After a small delay for Safari
-      setTimeout(() => {
-        setSizes();
-      }, 100);
-
+      this.setSizes();
       this.quicks = [...this.items]
         .map((item, index) => {
           const mesh = this.app.gl.world.items.meshs[index]?.mesh;
@@ -79,6 +55,7 @@ export default class Hero {
   }
 
   init() {
+    this.setSizes();
     this.hero.style.setProperty("--length", this.items.length);
     const left = this.hero.getBoundingClientRect().left;
     const start = this.wrapper.getBoundingClientRect().left;
@@ -165,6 +142,16 @@ export default class Hero {
         containerAnimation: this.tl,
         onEnter: () => this.innerTls[index].play(),
       });
+    });
+  }
+
+  setSizes() {
+    this.items.forEach((item) => {
+      const height = item.getBoundingClientRect().height;
+      const width = (height / 640) * 326;
+      item.style.width = `${width}px`;
+      item.style.aspectRatio = `${width} / ${height}`;
+      item.style.height = `${height}px`;
     });
   }
 
