@@ -149,13 +149,13 @@ export default class Hero {
   }
 
   setSizes() {
-    this.items.forEach((item) => {
-      const height = item.getBoundingClientRect().height;
-      const width = (height / 640) * 326;
-      item.style.width = `${width}px`;
-      item.style.aspectRatio = `${width} / ${height}`;
-      item.style.height = `${height}px`;
-    });
+    // this.items.forEach((item) => {
+    //   const height = item.getBoundingClientRect().height;
+    //   const width = (height / 640) * 326;
+    //   item.style.width = `${width}px`;
+    //   item.style.aspectRatio = `${width} / ${height}`;
+    //   item.style.height = `${height}px`;
+    // });
   }
 
   resize() {
