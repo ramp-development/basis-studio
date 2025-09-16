@@ -34,8 +34,8 @@ export default class index {
 
     this.offsetQuicks = {
       x: gsap.quickTo(this.outputOffset, "x", {
-        duration: 0.4,
-        ease: "power2",
+        duration: 0.6,
+        ease: "power2.out",
         onUpdate: () => {
           if (!this.mouseEnabled) return;
           this.meshs.forEach(({ material }) =>
@@ -47,8 +47,8 @@ export default class index {
         },
       }),
       y: gsap.quickTo(this.outputOffset, "y", {
-        duration: 0.4,
-        ease: "power2",
+        duration: 0.6,
+        ease: "power2.out",
       }),
     };
 
@@ -112,8 +112,10 @@ export default class index {
         .getComputedStyle(item)
         .getPropertyValue("border-radius");
       const rect = item.getBoundingClientRect();
-      // Reduce geometry complexity for better performance
-      const geometry = new PlaneGeometry(rect.width, rect.height, 50, 50);
+      // Reduce geometry complexity for better performance, especially on Safari
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      const subdivisions = isSafari ? 20 : 30;
+      const geometry = new PlaneGeometry(rect.width, rect.height, subdivisions, subdivisions);
       const material = this.material.clone();
 
       material.uniforms.uSize.value.set(rect.width, rect.height);

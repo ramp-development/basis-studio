@@ -38,9 +38,11 @@ export default class FluidSimulation {
     this.splats = [];
 
     // Simulation settings - tunable parameters
-    this.simRes = 128; // Fluid simulation resolution
-    this.dyeRes = 512; // Fluid visualization resolution (higher = more detailed)
-    this.iterations = 3; // Pressure solver iterations (higher = more accurate)
+    // Reduced resolution for better Safari performance
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    this.simRes = isSafari ? 64 : 128; // Fluid simulation resolution
+    this.dyeRes = isSafari ? 256 : 512; // Fluid visualization resolution (higher = more detailed)
+    this.iterations = isSafari ? 2 : 3; // Pressure solver iterations (higher = more accurate)
     this.densityDissipation = 0.95; // How quickly dye fades (0.95-0.99)
     this.velocityDissipation = 0.95; // How quickly velocity fades (0.95-0.99)
     this.pressureDissipation = 0.8; // Pressure dissipation (0.7-0.9)
@@ -60,7 +62,9 @@ export default class FluidSimulation {
   createFramebuffers() {
     // Define texture formats
     this.format = THREE.RGBAFormat;
-    this.type = THREE.HalfFloatType; // Use HalfFloat for better precision
+    // Use lower precision on Safari for better performance
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    this.type = isSafari ? THREE.UnsignedByteType : THREE.HalfFloatType;
 
     // Set up texel size uniform for shaders
     this.texelSize = new Vector2(1 / this.simRes, 1 / this.simRes);

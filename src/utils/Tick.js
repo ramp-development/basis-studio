@@ -11,6 +11,7 @@ export default class Time extends EventEmitter
         this.current = this.start
         this.elapsed = 0
         this.delta = 16
+        this.frame = 0
 
         Tempus.add(() => this.tick())
     }
@@ -21,6 +22,7 @@ export default class Time extends EventEmitter
         this.delta = currentTime - this.current
         this.current = currentTime
         this.elapsed = this.current - this.start
+        this.frame++
 
         this.trigger('tick')
     }

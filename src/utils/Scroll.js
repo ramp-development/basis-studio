@@ -24,16 +24,19 @@ export default class Scroll
 
     init()
     {
+        // Optimize for Safari performance
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
         this.lenis = new Lenis(
         {
-            duration: 1.4,
+            duration: isSafari ? 1.2 : 1.4,
             easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
             direction: 'vertical', // vertical, horizontal
             gestureDirection: 'vertical', // vertical, horizontal, both
             smoothWheel: true,
             syncTouch: false,
-            syncTouchLerp: 0.08,
-            wheelMultiplier: 1.6,
+            syncTouchLerp: isSafari ? 0.1 : 0.08,
+            wheelMultiplier: isSafari ? 1.2 : 1.6,
         })
     }
 

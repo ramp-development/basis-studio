@@ -16,9 +16,11 @@ export default class Hero {
     this.quicks = [...this.images].map((image, index) => {
       if (window.innerWidth < 992) return;
 
+      // Slower animations for better Safari performance
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
       const x = gsap.quickTo(image, "x", {
-        duration: 0.5,
-        ease: "power2",
+        duration: isSafari ? 0.7 : 0.5,
+        ease: "power2.out",
         onUpdate: () => {
           if (index !== 0 || this.destroyed) return;
 
@@ -27,7 +29,7 @@ export default class Hero {
           }
         },
       });
-      const y = gsap.quickTo(image, "y", { duration: 0.5, ease: "power2" });
+      const y = gsap.quickTo(image, "y", { duration: isSafari ? 0.7 : 0.5, ease: "power2.out" });
 
       const random = gsap.utils.random(0.8, 1.2, 0.1);
 
@@ -59,6 +61,15 @@ export default class Hero {
   mouseMove(e) {
     if (this.destroyed || !this.mouseEnabled) return;
     if (window.innerWidth < 992) return;
+
+    // Throttle mouse moves on Safari
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+      const now = Date.now();
+      if (!this.lastMouseMove) this.lastMouseMove = now;
+      if (now - this.lastMouseMove < 32) return; // ~30fps on Safari
+      this.lastMouseMove = now;
+    }
 
     const mouse = {
       x: e.clientX / window.innerWidth - 0.5,

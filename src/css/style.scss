@@ -20,6 +20,7 @@
 @use "./pages/services/index.scss" as services;
 @use "./pages/fintech/index.scss" as fintech;
 @use "./editor.scss";
+@use "./safari-performance.scss";
 
 a:is(.w-webflow-badge) {
   display: none !important;

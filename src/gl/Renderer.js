@@ -16,14 +16,23 @@ export default class Renderer
 
     setInstance()
     {
+        // Optimize for Safari
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isMobile = window.innerWidth < 992;
+
         this.instance = new WebGLRenderer(
         {
             canvas: this.canvas,
             alpha: true,
-            antialias: true,
+            antialias: !isSafari || !isMobile, // Disable antialiasing on Safari mobile
+            powerPreference: isSafari ? "high-performance" : "default",
+            stencil: false,
+            depth: true,
         })
         this.instance.setSize(this.sizes.width, this.sizes.height)
-        this.instance.setPixelRatio(this.sizes.pixelRatio)
+        // Limit pixel ratio on Safari for better performance
+        const maxPixelRatio = isSafari ? 1.5 : 2;
+        this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, maxPixelRatio))
         this.instance.render(this.scene, this.camera)
         this.instance.toneMapping = ACESFilmicToneMapping
         this.instance.shadowMap.enabled = true

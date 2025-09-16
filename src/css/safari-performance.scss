@@ -1,0 +1,107 @@
+// Safari-specific performance optimizations
+@supports (-webkit-hyphens: none) {
+  // Target Safari specifically
+
+  // Enable hardware acceleration for canvas
+  .canvas {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+  }
+
+  // Optimize hero images and videos
+  .hero_image,
+  .hero_video {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+
+    img,
+    video {
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+    }
+  }
+
+  // Optimize scroll performance
+  .main {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  // Reduce paint complexity for animated elements
+  [data-module*="Animation"],
+  [data-module="StaggerAnimation"],
+  [data-module="CharAnimation"],
+  [data-module="WordAnimation"],
+  [data-module="LineAnimation"],
+  [data-module="ParagraphAnimation"] {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+
+  // Optimize fluid mask elements
+  .footer_logo,
+  .now_texture,
+  .testimonials {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+
+  // Reduce repaints for frequently updated elements
+  .cursor,
+  .cursor_dot {
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    pointer-events: none;
+  }
+
+  // Optimize video playback
+  video {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
+  // Reduce complexity for blend modes
+  .mix-blend-mode {
+    will-change: opacity;
+  }
+}
+
+// Additional optimizations for mobile Safari
+@supports (-webkit-touch-callout: none) {
+  // iOS Safari specific
+
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  // Prevent elastic scrolling issues
+  html,
+  body {
+    overscroll-behavior: none;
+  }
+
+  // Optimize touch interactions
+  .hero_button,
+  .button,
+  a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+  }
+}
