@@ -5,8 +5,8 @@ import mkcert from "vite-plugin-mkcert";
 
 // vite.config.js
 export default defineConfig({
-  // base: "https://basis-52q.pages.dev/",
-  base: "https://basis-studio-preview.netlify.app/",
+  // Use relative base for better CDN compatibility
+  base: "./",
   resolve: {
     alias: {
       "@src": path.resolve(__dirname, "src"),
@@ -21,19 +21,26 @@ export default defineConfig({
   },
   build: {
     minify: true,
-    manifest: true,
+    cssCodeSplit: false, // Bundle all CSS into one file
     rollupOptions: {
-      input: "index.html", // defining the entry point explicitly
+      input: {
+        app: path.resolve(__dirname, "src/app.js"),
+      },
       output: {
-        dir: path.resolve(__dirname, "dist"), // specify the output directory
-        format: "es", // output format (ES modules)
-        chunkFileNames: "[name]-[hash].js",
-        entryFileNames: "app.js",
-        assetFileNames: "[name].[ext]",
-        esModule: true,
+        dir: path.resolve(__dirname, "dist"),
+        format: "iife", // IIFE format for browser compatibility
+        entryFileNames: "[name].js",
+        chunkFileNames: "[name].js",
+        assetFileNames: (assetInfo) => {
+          // Keep CSS as index.css
+          const fileName = assetInfo.names?.[0] || assetInfo.name;
+          if (fileName && fileName.endsWith('.css')) {
+            return 'index.css';
+          }
+          return "[name].[ext]";
+        },
         compact: true,
-        dynamicImportVars: true,
-        makeAbsoluteExternalsRelative: true,
+        inlineDynamicImports: true, // Bundle everything together
       },
     },
   },

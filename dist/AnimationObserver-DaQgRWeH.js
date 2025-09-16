@@ -1,1 +1,0 @@
-class s{constructor(){this.instance=new IntersectionObserver(e=>{e.forEach(t=>{t.target.dataset.animationVisible=t.isIntersecting?"true":"false"})},{root:null,rootMargin:"-25% 0px 7.5% 0px"})}}export{s as default};
