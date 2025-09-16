@@ -88,6 +88,7 @@ export default class Hero {
       const width = (height / 640) * 326;
       item.style.width = `${width}px`;
       item.style.aspectRatio = `${width} / ${height}`;
+      item.style.height = `${height}px`;
 
       this.scrolls[index] = ScrollTrigger.create({
         trigger: item,
