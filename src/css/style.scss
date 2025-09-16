@@ -1,27 +1,25 @@
-@import "./root.scss";
+@use "./root.scss";
+@use "./nav.scss";
+@use "./loader.scss";
 
-@import "./nav.scss";
-@import "./loader.scss";
+@use "./modules/fullBleed.scss";
+@use "./modules/accordion.scss";
+@use "./modules/footer.scss";
+@use "./modules/button.scss";
+@use "./modules/homeCta.scss";
+@use "./modules/goals.scss";
+@use "./modules/testimonials.scss";
+@use "./modules/talk.scss";
+@use "./modules/cursor.scss";
+@use "./modules/links.scss";
+@use "./modules/popup.scss";
+@use "./modules/text.scss";
 
-@import "./modules/fullBleed.scss";
-@import "./modules/accordion.scss";
-@import "./modules/footer.scss";
-@import "./modules/button.scss";
-@import "./modules/homeCta.scss";
-@import "./modules/goals.scss";
-@import "./modules/testimonials.scss";
-@import "./modules/talk.scss";
-@import "./modules/cursor.scss";
-@import "./modules/links.scss";
-@import "./modules/popup.scss";
-@import "./modules/text.scss";
-
-@import "./pages/home/index.scss";
-@import "./pages/cases/index.scss";
-@import "./pages/services/index.scss";
-@import "./pages/fintech/index.scss";
-
-@import "./editor.scss";
+@use "./pages/home/index.scss" as home;
+@use "./pages/cases/index.scss" as cases;
+@use "./pages/services/index.scss" as services;
+@use "./pages/fintech/index.scss" as fintech;
+@use "./editor.scss";
 
 a:is(.w-webflow-badge) {
   display: none !important;
