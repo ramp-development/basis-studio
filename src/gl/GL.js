@@ -16,8 +16,11 @@ export default class GL extends EventEmitter {
     this.sizes = this.app.sizes;
 
     if (window.innerWidth < 991) {
-      this.app.page.triggerLoad();
-      if (!this.app.onceLoaded) this.app.globalLoader.tl.play();
+      // Only trigger page load if not already loaded
+      if (!this.app.onceLoaded) {
+        this.app.page.triggerLoad();
+        this.app.globalLoader.tl.play();
+      }
 
       return;
     }
