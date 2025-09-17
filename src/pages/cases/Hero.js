@@ -108,20 +108,23 @@ export default class Hero {
           // mesh.material.uniforms.uParallax.value = progress
         },
       });
+      // Set initial 3D state and animate mesh rotation
+      mesh.rotation.set(-0.1, 0.1, -0.1); // Start rotated - more dramatic
+      // mesh.rotation.set(-0.8, 0.8, -0.3); // Start rotated - more dramatic
+      mesh.scale.set(0.4, 0.4, 0.4); // Start small
 
       if (index < 3) return;
+
+      // Set initial uLoading to 0 for items that will fade in
+      // mesh.material.uniforms.uLoading.value = 0;
 
       this.innerTls[index] = gsap.timeline({
         paused: true,
         defaults: { ease: "power3", duration: 1 },
       });
 
-      // Set initial 3D state and animate mesh rotation
-      mesh.rotation.set(-0.8, 0.8, -0.3); // Start rotated - more dramatic
-      mesh.scale.set(0.4, 0.4, 0.4); // Start small
-
       this.innerTls[index]
-        .fromTo(mesh.material.uniforms.uLoading, { value: 0.5 }, { value: 1 })
+        .fromTo(mesh.material.uniforms.uLoading, { value: 0 }, { value: 1 })
         .to(
           mesh.rotation,
           { x: 0, y: 0, z: 0, duration: 1, ease: "power3.out" },
@@ -132,12 +135,7 @@ export default class Hero {
           { x: 1, y: 1, z: 1, duration: 1, ease: "back.out(1.2)" },
           "<"
         )
-        .fromTo(
-          item,
-          { yPercent: 20, opacity: 0 },
-          { yPercent: 0, opacity: 1 },
-          "<"
-        );
+        .fromTo(item, { yPercent: 20 }, { yPercent: 0 }, "<");
 
       this.enterInnerTls[index] = ScrollTrigger.create({
         trigger: item,
