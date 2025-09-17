@@ -135,7 +135,12 @@ export default class Hero {
           { x: 1, y: 1, z: 1, duration: 1, ease: "back.out(1.2)" },
           "<"
         )
-        .fromTo(item, { yPercent: 20 }, { yPercent: 0 }, "<");
+        .fromTo(
+          item,
+          { yPercent: 20, opacity: 0 },
+          { yPercent: 0, opacity: 1 },
+          "<"
+        );
 
       this.enterInnerTls[index] = ScrollTrigger.create({
         trigger: item,
