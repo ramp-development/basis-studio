@@ -7,48 +7,12 @@
 }
 
 .h-cta_item {
-  &:not(:first-child) {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: max-content;
-    height: max-content;
-
-    @media screen and (max-width: 991px) {
-      left: 50%;
-      transform: translateX(-50%);
-      height: auto;
-      width: 100%;
-    }
-  }
-
   .custom-heading {
-    width: calc(var(--max-w) + 2ch);
-    max-width: none;
+    width: calc(var(--max-w));
+    max-width: 100%;
 
     @media screen and (max-width: 991px) {
-      text-align: start;
       width: auto;
-
-      .line {
-        text-align: center;
-        display: flex !important;
-        justify-content: center;
-        gap: 0.33ch;
-
-        div {
-          display: block !important;
-        }
-      }
     }
   }
-
-  // .line
-  // {
-  //     & > div
-  //     {
-  //         overflow: clip;
-  //     }
-  //     overflow: clip;
-  // }
 }
