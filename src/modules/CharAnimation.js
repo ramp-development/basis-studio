@@ -16,6 +16,7 @@ export default class CharAnimation {
   }
 
   init() {
+    let isReverted = false;
     if (this.instance.dataset.scroll === "false") return;
 
     this.split = new SplitText(this.text, { type: "lines", mask: "lines" });
@@ -29,9 +30,10 @@ export default class CharAnimation {
       paused: true,
       defaults: { duration: 1.2 },
       onComplete: () => {
-        if (this.split.isSplit) {
+        if (!isReverted) {
           console.log("reverting split:", this.split);
           this.split.revert();
+          isReverted = true;
         } else {
           console.log("split is not split:", this.split);
         }
