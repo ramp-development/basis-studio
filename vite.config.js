@@ -26,8 +26,6 @@ export default defineConfig({
       input: {
         app: path.resolve(__dirname, "src/app.js"),
       },
-      // Mark GSAP as external for production build
-      external: ["gsap", "gsap/ScrollTrigger", "gsap/SplitText", "gsap/Flip"],
       output: {
         dir: path.resolve(__dirname, "dist"),
         format: "iife", // IIFE format for browser compatibility

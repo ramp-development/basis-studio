@@ -29,8 +29,12 @@ export default class CharAnimation {
       paused: true,
       defaults: { duration: 1.2 },
       onComplete: () => {
-        console.log("reverting split:", this.split);
-        this.split.revert();
+        if (this.split.isSplit) {
+          console.log("reverting split:", this.split);
+          this.split.revert();
+        } else {
+          console.log("split is not split:", this.split);
+        }
       },
     });
 
