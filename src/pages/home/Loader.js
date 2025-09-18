@@ -15,21 +15,21 @@ export default class Loader {
     this.imagesParent = this.hero.querySelector(".hero_images");
     this.images = this.imagesParent.querySelectorAll(".hero_image");
 
-    this.titleSplit = new SplitText(this.title, { type: "lines" });
-    this.titleSplitSecond = new SplitText(this.title, {
+    this.titleSplit = new SplitText(this.title, {
       type: "lines",
-      linesClass: "line-second",
+      mask: "lines",
     });
-    gsap.set(this.titleSplitSecond.lines, {
-      overflow: "clip",
+    gsap.set(this.titleSplit.lines, {
       paddingBottom: "0.1em",
       marginBottom: "-0.1em",
       perspective: 1000,
     });
-    this.descrSplit = new SplitText(this.descr, { type: "lines" });
-    this.descrSplitSecond = new SplitText(this.descr, { type: "lines" });
-    gsap.set(this.descrSplitSecond.lines, {
-      overflow: "clip",
+
+    this.descrSplit = new SplitText(this.descr, {
+      type: "lines",
+      mask: "lines",
+    });
+    gsap.set(this.descrSplit.lines, {
       paddingBottom: "0.1em",
       marginBottom: "-0.1em",
     });
@@ -49,7 +49,7 @@ export default class Loader {
     if (window.innerWidth <= 992) {
       // Mobile: Simple initial states - no 3D transforms
       gsap.set(this.titleSplit.lines, {
-        y: "120%",
+        yPercent: 120,
       });
 
       // Ensure images are completely hidden during transitions
@@ -67,7 +67,7 @@ export default class Loader {
     } else {
       // Desktop: Full 3D transforms
       gsap.set(this.titleSplit.lines, {
-        y: "120%",
+        yPercent: 120,
         rotateX: "-35deg",
         rotateY: "-5deg",
         z: "-1rem",
@@ -77,7 +77,7 @@ export default class Loader {
     }
 
     gsap.set(this.descrSplit.lines, {
-      y: "120%",
+      yPercent: 120,
     });
 
     gsap.set(this.btn, {
@@ -110,8 +110,10 @@ export default class Loader {
         }, timeout);
       },
       onComplete: () => {
-        this.titleSplit.revert();
-        this.descrSplit.revert();
+        setTimeout(() => {
+          this.titleSplit.revert();
+          this.descrSplit.revert();
+        }, 250);
         // Enable mouse interactions after animation completes
         this.app.trigger("homeAnimationComplete");
       },
@@ -143,8 +145,8 @@ export default class Loader {
     this.tl
       .fromTo(
         this.titleSplit.lines,
-        { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3" },
+        { yPercent: 120 },
+        { yPercent: 0, stagger: 0.1, ease: "power3" },
         "<0.2"
       )
       .fromTo(
@@ -169,8 +171,8 @@ export default class Loader {
 
       .fromTo(
         this.descrSplit.lines,
-        { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3" },
+        { yPercent: 120 },
+        { yPercent: 0, stagger: 0.1, ease: "power3" },
         "<0.2"
       )
 
@@ -212,14 +214,14 @@ export default class Loader {
       })
       .fromTo(
         this.titleSplit.lines,
-        { y: "120%" },
-        { y: "0%", duration: 2, stagger: 0.1, ease: "power3" },
+        { yPercent: 120 },
+        { yPercent: 0, duration: 2, stagger: 0.1, ease: "power3" },
         "<0.6"
       )
       .fromTo(
         this.descrSplit.lines,
-        { y: "120%" },
-        { y: "0%", duration: 2, stagger: 0.1, ease: "power3" },
+        { yPercent: 120 },
+        { yPercent: 0, duration: 2, stagger: 0.1, ease: "power3" },
         "<0.2"
       )
       .fromTo(

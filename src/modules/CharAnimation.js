@@ -46,8 +46,10 @@ export default class CharAnimation {
           ease: "power3",
           stagger: 0.1,
           onComplete: () => {
-            gsap.set(this.split.lines, { clearProps: "all" });
-            this.split.revert();
+            setTimeout(() => {
+              gsap.set(this.split.lines, { clearProps: "all" });
+              this.split.revert();
+            }, 250);
           },
         },
         "<0.2"
