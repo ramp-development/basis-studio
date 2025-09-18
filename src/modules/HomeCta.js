@@ -22,17 +22,13 @@ export default class HomeCta {
   }
 
   init() {
-    console.log("making splits of:,", this.items);
-    console.log("pre splits:", this.splits);
     this.splits = [...this.items].map((item) => {
       const text = item.querySelector(".heading_span");
       return new SplitText(text, {
         type: "lines, words",
-        // linesClass: "line",
         mask: "words",
       });
     });
-    console.log("splits:", this.splits);
 
     this.sectionHeight = this.section.offsetHeight - window.innerHeight * 0.8;
     this.itemPart = this.sectionHeight / this.items.length;
