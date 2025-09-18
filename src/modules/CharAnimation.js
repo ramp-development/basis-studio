@@ -20,10 +20,8 @@ export default class CharAnimation {
   init() {
     if (this.instance.dataset.scroll === "false") return;
 
-    this.split = new SplitText(this.text, { type: "lines" });
-    this.splitSecond = new SplitText(this.text, { type: "lines" });
-    gsap.set(this.splitSecond.lines, {
-      overflow: "clip",
+    this.split = new SplitText(this.text, { type: "lines", mask: "lines" });
+    gsap.set(this.split.lines, {
       paddingBottom: "0.1em",
       marginBottom: "-0.1em",
       perspective: 1000,
@@ -32,14 +30,17 @@ export default class CharAnimation {
     this.tl = gsap.timeline({
       paused: true,
       defaults: { duration: 1.2 },
-      onComplete: () => this.split.revert(),
+      onComplete: () => {
+        console.log("reverting split:", this.split);
+        this.split.revert();
+      },
     });
 
     this.tl
       .fromTo(
         this.split.lines,
-        { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3", stagger: 0.1 },
+        { yPercent: 120 },
+        { yPercent: 0, stagger: 0.1, ease: "power3", stagger: 0.1 },
         "<0.2"
       )
       .fromTo(
