@@ -40,7 +40,16 @@ export default class CharAnimation {
       .fromTo(
         this.split.lines,
         { yPercent: 120 },
-        { yPercent: 0, stagger: 0.1, ease: "power3", stagger: 0.1 },
+        {
+          yPercent: 0,
+          stagger: 0.1,
+          ease: "power3",
+          stagger: 0.1,
+          onComplete: () => {
+            gsap.set(this.split.lines, { clearProps: "all" });
+            this.split.revert();
+          },
+        },
         "<0.2"
       )
       .fromTo(
