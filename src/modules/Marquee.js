@@ -1,8 +1,5 @@
-import { gsap, ScrollTrigger, Draggable, InertiaPlugin } from "gsap/all";
 import { LoadImages } from "@utils/LoadImages.js";
 import VideoLoader from "@modules/VideoLoader.js";
-
-gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
 
 export default class Marquee {
   constructor(instance, app, main) {

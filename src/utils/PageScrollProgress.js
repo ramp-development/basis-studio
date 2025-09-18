@@ -1,48 +1,39 @@
-import { gsap, ScrollTrigger } from 'gsap/all'
+export default class PageScrollProgress {
+  constructor(main, app) {
+    this.main = main;
+    this.app = app;
 
-gsap.registerPlugin(ScrollTrigger)
+    this.destroyed = false;
 
-export default class PageScrollProgress
-{
-    constructor(main, app)
-    {
-        this.main = main
-        this.app = app
+    document.querySelector("nav").style.setProperty("--progress", 0);
 
-        this.destroyed = false
+    this.init();
+    this.app.on("resize", () => this.resize());
+    this.app.on("destroy", () => this.destroy());
+  }
 
-        document.querySelector('nav').style.setProperty('--progress', 0)
+  init() {
+    this.scroll = ScrollTrigger.create({
+      trigger: this.main,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        document
+          .querySelector("nav")
+          .style.setProperty("--progress", self.progress);
+      },
+    });
+  }
 
-        this.init()
-        this.app.on('resize', () => this.resize())
-        this.app.on('destroy', () => this.destroy())
-    }
+  resize() {
+    if (this.destroyed) return;
 
-    init()
-    {
-        this.scroll = ScrollTrigger.create(
-        {
-            trigger: this.main,
-            start: 'top top',
-            end: 'bottom bottom',
-            onUpdate: self =>
-            {
-                document.querySelector('nav').style.setProperty('--progress', self.progress)
-            }
-        })
-    }
+    this.scroll?.kill();
+    this.init();
+  }
 
-    resize()
-    {
-        if(this.destroyed) return
-
-        this.scroll?.kill()
-        this.init()
-    }
-
-    destroy()
-    {
-        if(this.destroyed) return
-        this.destroyed = true
-    }
+  destroy() {
+    if (this.destroyed) return;
+    this.destroyed = true;
+  }
 }

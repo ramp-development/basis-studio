@@ -1,8 +1,3 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
 export default class HomeToCase {
   constructor(data, done, checkPages, app) {
     this.app = app;

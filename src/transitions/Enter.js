@@ -1,8 +1,3 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
 export default class Enter {
   constructor(data, checkPages, app) {
     this.app = app;
@@ -60,9 +55,9 @@ export default class Enter {
 
         this.checkPages(this.app, this.container);
         await this.app.moduleLoader.loadModules(this.container);
-        
+
         // Small delay to ensure all initial states are set
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
 
         this.app.scroll.init();
         this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
@@ -74,9 +69,9 @@ export default class Enter {
       (async () => {
         this.checkPages(this.app, this.container);
         await this.app.moduleLoader.loadModules(this.container);
-      
-      // Small delay to ensure all initial states are set
-      await new Promise(resolve => setTimeout(resolve, 50));
+
+        // Small delay to ensure all initial states are set
+        await new Promise((resolve) => setTimeout(resolve, 50));
 
         this.app.scroll.init();
         this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));

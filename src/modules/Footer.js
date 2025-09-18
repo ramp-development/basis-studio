@@ -1,4 +1,3 @@
-import { gsap } from "@utils/GSAP.js";
 import BaseAnimation from "@utils/BaseAnimation.js";
 
 export default class Footer extends BaseAnimation {

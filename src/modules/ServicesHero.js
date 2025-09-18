@@ -1,7 +1,3 @@
-import { gsap, ScrollTrigger } from "gsap/all";
-
-gsap.registerPlugin(ScrollTrigger);
-
 export default class ServicesHero {
   constructor(instance, app) {
     this.instance = instance;
@@ -31,11 +27,11 @@ export default class ServicesHero {
   initMobile() {
     // Simplified mobile version with minimal animations
     this.tl = gsap.timeline({ paused: true });
-    
+
     // Calculate Y movement to create proper spacing (simplified calculation)
     const titleHeight = this.title.offsetHeight;
     const minYMovement = Math.min(titleHeight * 0.5, 150); // Increased movement and cap
-    
+
     this.tl
       .fromTo(
         this.title,
@@ -76,11 +72,7 @@ export default class ServicesHero {
     const top = titleRect.top + titleRect.height / 2 - middleY;
 
     this.tl
-      .fromTo(
-        this.title,
-        { y: 0 },
-        { y: -top, ease: "power3", duration: 1 }
-      )
+      .fromTo(this.title, { y: 0 }, { y: -top, ease: "power3", duration: 1 })
       .fromTo(
         this.text,
         { scale: 1 },
@@ -102,20 +94,20 @@ export default class ServicesHero {
       scrub: true,
       onUpdate: (self) => {
         if (this.app.gl?.world?.hero?.material?.uniforms?.uScroll) {
-          this.app.gl.world.hero.material.uniforms.uScroll.value = self.progress;
+          this.app.gl.world.hero.material.uniforms.uScroll.value =
+            self.progress;
         }
         this.bg.style.setProperty("--progress", self.progress);
       },
     });
   }
 
-
   resize() {
     if (this.destroyed) return;
 
     const wasMobile = this.isMobile;
     this.isMobile = window.innerWidth < 992;
-    
+
     // Only reinitialize if device type changed
     if (wasMobile !== this.isMobile) {
       this.tl?.kill();
@@ -127,7 +119,7 @@ export default class ServicesHero {
   destroy() {
     if (this.destroyed) return;
     this.destroyed = true;
-    
+
     this.tl?.kill();
     this.scroll?.kill();
     this.tl = null;

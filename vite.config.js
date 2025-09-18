@@ -26,6 +26,8 @@ export default defineConfig({
       input: {
         app: path.resolve(__dirname, "src/app.js"),
       },
+      // Mark GSAP as external for production build
+      external: ["gsap", "gsap/ScrollTrigger", "gsap/SplitText", "gsap/Flip"],
       output: {
         dir: path.resolve(__dirname, "dist"),
         format: "iife", // IIFE format for browser compatibility
@@ -34,13 +36,20 @@ export default defineConfig({
         assetFileNames: (assetInfo) => {
           // Keep CSS as index.css
           const fileName = assetInfo.names?.[0] || assetInfo.name;
-          if (fileName && fileName.endsWith('.css')) {
-            return 'index.css';
+          if (fileName && fileName.endsWith(".css")) {
+            return "index.css";
           }
           return "[name].[ext]";
         },
         compact: true,
         inlineDynamicImports: true, // Bundle everything together
+        // Map external GSAP modules to global variables
+        globals: {
+          gsap: "gsap",
+          "gsap/ScrollTrigger": "ScrollTrigger",
+          "gsap/SplitText": "SplitText",
+          "gsap/Flip": "Flip",
+        },
       },
     },
   },

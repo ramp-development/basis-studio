@@ -1,8 +1,3 @@
-import { gsap, SplitText, ScrollTrigger } from "gsap/all";
-import { def } from "@utils/GSAP.js";
-
-gsap.registerPlugin(SplitText, ScrollTrigger);
-
 export default class HomeCta {
   constructor(instance, app) {
     this.instance = instance;

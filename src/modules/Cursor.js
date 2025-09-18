@@ -1,5 +1,3 @@
-import gsap from "gsap";
-
 export default class Cursor {
   constructor(instance, app, main) {
     this.instance = instance;

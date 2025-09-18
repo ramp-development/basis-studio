@@ -1,5 +1,3 @@
-import gsap from "gsap";
-
 export default class GlobalLoader {
   constructor(container, toLoad, app) {
     this.app = app;

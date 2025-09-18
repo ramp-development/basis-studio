@@ -7,14 +7,11 @@ import {
   VideoTexture,
   Color,
 } from "three";
-import { gsap, ScrollTrigger } from "gsap/all";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import VideoLoader from "@modules/VideoLoader.js";
 
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default class index {
   constructor(app, gl, scene, main) {

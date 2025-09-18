@@ -1,7 +1,3 @@
-import { gsap, SplitText, ScrollTrigger } from "gsap/all";
-
-gsap.registerPlugin(SplitText, ScrollTrigger);
-
 export default class Talk {
   constructor(instance, app) {
     this.instance = instance;

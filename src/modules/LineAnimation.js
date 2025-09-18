@@ -1,4 +1,3 @@
-import { gsap } from "@utils/GSAP.js";
 import { CSS } from "@utils/Easings.js";
 import BaseAnimation from "@utils/BaseAnimation.js";
 

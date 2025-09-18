@@ -1,8 +1,3 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
 export default class Leave {
   constructor(data, done, app) {
     this.app = app;

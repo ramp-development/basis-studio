@@ -1,7 +1,4 @@
-import { gsap, SplitText } from "gsap/all";
 import { def } from "@utils/GSAP.js";
-
-gsap.registerPlugin(SplitText);
 
 export default class Loader {
   constructor(main, app) {

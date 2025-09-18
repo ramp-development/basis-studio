@@ -1,7 +1,3 @@
-import { gsap, ScrollTrigger } from "gsap/all";
-
-gsap.registerPlugin(ScrollTrigger);
-
 export default class Calendar {
   constructor(instance, app) {
     this.instance = instance;

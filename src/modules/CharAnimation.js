@@ -1,5 +1,3 @@
-import { gsap, ScrollTrigger, SplitText, def } from "@utils/GSAP.js";
-
 export default class CharAnimation {
   constructor(instance, app) {
     this.instance = instance;
@@ -45,12 +43,6 @@ export default class CharAnimation {
           stagger: 0.1,
           ease: "power3",
           stagger: 0.1,
-          onComplete: () => {
-            setTimeout(() => {
-              gsap.set(this.split.lines, { clearProps: "all" });
-              this.split.revert();
-            }, 250);
-          },
         },
         "<0.2"
       )
