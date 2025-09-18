@@ -90,6 +90,8 @@ export default class CharAnimation {
   resize() {
     if (this.destroyed) return;
 
+    console.log("resizing char animation");
+
     this.played = false;
 
     this.split?.revert();

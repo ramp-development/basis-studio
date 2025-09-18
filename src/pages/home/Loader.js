@@ -262,6 +262,8 @@ export default class Loader {
   resize() {
     if (this.destroyed) return;
 
+    console.log("resizing loader");
+
     this.titleSplit?.revert();
     this.descrSplit?.revert();
   }
