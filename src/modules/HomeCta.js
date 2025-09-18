@@ -24,7 +24,11 @@ export default class HomeCta {
   init() {
     this.splits = [...this.items].map((item) => {
       const text = item.querySelector(".heading_span");
-      return new SplitText(text, { type: "lines, words", linesClass: "line" });
+      return new SplitText(text, {
+        type: "lines, words",
+        linesClass: "line",
+        mask: "words",
+      });
     });
 
     this.sectionHeight = this.section.offsetHeight - window.innerHeight * 0.8;
@@ -34,14 +38,13 @@ export default class HomeCta {
     this.tls = [...this.items].map((item, index) => {
       const split = this.splits[index];
       const isMobile = window.innerWidth <= 992;
-      
+
       gsap.set(split.lines, {
-        overflow: "clip",
         paddingBottom: "0.1em",
         marginBottom: "-0.1em",
         perspective: isMobile ? "none" : 1000, // No perspective on mobile
       });
-      
+
       const tl = gsap.timeline({ defaults: { ease: "power3", duration: 1 } });
 
       if (index > 0) {
@@ -50,7 +53,7 @@ export default class HomeCta {
           tl.to(
             this.splits[index - 1].words,
             {
-              y: "120%",
+              yPercent: 120,
               stagger: 0.1,
               duration: 0.8,
             },
@@ -64,7 +67,7 @@ export default class HomeCta {
               rotateX: "-35deg",
               rotateY: "-5deg",
               z: "-1rem",
-              y: "120%",
+              yPercent: 120,
               transformStyle: "preserve-3d",
               transformOrigin: "50% 0",
               stagger: 0.1,
@@ -74,14 +77,14 @@ export default class HomeCta {
           );
         }
       }
-      
+
       tl.fromTo(
         split.words,
-        { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3", stagger: 0.1 },
+        { yPercent: 120 },
+        { yPercent: 0, stagger: 0.1, ease: "power3", stagger: 0.1 },
         "<50%"
       );
-      
+
       if (!isMobile) {
         // Desktop: Add 3D transform animation
         tl.fromTo(
@@ -115,7 +118,8 @@ export default class HomeCta {
     this.scroll = ScrollTrigger.create({
       trigger: this.section,
       start: "top top",
-      end: "bottom bottom+=100%",
+      // end: "bottom bottom+=100%",
+      end: "bottom bottom",
       scrub: true,
       animation: this.masterTl,
     });

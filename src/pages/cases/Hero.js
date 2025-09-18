@@ -15,9 +15,6 @@ export default class Hero {
 
     this.destroyed = false;
 
-    // Set sizes immediately for Safari - before WebGL initialization
-    this.setSizes();
-
     // Setup parallax after GL world is ready
     this.quicks = [];
 
@@ -47,8 +44,6 @@ export default class Hero {
     if (!this.app.gl?.world?.items?.meshs) {
       this.app.once("loadedWorld", () => {
         setupParallax();
-        // Re-set sizes after WebGL is ready
-        this.setSizes();
       });
     }
 
@@ -149,16 +144,6 @@ export default class Hero {
         onEnter: () => this.innerTls[index].play(),
       });
     });
-  }
-
-  setSizes() {
-    // this.items.forEach((item) => {
-    //   const height = item.getBoundingClientRect().height;
-    //   const width = (height / 640) * 326;
-    //   item.style.width = `${width}px`;
-    //   item.style.aspectRatio = `${width} / ${height}`;
-    //   item.style.height = `${height}px`;
-    // });
   }
 
   resize() {
