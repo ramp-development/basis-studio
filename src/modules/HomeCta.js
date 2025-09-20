@@ -25,6 +25,8 @@ export default class HomeCta {
       });
     });
 
+    console.log(this.splits);
+
     this.sectionHeight = this.section.offsetHeight - window.innerHeight * 0.8;
     this.itemPart = this.sectionHeight / this.items.length;
     this.masterTl = gsap.timeline({ paused: true, defaults: { ease: "none" } });

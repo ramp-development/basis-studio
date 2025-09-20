@@ -7,7 +7,6 @@ import {
   VideoTexture,
   Color,
 } from "three";
-import { gsap, ScrollTrigger } from "@utils/GSAP.js";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 
 import vertex from "./vertex.glsl";

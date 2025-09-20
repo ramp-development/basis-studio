@@ -1,5 +1,3 @@
-import { gsap, ScrollTrigger, SplitText } from "@utils/GSAP.js";
-
 export default class WordAnimation {
   constructor(instance, app) {
     this.instance = instance;

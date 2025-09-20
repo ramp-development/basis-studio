@@ -1,4 +1,3 @@
-import { gsap, SplitText } from "@utils/GSAP.js";
 import BaseAnimation from "@utils/BaseAnimation.js";
 
 export default class CaseReveal extends BaseAnimation {

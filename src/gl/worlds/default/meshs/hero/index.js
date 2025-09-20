@@ -7,7 +7,6 @@ import {
   VideoTexture,
   Color,
 } from "three";
-import { gsap, ScrollTrigger } from "@utils/GSAP.js";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import VideoLoader from "@modules/VideoLoader.js";
 
@@ -71,7 +70,10 @@ export default class index {
 
     // Only handle video content
     const video = this.item.querySelector("video");
-    if (video && !video.parentElement.classList.contains("w-condition-invisible")) {
+    if (
+      video &&
+      !video.parentElement.classList.contains("w-condition-invisible")
+    ) {
       video.style.opacity = 0;
       if (video._videoLoaderInstance) {
         const videoLoader = video._videoLoaderInstance;

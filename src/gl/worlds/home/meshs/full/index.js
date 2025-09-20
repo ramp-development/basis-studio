@@ -7,7 +7,6 @@ import {
   VideoTexture,
   Color,
 } from "three";
-import gsap from "gsap";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import VideoLoader from "@modules/VideoLoader.js";
 

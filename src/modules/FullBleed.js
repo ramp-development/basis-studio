@@ -1,5 +1,3 @@
-import { gsap, ScrollTrigger, SplitText } from "@utils/GSAP.js";
-
 export default class FullBleed {
   constructor(instance, app, main) {
     this.instance = instance;

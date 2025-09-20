@@ -1,5 +1,3 @@
-import { gsap, ScrollTrigger } from "@utils/GSAP.js";
-
 export default class Hero {
   constructor(main, app) {
     this.main = main;

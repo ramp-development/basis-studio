@@ -16,10 +16,11 @@ export default class CharAnimation {
   }
 
   init() {
-    let isReverted = false;
+    // let isReverted = false;
     if (this.instance.dataset.scroll === "false") return;
 
     this.split = new SplitText(this.text, { type: "lines", mask: "lines" });
+    console.log(this.split);
     gsap.set(this.split.lines, {
       paddingBottom: "0.1em",
       marginBottom: "-0.1em",
@@ -29,15 +30,15 @@ export default class CharAnimation {
     this.tl = gsap.timeline({
       paused: true,
       defaults: { duration: 1.2 },
-      onComplete: () => {
-        if (!isReverted) {
-          console.log("reverting split:", this.split);
-          this.split.revert();
-          isReverted = true;
-        } else {
-          console.log("split is not split:", this.split);
-        }
-      },
+      // onComplete: () => {
+      //   if (!isReverted) {
+      //     console.log("reverting split:", this.split);
+      //     this.split.revert();
+      //     isReverted = true;
+      //   } else {
+      //     console.log("split is not split:", this.split);
+      //   }
+      // },
     });
 
     this.tl
@@ -75,13 +76,17 @@ export default class CharAnimation {
     this.scroll = ScrollTrigger.create({
       trigger: this.instance,
       start: "top 90%",
-      onEnter: () => this.tl.play(),
+      onEnter: () => {
+        this.tl.play();
+      },
     });
 
     this.srcollBack = ScrollTrigger.create({
       trigger: this.instance,
       start: "top bottom",
-      onLeaveBack: () => this.tl.pause(0),
+      onLeaveBack: () => {
+        this.tl.pause(0);
+      },
     });
   }
 
@@ -92,7 +97,7 @@ export default class CharAnimation {
 
     this.played = false;
 
-    this.split?.revert();
+    // this.split?.revert();
     this.tl?.kill();
     this.scroll?.kill();
     this.srcollBack?.kill();

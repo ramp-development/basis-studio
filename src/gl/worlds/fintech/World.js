@@ -1,6 +1,5 @@
 import Resources from "@utils/Resources";
 import FluidMask from "@gl/utils/fluidMask/index.js";
-import gsap from "gsap";
 
 import Hero from "./meshs/hero/index.js";
 import Items from "./meshs/items/index.js";

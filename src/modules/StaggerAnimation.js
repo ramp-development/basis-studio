@@ -1,5 +1,3 @@
-import { gsap, ScrollTrigger, SplitText } from "@utils/GSAP.js";
-
 export default class StaggerAnimation {
   constructor(instance, app) {
     this.instance = instance;

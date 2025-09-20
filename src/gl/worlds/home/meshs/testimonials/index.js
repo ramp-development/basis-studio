@@ -6,7 +6,6 @@ import {
   Vector2,
   Color,
 } from "three";
-import gsap from "gsap";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 
 import vertex from "./vertex.glsl";

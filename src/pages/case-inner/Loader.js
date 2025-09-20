@@ -1,5 +1,4 @@
-import gsap from "gsap";
-import { SplitText, def } from "@utils/GSAP.js";
+import { def } from "@utils/GSAP.js";
 
 export default class Loader {
   constructor(main, app) {
