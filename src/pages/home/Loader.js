@@ -188,13 +188,13 @@ export default class Loader {
       .from(this.images, {
         yPercent: -80,
         duration: 3.5,
-        ease: "power1",
+        ease: "power1.inOut",
         stagger: 0.2,
       })
       .to(
         this.titleSplit.lines,
         { yPercent: 0, duration: 2, stagger: 0.1, ease: "power3" },
-        "<0.6"
+        "<2"
       )
       .to(
         this.descrSplit.lines,

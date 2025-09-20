@@ -65,13 +65,13 @@ export default class WordAnimation {
       this.tl.fromTo(
         this.split.chars,
         {
-          y: "100%",
+          yPercent: 100,
           rotateX: "-90deg",
           rotateY: "0deg",
           z: "0",
         },
         {
-          y: "0%",
+          yPercent: 0,
           rotateX: "0deg",
           rotateY: "0deg",
           z: "0",
@@ -93,10 +93,6 @@ export default class WordAnimation {
       start: "top bottom",
       onLeaveBack: () => this.tl.pause(0),
     });
-
-    // setTimeout(() => {
-    //   ScrollTrigger.refresh();
-    // }, 2000);
   }
 
   resize() {
