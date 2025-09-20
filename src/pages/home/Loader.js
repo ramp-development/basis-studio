@@ -107,10 +107,8 @@ export default class Loader {
         }, timeout);
       },
       onComplete: () => {
-        setTimeout(() => {
-          this.titleSplit.revert();
-          this.descrSplit.revert();
-        }, 250);
+        // this.titleSplit.revert();
+        // this.descrSplit.revert();
         // Enable mouse interactions after animation completes
         this.app.trigger("homeAnimationComplete");
       },
@@ -140,21 +138,13 @@ export default class Loader {
     });
 
     this.tl
-      .fromTo(
+      .to(
         this.titleSplit.lines,
-        { yPercent: 120 },
         { yPercent: 0, stagger: 0.1, ease: "power3" },
         "<0.2"
       )
-      .fromTo(
+      .to(
         this.titleSplit.lines,
-        {
-          rotateX: "-35deg",
-          rotateY: "-5deg",
-          z: "-1rem",
-          transformStyle: "preserve-3d",
-          transformOrigin: "50% 0",
-        },
         {
           rotateX: "0deg",
           rotateY: "0deg",
@@ -165,20 +155,12 @@ export default class Loader {
         },
         "<"
       )
-
-      .fromTo(
+      .to(
         this.descrSplit.lines,
-        { yPercent: 120 },
         { yPercent: 0, stagger: 0.1, ease: "power3" },
         "<0.2"
       )
-
-      .fromTo(
-        this.btn,
-        { opacity: 0, filter: "blur(10px)" },
-        { opacity: 1, filter: "blur(0px)" },
-        "<0.3"
-      );
+      .to(this.btn, { opacity: 1, filter: "blur(0px)" }, "<0.3");
   }
 
   mobInit() {
@@ -194,8 +176,8 @@ export default class Loader {
         }, timeout);
       },
       onComplete: () => {
-        this.titleSplit.revert();
-        this.descrSplit.revert();
+        // this.titleSplit.revert();
+        // this.descrSplit.revert();
         // Enable mouse interactions after animation completes
         this.app.trigger("homeAnimationComplete");
       },
@@ -209,27 +191,19 @@ export default class Loader {
         ease: "power1",
         stagger: 0.2,
       })
-      .fromTo(
+      .to(
         this.titleSplit.lines,
-        { yPercent: 120 },
         { yPercent: 0, duration: 2, stagger: 0.1, ease: "power3" },
         "<0.6"
       )
-      .fromTo(
+      .to(
         this.descrSplit.lines,
-        { yPercent: 120 },
         { yPercent: 0, duration: 2, stagger: 0.1, ease: "power3" },
         "<0.2"
       )
-      .fromTo(
-        this.btn,
-        { opacity: 0, filter: "blur(10px)" },
-        { opacity: 1, filter: "blur(0px)" },
-        "<0.3"
-      )
-      .fromTo(
+      .to(this.btn, { opacity: 1, filter: "blur(0px)" }, "<0.3")
+      .to(
         this.imagesParent,
-        { yPercent: -20, scale: 0.6, autoAlpha: 0 },
         {
           yPercent: 0,
           scale: 1,
@@ -240,9 +214,8 @@ export default class Loader {
         },
         0.6
       )
-      .fromTo(
+      .to(
         this.images,
-        { scale: 0.8, opacity: 0, autoAlpha: 0 },
         {
           scale: 1,
           opacity: 1,
@@ -261,8 +234,8 @@ export default class Loader {
 
     console.log("resizing loader");
 
-    this.titleSplit?.revert();
-    this.descrSplit?.revert();
+    // this.titleSplit?.revert();
+    // this.descrSplit?.revert();
   }
 
   destroy() {
