@@ -107,8 +107,8 @@ export default class Loader {
         }, timeout);
       },
       onComplete: () => {
-        // this.titleSplit.revert();
-        // this.descrSplit.revert();
+        this.titleSplit.revert();
+        this.descrSplit.revert();
         // Enable mouse interactions after animation completes
         this.app.trigger("homeAnimationComplete");
       },
@@ -176,8 +176,8 @@ export default class Loader {
         }, timeout);
       },
       onComplete: () => {
-        // this.titleSplit.revert();
-        // this.descrSplit.revert();
+        this.titleSplit.revert();
+        this.descrSplit.revert();
         // Enable mouse interactions after animation completes
         this.app.trigger("homeAnimationComplete");
       },
@@ -234,8 +234,8 @@ export default class Loader {
 
     console.log("resizing loader");
 
-    // this.titleSplit?.revert();
-    // this.descrSplit?.revert();
+    this.titleSplit?.revert();
+    this.descrSplit?.revert();
   }
 
   destroy() {

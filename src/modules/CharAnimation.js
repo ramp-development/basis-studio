@@ -37,15 +37,7 @@ export default class CharAnimation {
     this.tl = gsap.timeline({
       paused: true,
       defaults: { duration: 1.2 },
-      // onComplete: () => {
-      //   if (!isReverted) {
-      //     console.log("reverting split:", this.split);
-      //     this.split.revert();
-      //     isReverted = true;
-      //   } else {
-      //     console.log("split is not split:", this.split);
-      //   }
-      // },
+      onComplete: () => this.split.revert(),
     });
 
     this.tl
@@ -104,7 +96,7 @@ export default class CharAnimation {
 
     this.played = false;
 
-    // this.split?.revert();
+    this.split?.revert();
     this.tl?.kill();
     this.scroll?.kill();
     this.srcollBack?.kill();

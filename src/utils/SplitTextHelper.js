@@ -1,8 +1,10 @@
 // Helper functions for managing SplitText to prevent duplicates
 export function isAlreadySplit(element) {
   // Check if element has split text markers
-  return element.querySelector(".char, .word, .line") !== null ||
-         element.dataset.splitTextProcessed === "true";
+  return (
+    element.querySelector(".char, .word, .line") !== null ||
+    element.dataset.splitTextProcessed === "true"
+  );
 }
 
 export function markAsSplit(element) {

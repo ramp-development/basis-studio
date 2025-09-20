@@ -56,8 +56,10 @@ export default class ModuleLoader extends EventEmitter {
               this.trigger("loaded");
             }
           } catch (importError) {
-            console.warn(`❌ ModuleLoader: Failed to load module "${value}": ${importError.message}`);
-            
+            console.warn(
+              `❌ ModuleLoader: Failed to load module "${value}": ${importError.message}`
+            );
+
             // Still increment count so loading doesn't hang
             count++;
             if (count === elements.length && !loaded) {

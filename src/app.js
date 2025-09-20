@@ -97,7 +97,9 @@ export default class app extends EventEmitter {
 
   async loadMainComponentsOnce(main, app) {
     if (app.initialized) {
-      console.warn('App already initialized, skipping duplicate initialization');
+      console.warn(
+        "App already initialized, skipping duplicate initialization"
+      );
       return;
     }
 
