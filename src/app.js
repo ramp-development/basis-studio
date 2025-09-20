@@ -62,27 +62,7 @@ export default class app extends EventEmitter {
       ],
     });
 
-    // barba.hooks.before((data) => {
-    //   console.log("🔍 Before transition:", {
-    //     from: data.current?.namespace,
-    //     to: data.next?.namespace,
-    //     fromRoute: data.current?.container?.getAttribute(
-    //       "data-transition-page"
-    //     ),
-    //     toRoute: data.next?.container?.getAttribute("data-transition-page"),
-    //   });
-    // });
-
     barba.hooks.enter(async (data) => {
-      // console.log("📄 Barba page info:", {
-      //   from: data.current?.namespace,
-      //   to: data.next?.namespace,
-      //   fromRoute: data.current?.container?.getAttribute(
-      //     "data-transition-page"
-      //   ),
-      //   toRoute: data.next?.container?.getAttribute("data-transition-page"),
-      // });
-
       // Clear loaded pages on navigation to allow reloading when returning
       if (this.pagesLoaded) {
         this.pagesLoaded.clear();
@@ -90,8 +70,6 @@ export default class app extends EventEmitter {
 
       // Restart Webflow BEFORE loading modules and content
       await RestartWebflow();
-
-      // Remove force video loading - let VideoLoader module handle it with lazy loading
     });
   }
 

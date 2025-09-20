@@ -16,10 +16,7 @@ export default class WordAnimation {
     if (window.innerWidth >= 992) return;
 
     // Check if already split
-    if (this.instance.dataset.splitTextProcessed === "true") {
-      console.log("WordAnimation: Text already split, skipping");
-      return;
-    }
+    if (this.instance.dataset.splitTextProcessed === "true") return;
 
     const svgElement = this.instance.querySelector("svg");
     const isSVG = svgElement !== null;

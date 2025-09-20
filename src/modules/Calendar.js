@@ -196,8 +196,6 @@ export default class Calendar {
 
   onCalendarLoaded() {
     // Add any custom logic after calendar is loaded
-    // console.log('Cal.com calendar loaded successfully')
-
     // Start monitoring height changes
     this.startHeightMonitoring();
 

@@ -72,8 +72,6 @@ export default class GlobalLoader {
   }
 
   async load() {
-    console.log("[GlobalLoader] Starting load, calling toLoad callback");
     await this.toLoad(this.main, this.app);
-    console.log("[GlobalLoader] toLoad completed");
   }
 }

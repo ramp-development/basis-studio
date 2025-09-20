@@ -20,14 +20,10 @@ export default class CharAnimation {
     if (this.instance.dataset.scroll === "false") return;
 
     // Check if already split
-    if (this.instance.dataset.splitTextProcessed === "true") {
-      console.log("CharAnimation: Text already split, skipping");
-      return;
-    }
+    if (this.instance.dataset.splitTextProcessed === "true") return;
 
     this.split = new SplitText(this.text, { type: "lines", mask: "lines" });
     this.instance.dataset.splitTextProcessed = "true";
-    console.log(this.split);
     gsap.set(this.split.lines, {
       paddingBottom: "0.1em",
       marginBottom: "-0.1em",
@@ -91,8 +87,6 @@ export default class CharAnimation {
 
   resize() {
     if (this.destroyed) return;
-
-    console.log("resizing char animation");
 
     this.played = false;
 

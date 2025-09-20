@@ -3,21 +3,18 @@ export const CheckPages = async (app, main) => {
   const page = container.getAttribute("data-transition-page");
 
   // Prevent duplicate page loading
-  if (app.pagesLoaded && app.pagesLoaded.has(page)) {
-    console.log(`Page ${page} already loaded, skipping`);
-    return app.page;
-  }
+  if (app.pagesLoaded && app.pagesLoaded.has(page)) return app.page;
 
-  // Handle canvas z-index for case study pages
-  const canvasContainer = document.querySelector(".canvas-container");
-  if (canvasContainer) {
-    // if (page === 'case-inner') {
-    //     canvasContainer.style.zIndex = '2'
-    //     canvasContainer.style.pointerEvents = 'none'
-    // } else {
-    // canvasContainer.style.zIndex = "-1";
-    // }
-  }
+  // // Handle canvas z-index for case study pages
+  // const canvasContainer = document.querySelector(".canvas-container");
+  // if (canvasContainer) {
+  //   // if (page === 'case-inner') {
+  //   //     canvasContainer.style.zIndex = '2'
+  //   //     canvasContainer.style.pointerEvents = 'none'
+  //   // } else {
+  //   // canvasContainer.style.zIndex = "-1";
+  //   // }
+  // }
 
   switch (page) {
     case "home": {
