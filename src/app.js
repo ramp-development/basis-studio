@@ -18,6 +18,8 @@ export default class app extends EventEmitter {
 
     instance = this;
     this.app = null;
+    this.initialized = false;
+    this.pagesLoaded = new Set();
 
     history.scrollRestoration = "manual";
 
@@ -81,6 +83,11 @@ export default class app extends EventEmitter {
       //   toRoute: data.next?.container?.getAttribute("data-transition-page"),
       // });
 
+      // Clear loaded pages on navigation to allow reloading when returning
+      if (this.pagesLoaded) {
+        this.pagesLoaded.clear();
+      }
+
       // Restart Webflow BEFORE loading modules and content
       await RestartWebflow();
 
@@ -89,6 +96,12 @@ export default class app extends EventEmitter {
   }
 
   async loadMainComponentsOnce(main, app) {
+    if (app.initialized) {
+      console.warn('App already initialized, skipping duplicate initialization');
+      return;
+    }
+
+    app.initialized = true;
     app.onceLoaded = false;
     app.moduleLoaded = false;
 

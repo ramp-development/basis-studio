@@ -5,6 +5,7 @@ export default class ModuleLoader extends EventEmitter {
     super();
 
     this.app = app;
+    this.loadedModules = new WeakMap();
   }
 
   async loadModules(main) {
@@ -20,8 +21,19 @@ export default class ModuleLoader extends EventEmitter {
       let loaded = false;
 
       elements.forEach(async (element, index) => {
+        // Check if modules already loaded for this element
+        if (this.loadedModules.has(element)) {
+          count++;
+          if (count === elements.length && !loaded) {
+            loaded = true;
+            this.trigger("loaded");
+          }
+          return;
+        }
+
         const moduleName = element.getAttribute("data-module");
-        
+        const moduleSet = new Set();
+
         const values = moduleName.split(" ");
         for (const value of values) {
           if (value === "" || value === " ") {
@@ -36,6 +48,7 @@ export default class ModuleLoader extends EventEmitter {
           try {
             const module = await import(`@modules/${value}.js`);
             const moduleInstance = new module.default(element, this.app, main);
+            moduleSet.add(moduleInstance);
 
             count++;
             if (count === elements.length && !loaded) {
@@ -52,6 +65,11 @@ export default class ModuleLoader extends EventEmitter {
               this.trigger("loaded");
             }
           }
+        }
+
+        // Mark element as having modules loaded
+        if (moduleSet.size > 0) {
+          this.loadedModules.set(element, moduleSet);
         }
       });
     } catch (error) {

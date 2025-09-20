@@ -15,6 +15,12 @@ export default class WordAnimation {
     if (this.instance.dataset.scroll === "false") return;
     if (window.innerWidth >= 992) return;
 
+    // Check if already split
+    if (this.instance.dataset.splitTextProcessed === "true") {
+      console.log("WordAnimation: Text already split, skipping");
+      return;
+    }
+
     const svgElement = this.instance.querySelector("svg");
     const isSVG = svgElement !== null;
 
@@ -40,6 +46,7 @@ export default class WordAnimation {
       });
     } else {
       this.split = new SplitText(this.instance, { type: "chars" });
+      this.instance.dataset.splitTextProcessed = "true";
 
       gsap.set(this.instance, {
         overflow: "hidden",
@@ -111,6 +118,7 @@ export default class WordAnimation {
     this.destroyed = true;
 
     this.split?.revert();
+    this.instance.dataset.splitTextProcessed = "false";
     this.tl?.kill();
     this.scroll?.kill();
     this.scrollBack?.kill();
