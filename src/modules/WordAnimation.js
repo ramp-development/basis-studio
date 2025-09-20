@@ -55,7 +55,7 @@ export default class WordAnimation {
 
       this.tl = gsap.timeline({
         paused: true,
-        onComplete: () => this.split.revert(),
+        // onComplete: () => this.split.revert(),
       });
 
       this.tl.fromTo(
@@ -98,7 +98,7 @@ export default class WordAnimation {
   resize() {
     if (this.destroyed) return;
 
-    this.split?.revert();
+    // this.split?.revert();
     this.tl?.kill();
     this.scroll?.kill();
     this.scrollBack?.kill();
