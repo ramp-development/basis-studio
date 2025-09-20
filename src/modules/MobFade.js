@@ -40,23 +40,25 @@ export default class MobFade {
       document.querySelector("main").dataset.transitionPage === "cases";
     const isCasesItem = this.instance.classList.contains("cases_item");
 
-    let isFirstTwoCases = false;
+    let currentIndex;
     if (isCasesPage && isCasesItem) {
       const allCaseItems = document.querySelectorAll(".cases_item");
-      const currentIndex = Array.from(allCaseItems).indexOf(this.instance);
-      isFirstTwoCases = currentIndex < 2; // First two items (index 0 and 1)
+      currentIndex = Array.from(allCaseItems).indexOf(this.instance);
     }
 
-    const delay = isFirstTwoCases ? 1.2 : 0;
+    const delay = currentIndex < 2 ? 1.2 + 0.25 * currentIndex : 0;
 
     // Mimic the 3D GL reveal effect in 2D
     this.tl.fromTo(
       this.instance,
       {
         autoAlpha: 0,
-        rotationZ: -18, // equivalent to uRotate: -0.3
-        rotationY: 45, // equivalent to uRotateY: 0.8
-        rotationX: -45, // equivalent to uRotateX: -0.8
+        // rotationZ: -18, // equivalent to uRotate: -0.3
+        // rotationY: 45, // equivalent to uRotateY: 0.8
+        // rotationX: -45, // equivalent to uRotateX: -0.8
+        rotationZ: -10, // equivalent to uRotate: -0.3
+        rotationY: 25, // equivalent to uRotateY: 0.8
+        rotationX: -25, // equivalent to uRotateX: -0.8
         scale: startScale,
       },
       {
