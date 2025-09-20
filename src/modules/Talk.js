@@ -16,21 +16,12 @@ export default class Talk {
   }
 
   init() {
-    // SplitText for title animation
-    // this.titleSplit = new SplitText(this.title, {
-    //   type: "chars, words",
-    //   charsClass: "char",
-    //   wordsClass: "word",
-    // });
-
     this.split = new SplitText(this.title, {
       type: "lines",
+      mask: "lines",
     });
-    this.splitSecond = new SplitText(this.title, {
-      type: "lines",
-    });
-    gsap.set(this.splitSecond.lines, {
-      overflow: "clip",
+
+    gsap.set(this.split.lines, {
       paddingBottom: "0.1em",
       marginBottom: "-0.1em",
       perspective: 1000,
@@ -78,13 +69,13 @@ export default class Talk {
     this.titleTl.fromTo(
       this.split.lines,
       {
-        y: "120%",
+        yPercent: 120,
         rotateX: "-65deg",
         transformStyle: "preserve-3d",
         transformOrigin: "center bottom",
       },
       {
-        y: "0%",
+        yPercent: 0,
         rotateX: "0deg",
         stagger: 0.1,
       }
@@ -163,7 +154,7 @@ export default class Talk {
   hideTitleAnimation() {
     // Animate title out with same 3D effect but reversed
     gsap.to(this.split.lines, {
-      y: "-120%",
+      yPercent: -120,
       rotateX: "65deg",
       duration: 0.6,
       ease: "power3.in",
@@ -173,7 +164,7 @@ export default class Talk {
   showTitleAnimation() {
     // Animate title back in
     gsap.to(this.split.lines, {
-      y: "0%",
+      yPercent: 0,
       rotateX: "0deg",
       duration: 0.6,
       ease: "power3.out",
