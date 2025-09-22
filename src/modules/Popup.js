@@ -14,10 +14,6 @@ export default class Popup {
     this.isOpen = false;
 
     this.init();
-    this.app.on("barbaEnterStart", () => {
-      console.log("barbaEnterStart");
-      this.initButtons();
-    });
   }
 
   init() {
@@ -92,13 +88,20 @@ export default class Popup {
   }
 
   initButtons() {
-    this.btns = this.bodyMain.querySelectorAll('[data-popup-trigger="true"]');
-    this.btns.forEach((btn) =>
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a, button");
+      if (link.dataset.popupTrigger === "true") {
+        event.preventDefault();
         this.openPopup();
-      })
-    );
+      }
+    });
+    // this.btns = this.bodyMain.querySelectorAll('[data-popup-trigger="true"]');
+    // this.btns.forEach((btn) =>
+    //   btn.addEventListener("click", (e) => {
+    //     e.preventDefault();
+    //     this.openPopup();
+    //   })
+    // );
   }
 
   openPopup() {
