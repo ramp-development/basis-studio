@@ -71,11 +71,15 @@ export default class MobFade {
       }
     );
 
-    this.scroll = ScrollTrigger.create({
-      trigger: this.instance,
-      start: "top 85%",
-      onEnter: () => this.tl.play(),
-    });
+    if (delay !== 0) {
+      this.tl.play();
+    } else {
+      this.scroll = ScrollTrigger.create({
+        trigger: this.instance,
+        start: "top 85%",
+        onEnter: () => this.tl.play(),
+      });
+    }
 
     // this.scrollBack = ScrollTrigger.create({
     //   trigger: this.instance,
