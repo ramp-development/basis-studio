@@ -9,6 +9,7 @@ export default class MobFade {
 
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
+    this.app.on("barbaEnterStart", () => this.resize());
   }
 
   init() {

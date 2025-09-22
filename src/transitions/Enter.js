@@ -28,6 +28,7 @@ export default class Enter {
   }
 
   start() {
+    this.app.trigger("barbaEnterStart");
     gsap.set(this.container, { autoAlpha: 1 });
 
     document.documentElement.style.scrollBehavior = "instant";

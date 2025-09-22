@@ -6,7 +6,6 @@ export default class Popup {
     this.scroll = this.app.scroll.lenis;
 
     this.bodyMain = document.body;
-    this.btns = this.bodyMain.querySelectorAll('[data-popup-trigger="true"]');
     this.close = this.instance.querySelector(".btn");
     this.body = this.instance.querySelector(".popup_body");
     this.overlay = this.instance.querySelector(".popup_overlay");
@@ -15,6 +14,10 @@ export default class Popup {
     this.isOpen = false;
 
     this.init();
+    this.app.on("barbaEnterStart", () => {
+      console.log("barbaEnterStart");
+      this.initButtons();
+    });
   }
 
   init() {
@@ -50,12 +53,7 @@ export default class Popup {
         "<"
       );
 
-    this.btns.forEach((btn) =>
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.openPopup();
-      })
-    );
+    this.initButtons();
 
     this.leaveTl = gsap.timeline({
       paused: true,
@@ -91,6 +89,16 @@ export default class Popup {
         this.closePopup();
       }
     });
+  }
+
+  initButtons() {
+    this.btns = this.bodyMain.querySelectorAll('[data-popup-trigger="true"]');
+    this.btns.forEach((btn) =>
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.openPopup();
+      })
+    );
   }
 
   openPopup() {
