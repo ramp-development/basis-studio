@@ -52,7 +52,7 @@ export default class index {
     };
 
     // Enable mouse interactions after home animation completes
-    this.app.on("homeAnimationComplete", () => {
+    this.app.on("homeAnimationStatic", () => {
       this.mouseEnabled = true;
     });
 

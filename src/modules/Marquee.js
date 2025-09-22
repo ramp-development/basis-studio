@@ -11,12 +11,9 @@ export default class Marquee {
 
     this.destroyed = false;
 
-    // Check if parent element is hidden by Webflow
-    if (
-      this.instance.parentElement?.classList.contains("w-condition-invisible")
-    ) {
-      return; // Exit early if hidden
-    }
+    // Check if parent element is hidden by Webflow and exit early if so
+    const wHidden = "w-condition-invisible";
+    if (this.instance.parentElement?.classList.contains(wHidden)) return;
 
     this.axis = this.instance.dataset.axis === "vertical" ? "y" : "x";
     this.multiDirection = this.instance.dataset.direction === "1" ? 1 : -1;
@@ -230,7 +227,7 @@ export default class Marquee {
     const velocity = gsap.utils.mapRange(0, 100, 0, 1, this.velocity.value);
     const oldMove = this.move;
     this.move +=
-      this.direction * (0.05 + velocity) * this.enter.value +
+      this.direction * (0.1 + velocity) * this.enter.value +
       this.draggableMove.value / 10;
 
     // COMMENTED OUT - Removing 3D testimonials connection for testing

@@ -16,8 +16,6 @@ export default class GlobalLoader {
     this.loaderLogo = this.loaderLayer[0].querySelector(".loader_logo");
     this.progress = { value: 0 };
 
-    gsap.to([this.main], { autoAlpha: 1 });
-
     this.tl = gsap.timeline({
       defaults: { ease: "power2", duration: 1 },
       paused: true,
@@ -72,6 +70,7 @@ export default class GlobalLoader {
   }
 
   async load() {
+    gsap.to([this.main], { autoAlpha: 1 });
     await this.toLoad(this.main, this.app);
   }
 }

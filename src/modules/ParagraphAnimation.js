@@ -13,6 +13,8 @@ export default class ParagraphAnimation extends BaseAnimation {
   init() {
     if (this.instance.dataset.scroll === "false") return;
 
+    const isMobile = window.innerWidth < 992;
+
     // Set parent to overflow hidden (like StaggerAnimation)
     const parentItems = this.instance.querySelectorAll(".paragraph-animation");
     if (parentItems.length > 0) {
@@ -41,18 +43,16 @@ export default class ParagraphAnimation extends BaseAnimation {
       );
 
       if (hasTextContent) {
-        const split = new SplitText(textChildren, { type: "lines" });
-        const splitSecond = new SplitText(textChildren, { type: "lines" });
-
+        const split = new SplitText(textChildren, {
+          type: "lines",
+          mask: "lines",
+        });
         this.splits.push(split);
 
-        gsap.set(splitSecond.lines, {
-          overflow: "clip",
-        });
-        gsap.set(split.lines, { y: "120%" });
+        gsap.set(split.lines, { yPercent: 120 });
         this.animationTargets.push(split.lines);
       } else {
-        gsap.set(item, { y: "120%" });
+        gsap.set(item, { yPercent: 120 });
         this.animationTargets.push(item);
       }
     });
@@ -68,10 +68,15 @@ export default class ParagraphAnimation extends BaseAnimation {
       this.tl.to(
         target,
         {
-          y: "0%",
+          yPercent: 0,
           duration: 0.6,
           ease: "power2.out",
-          stagger: Array.isArray(target) ? 0.1 : 0,
+          stagger:
+            Array.isArray(target) && !isMobile
+              ? 0.1
+              : Array.isArray(target)
+                ? 0.05
+                : 0,
         },
         index * 0.1
       );
