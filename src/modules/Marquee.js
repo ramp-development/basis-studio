@@ -175,17 +175,17 @@ export default class Marquee {
       for (let copy = 0; copy < 2; copy++) {
         const duplicatedElement = element.cloneNode(true);
 
-        // Add responsive margin based on axis direction
-        const isMobile = window.innerWidth <= 992;
-        const marginValue = isMobile ? "2.75rem" : "7.5rem";
+        // // Add responsive margin based on axis direction
+        // const isMobile = window.innerWidth <= 992;
+        // const marginValue = isMobile ? "2.75rem" : "7.5rem";
 
-        if (this.axis === "y") {
-          // Vertical marquee - use margin-top
-          duplicatedElement.style.marginTop = marginValue;
-        } else {
-          // Horizontal marquee - use margin-left
-          duplicatedElement.style.marginLeft = marginValue;
-        }
+        // if (this.axis === "y") {
+        //   // Vertical marquee - use margin-top
+        //   duplicatedElement.style.marginTop = marginValue;
+        // } else {
+        //   // Horizontal marquee - use margin-left
+        //   duplicatedElement.style.marginLeft = marginValue;
+        // }
 
         parent.appendChild(duplicatedElement);
       }
