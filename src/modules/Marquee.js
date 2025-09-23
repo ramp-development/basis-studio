@@ -31,6 +31,14 @@ export default class Marquee {
     this.wrappers = this.instance.querySelectorAll("[wrapper]");
     this.items = this.instance.querySelectorAll("[item]");
 
+    const numberOfWrappers = this.wrappers.length;
+    this.numberOfItems = this.items.length / numberOfWrappers;
+
+    this.wrapperOffset =
+      this.axis === "x"
+        ? this.wrappers[0].getBoundingClientRect().width
+        : this.wrappers[0].getBoundingClientRect().height;
+
     // For vertical marquees, duplicate wrappers with data-duplicate attribute
     this.duplicateMarqueeWrappers();
 
@@ -57,11 +65,11 @@ export default class Marquee {
     );
     this.draggbleQuick = gsap.quickTo(this.draggableMove, "value", {
       duration: 0.2,
-      ease: "power2",
+      ease: "power1.out",
     });
     this.changeVelocity = gsap.quickTo(this.velocity, "value", {
       duration: 0.2,
-      ease: "power2",
+      ease: "power1.out",
     });
 
     this.scroll.on("scroll", (e) => {
@@ -83,7 +91,7 @@ export default class Marquee {
         this.enterTl = gsap.to(this.enter, {
           value: 0,
           duration: 0.6,
-          ease: "power3",
+          ease: "power1.out",
         });
       });
       wrapper.addEventListener("mouseleave", () => {
@@ -91,7 +99,7 @@ export default class Marquee {
         this.enterTl = gsap.to(this.enter, {
           value: 1,
           duration: 0.6,
-          ease: "power3",
+          ease: "power1.out",
         });
       });
     });
@@ -104,7 +112,7 @@ export default class Marquee {
     // NEW REVEAL TIMELINE - enhanced entrance effect
     this.revealTl = gsap.timeline({
       paused: true,
-      defaults: { duration: 1, ease: "power3.out" },
+      defaults: { duration: 1, ease: "power1.out" },
     });
     // OLD REVEAL ANIMATION - commented for easy rollback
     // this.revealTl.fromTo(this.newOrderItems, {y: 40, autoAlpha: 0}, {y: 0, autoAlpha: 1, stagger: 0.05, onComplete: () => this.revealed = true})
@@ -226,8 +234,12 @@ export default class Marquee {
     this.quicks.forEach((quick) => quick(this.move));
     const velocity = gsap.utils.mapRange(0, 100, 0, 1, this.velocity.value);
     const oldMove = this.move;
+
+    const percentageOfViewport = this.wrapperOffset / window.innerWidth;
+    const baseVelocity = 0.1 - percentageOfViewport / 1000;
+
     this.move +=
-      this.direction * (0.1 + velocity) * this.enter.value +
+      this.direction * (baseVelocity + velocity) * this.enter.value +
       this.draggableMove.value / 10;
 
     // COMMENTED OUT - Removing 3D testimonials connection for testing

@@ -89,11 +89,11 @@ export default class Popup {
 
   initButtons() {
     document.addEventListener("click", (event) => {
-      const link = event.target.closest("a, button");
-      if (link.dataset.popupTrigger === "true") {
-        event.preventDefault();
-        this.openPopup();
-      }
+      const trigger = event.target.closest('[data-popup-trigger="true"]');
+      if (!trigger) return;
+
+      event.preventDefault();
+      this.openPopup();
     });
     // this.btns = this.bodyMain.querySelectorAll('[data-popup-trigger="true"]');
     // this.btns.forEach((btn) =>
