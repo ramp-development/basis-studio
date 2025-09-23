@@ -295,28 +295,28 @@ export default class Marquee {
       // Handle .s-gallery_item classes (new logic)
       const galleryItem = card.querySelector(".s-gallery_item_wrapper");
       if (galleryItem) {
-        // Set width and aspect-ratio based on layout
-        const layout = galleryItem.dataset.layout;
-        const isBig = layout === "big";
+        // // Set width and aspect-ratio based on layout
+        // const layout = galleryItem.dataset.layout;
+        // const isBig = layout === "big";
 
-        const width = isMobile
-          ? isBig
-            ? "25rem"
-            : "15rem"
-          : isBig
-            ? "45rem"
-            : "30rem";
+        // const width = isMobile
+        //   ? isBig
+        //     ? "25rem"
+        //     : "15rem"
+        //   : isBig
+        //     ? "45rem"
+        //     : "30rem";
 
-        const aspectRatio = isMobile
-          ? isBig
-            ? "395 / 295"
-            : "238 / 295"
-          : isBig
-            ? "725 / 545"
-            : "389 / 440";
+        // const aspectRatio = isMobile
+        //   ? isBig
+        //     ? "395 / 295"
+        //     : "238 / 295"
+        //   : isBig
+        //     ? "725 / 545"
+        //     : "389 / 440";
 
-        galleryItem.style.setProperty("width", width, "important");
-        galleryItem.style.setProperty("aspect-ratio", aspectRatio, "important");
+        // galleryItem.style.setProperty("width", width, "important");
+        // galleryItem.style.setProperty("aspect-ratio", aspectRatio, "important");
 
         // Handle gallery image and video containers
         const galleryImageContainer = card.querySelector(
