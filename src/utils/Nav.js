@@ -37,11 +37,7 @@ export default class Nav {
   }
 
   toggleMenu() {
-    if (this.instance.classList.contains("active")) {
-      this.instance.classList.remove("active");
-    } else {
-      this.instance.classList.add("active");
-    }
+    this.instance.classList.toggle("active");
   }
 
   setupClickOutside() {
