@@ -1,10 +1,6 @@
 .hide-nav {
   .nav {
-    transform: translate3d(-50%, -200%, 0);
-
-    @media screen and (max-width: 991px) {
-      transform: translate3d(0, -200%, 0);
-    }
+    transform: translate3d(0, -200%, 0);
   }
 }
 
@@ -113,13 +109,6 @@
       transform: scale(1.2);
     }
   }
-}
-
-.nav_parent:has(.nav:hover) {
-  // .nav_overlay
-  // {
-  //     opacity: 1;
-  // }
 }
 
 .nav_body {
