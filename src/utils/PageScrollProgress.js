@@ -5,7 +5,8 @@ export default class PageScrollProgress {
 
     this.destroyed = false;
 
-    document.querySelector("nav").style.setProperty("--progress", 0);
+    this.nav = document.querySelector("nav.nav");
+    this.nav.style.setProperty("--progress", 0);
 
     this.init();
     this.app.on("resize", () => this.resize());
@@ -17,11 +18,8 @@ export default class PageScrollProgress {
       trigger: this.main,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: (self) => {
-        document
-          .querySelector("nav")
-          .style.setProperty("--progress", self.progress);
-      },
+      onUpdate: (self) =>
+        this.nav.style.setProperty("--progress", self.progress),
     });
   }
 
