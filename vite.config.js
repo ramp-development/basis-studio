@@ -5,8 +5,7 @@ import mkcert from "vite-plugin-mkcert";
 
 // vite.config.js
 export default defineConfig({
-  // Use relative base for better CDN compatibility
-  base: "./",
+  base: "https://basisstudio.netlify.app/",
   resolve: {
     alias: {
       "@src": path.resolve(__dirname, "src"),
@@ -21,29 +20,20 @@ export default defineConfig({
   },
   build: {
     minify: true,
-    cssCodeSplit: false, // Bundle all CSS into one file
+    manifest: true,
     rollupOptions: {
-      input: {
-        app: path.resolve(__dirname, "src/app.js"),
-      },
-      // Mark GSAP as external for production build
+      input: "index.html",
       external: ["gsap", "gsap/ScrollTrigger", "gsap/SplitText", "gsap/Flip"],
       output: {
         dir: path.resolve(__dirname, "dist"),
-        format: "iife", // IIFE format for browser compatibility
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].js",
-        assetFileNames: (assetInfo) => {
-          // Keep CSS as index.css
-          const fileName = assetInfo.names?.[0] || assetInfo.name;
-          if (fileName && fileName.endsWith(".css")) {
-            return "index.css";
-          }
-          return "[name].[ext]";
-        },
+        format: "es",
+        chunkFileNames: "[name]-[hash].js",
+        entryFileNames: "app.js",
+        assetFileNames: "[name].[ext]",
+        esModule: true,
         compact: true,
-        inlineDynamicImports: true, // Bundle everything together
-        // Map external GSAP modules to global variables
+        dynamicImportVars: true,
+        makeAbsoluteExternalsRelative: true,
         globals: {
           gsap: "gsap",
           "gsap/ScrollTrigger": "ScrollTrigger",
