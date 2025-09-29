@@ -11,6 +11,7 @@ import {
 } from "three";
 import * as THREE from "three";
 import { UpdateGeometry } from "@gl/UpdateGeometry";
+import { isSafari } from "@utils/isSafari";
 
 import baseVertex from "./vertex.glsl";
 import clearShader from "./clearShader.glsl";
@@ -39,16 +40,15 @@ export default class FluidSimulation {
 
     // Simulation settings - tunable parameters
     // Balanced settings for Safari performance while maintaining effect
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    this.simRes = isSafari ? 96 : 128; // Fluid simulation resolution
-    this.dyeRes = isSafari ? 384 : 512; // Fluid visualization resolution (higher = more detailed)
-    this.iterations = isSafari ? 2 : 3; // Pressure solver iterations (higher = more accurate)
+    this.simRes = isSafari ? 64 : 128; // Fluid simulation resolution
+    this.dyeRes = isSafari ? 256 : 512; // Fluid visualization resolution (higher = more detailed)
+    this.iterations = isSafari ? 1.5 : 3; // Pressure solver iterations (higher = more accurate)
     // Adjusted for better visibility on Safari
-    this.densityDissipation = 0.97; // How quickly dye fades (0.95-0.99)
-    this.velocityDissipation = 0.96; // How quickly velocity fades (0.95-0.99)
-    this.pressureDissipation = 0.85; // Pressure dissipation (0.7-0.9)
-    this.curlStrength = 36; // Vorticity strength (10-30)
-    this.radius = 0.3 * window.innerWidth * 0.0007; // Splat radius (0.1-0.3)
+    this.densityDissipation = 0.95; // How quickly dye fades (0.95-0.99)
+    this.velocityDissipation = 0.95; // How quickly velocity fades (0.95-0.99)
+    this.pressureDissipation = 0.7; // Pressure dissipation (0.7-0.9)
+    this.curlStrength = 10; // Vorticity strength (10-30)
+    this.radius = 0.2 * window.innerWidth * 0.0007; // Splat radius (0.1-0.3)
     this.splatForce = 2000; // Amplifies mouse movement impact (3000-10000)
     this.outputColor = new Color(1, 1, 1); // Default output color
 

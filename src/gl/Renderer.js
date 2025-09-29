@@ -1,9 +1,5 @@
-import {
-  WebGLRenderer,
-  ACESFilmicToneMapping,
-  Color,
-  TorusKnotGeometry,
-} from "three";
+import { WebGLRenderer, ACESFilmicToneMapping } from "three";
+import { isSafari } from "@utils/isSafari";
 
 export default class Renderer {
   constructor(app, gl) {
@@ -19,7 +15,6 @@ export default class Renderer {
 
   setInstance() {
     // Optimize for Safari
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const isMobile = window.innerWidth < 992;
 
     this.instance = new WebGLRenderer({
@@ -32,14 +27,11 @@ export default class Renderer {
     });
     this.instance.setSize(this.sizes.width, this.sizes.height);
     // Limit pixel ratio on Safari for better performance
-    const maxPixelRatio = isSafari ? 1.5 : 2;
+    const maxPixelRatio = isSafari ? 1 : 2;
     this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, maxPixelRatio));
     this.instance.render(this.scene, this.camera);
     this.instance.toneMapping = ACESFilmicToneMapping;
     this.instance.shadowMap.enabled = true;
-
-    if (this.app.sizes.isMobile) return;
-    // this.instance.setClearColor(0xffffff, 1)
   }
 
   resize() {

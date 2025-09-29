@@ -10,6 +10,7 @@ import {
 } from "three";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import VideoLoader from "@modules/VideoLoader.js";
+import { isSafari } from "@utils/isSafari";
 
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
@@ -112,10 +113,7 @@ export default class index {
         .getPropertyValue("border-radius");
       const rect = item.getBoundingClientRect();
       // Reduce geometry complexity for better performance, especially on Safari
-      const isSafari = /^((?!chrome|android).)*safari/i.test(
-        navigator.userAgent
-      );
-      const subdivisions = isSafari ? 20 : 30;
+      const subdivisions = isSafari ? 15 : 30;
       const geometry = new PlaneGeometry(
         rect.width,
         rect.height,

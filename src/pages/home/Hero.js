@@ -1,3 +1,5 @@
+import { isSafari } from "@utils/isSafari";
+
 export default class Hero {
   constructor(main, app) {
     this.main = main;
@@ -15,9 +17,6 @@ export default class Hero {
       if (window.innerWidth < 992) return;
 
       // Slower animations for better Safari performance
-      const isSafari = /^((?!chrome|android).)*safari/i.test(
-        navigator.userAgent
-      );
       const x = gsap.quickTo(image, "x", {
         duration: isSafari ? 0.7 : 0.5,
         ease: "power2.out",

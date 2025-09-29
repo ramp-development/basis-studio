@@ -1,4 +1,3 @@
-import { WebGLRenderTarget, Box3 } from "three";
 import Resources from "@utils/Resources";
 import FluidMask from "@gl/utils/fluidMask/index.js";
 

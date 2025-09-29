@@ -1,5 +1,6 @@
 import Lenis from "lenis";
 import Tempus from "tempus";
+import { isSafari } from "@utils/isSafari";
 import "lenis/dist/lenis.css";
 
 export default class Scroll {
@@ -18,8 +19,6 @@ export default class Scroll {
 
   init() {
     // Optimize for Safari performance
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
     this.lenis = new Lenis({
       duration: isSafari ? 1.2 : 1.4,
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou

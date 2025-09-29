@@ -1,6 +1,7 @@
 import { Scene, Vector2 } from "three";
 import Stats from "stats-gl";
 import EventEmitter from "@utils/EventEmitter.js";
+import { isSafari } from "@utils/isSafari";
 
 import Camera from "./Camera.js";
 import Renderer from "./Renderer.js";
@@ -52,7 +53,7 @@ export default class GL extends EventEmitter {
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
 
-    this.fluid = new FluidSimulation(this.app, this);
+    this.fluid = isSafari ? null : new FluidSimulation(this.app, this);
 
     this.mouse = new Vector2();
     window.addEventListener("mousemove", (e) => this.onMouseMove(e));
