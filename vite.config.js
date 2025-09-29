@@ -51,6 +51,7 @@ export default defineConfig({
     // })
   ],
   server: {
+    allowedHosts: ["basis-89.localcan.dev"],
     port: 4321, // server port
     host: "0.0.0.0",
     // open: true, // open in browser automatically
