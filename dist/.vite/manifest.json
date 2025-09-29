@@ -3,12 +3,13 @@
     "file": "BaseAnimation-DRDS06CE.js",
     "name": "BaseAnimation"
   },
-  "_GL-BGRjnAmH.js": {
-    "file": "GL-BGRjnAmH.js",
+  "_GL-CDREo0df.js": {
+    "file": "GL-CDREo0df.js",
     "name": "GL",
     "isDynamicEntry": true,
     "imports": [
-      "index.html"
+      "index.html",
+      "_isSafari-DYs6RIMp.js"
     ],
     "dynamicImports": [
       "src/gl/worlds/home/World.js",
@@ -22,23 +23,27 @@
     "file": "GSAP-BxWzQY2p.js",
     "name": "GSAP"
   },
-  "_Resources--KCJCONz.js": {
-    "file": "Resources--KCJCONz.js",
+  "_Resources-CxYDS8p8.js": {
+    "file": "Resources-CxYDS8p8.js",
     "name": "Resources",
     "imports": [
       "index.html",
-      "_GL-BGRjnAmH.js"
+      "_GL-CDREo0df.js"
     ],
     "dynamicImports": [
-      "_GL-BGRjnAmH.js"
+      "_GL-CDREo0df.js"
     ]
   },
-  "_index-Cwx_fOX2.js": {
-    "file": "index-Cwx_fOX2.js",
+  "_index-B4R9HsQ2.js": {
+    "file": "index-B4R9HsQ2.js",
     "name": "index",
     "imports": [
-      "_GL-BGRjnAmH.js"
+      "_GL-CDREo0df.js"
     ]
+  },
+  "_isSafari-DYs6RIMp.js": {
+    "file": "isSafari-DYs6RIMp.js",
+    "name": "isSafari"
   },
   "_tempus-Bqg6GbCr.js": {
     "file": "tempus-Bqg6GbCr.js",
@@ -65,7 +70,7 @@
       "src/utils/Observer.js",
       "src/utils/AnimationObserver.js",
       "src/utils/Debug.js",
-      "_GL-BGRjnAmH.js",
+      "_GL-CDREo0df.js",
       "src/utils/Nav.js",
       "src/transitions/GlobalLoader.js"
     ],
@@ -80,67 +85,72 @@
     "isDynamicEntry": true
   },
   "src/gl/worlds/cases/World.js": {
-    "file": "World-DKurAdTu.js",
+    "file": "World-kzQgrwuf.js",
     "name": "World",
     "src": "src/gl/worlds/cases/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources--KCJCONz.js",
+      "_Resources-CxYDS8p8.js",
       "src/modules/VideoLoader.js",
-      "_GL-BGRjnAmH.js",
-      "index.html"
+      "_GL-CDREo0df.js",
+      "index.html",
+      "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/gl/worlds/default/World.js": {
-    "file": "World-DgIiwdVL.js",
+    "file": "World-CsVAXdFe.js",
     "name": "World",
     "src": "src/gl/worlds/default/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources--KCJCONz.js",
-      "_index-Cwx_fOX2.js",
-      "_GL-BGRjnAmH.js",
+      "_Resources-CxYDS8p8.js",
+      "_index-B4R9HsQ2.js",
+      "_GL-CDREo0df.js",
       "src/modules/VideoLoader.js",
-      "index.html"
+      "index.html",
+      "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/gl/worlds/fintech/World.js": {
-    "file": "World-7bOKEsMp.js",
+    "file": "World-CpPiNrIc.js",
     "name": "World",
     "src": "src/gl/worlds/fintech/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources--KCJCONz.js",
-      "_index-Cwx_fOX2.js",
-      "_GL-BGRjnAmH.js",
+      "_Resources-CxYDS8p8.js",
+      "_index-B4R9HsQ2.js",
+      "_GL-CDREo0df.js",
       "src/modules/VideoLoader.js",
-      "index.html"
+      "index.html",
+      "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/gl/worlds/home/World.js": {
-    "file": "World-NcgmUYyX.js",
+    "file": "World-CGX1AcPq.js",
     "name": "World",
     "src": "src/gl/worlds/home/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources--KCJCONz.js",
-      "_index-Cwx_fOX2.js",
-      "_GL-BGRjnAmH.js",
+      "_Resources-CxYDS8p8.js",
+      "_index-B4R9HsQ2.js",
+      "_GL-CDREo0df.js",
       "src/modules/VideoLoader.js",
+      "_isSafari-DYs6RIMp.js",
       "index.html"
     ]
   },
   "src/gl/worlds/services/World.js": {
-    "file": "World-BaUsrW1p.js",
+    "file": "World-CmujAQdJ.js",
     "name": "World",
     "src": "src/gl/worlds/services/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources--KCJCONz.js",
-      "_index-Cwx_fOX2.js",
-      "_GL-BGRjnAmH.js",
+      "_Resources-CxYDS8p8.js",
+      "_index-B4R9HsQ2.js",
+      "_GL-CDREo0df.js",
       "src/modules/VideoLoader.js",
-      "index.html"
+      "index.html",
+      "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/modules/AspectRatio.js": {
@@ -337,12 +347,13 @@
     ]
   },
   "src/pages/home/index.js": {
-    "file": "index-BQAFAek-.js",
+    "file": "index-DKJUNYPa.js",
     "name": "index",
     "src": "src/pages/home/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_GSAP-BxWzQY2p.js"
+      "_GSAP-BxWzQY2p.js",
+      "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/pages/services/index.js": {
@@ -450,12 +461,13 @@
     "isDynamicEntry": true
   },
   "src/utils/Scroll.js": {
-    "file": "Scroll-BHBWDXxM.js",
+    "file": "Scroll-DWfqIHFh.js",
     "name": "Scroll",
     "src": "src/utils/Scroll.js",
     "isDynamicEntry": true,
     "imports": [
-      "_tempus-Bqg6GbCr.js"
+      "_tempus-Bqg6GbCr.js",
+      "_isSafari-DYs6RIMp.js"
     ],
     "css": [
       "Scroll.css"
