@@ -53,7 +53,7 @@ export default class GL extends EventEmitter {
     this.app.on("resize", () => this.resize());
     this.app.on("destroy", () => this.destroy());
 
-    this.fluid = isSafari ? null : new FluidSimulation(this.app, this);
+    this.fluid = new FluidSimulation(this.app, this);
 
     this.mouse = new Vector2();
     window.addEventListener("mousemove", (e) => this.onMouseMove(e));
