@@ -1,3 +1,3 @@
-import app from "./app"
+import App from "@app";
 
-const instance = new app()
+const instance = App.getInstance();
