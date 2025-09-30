@@ -1,7 +1,9 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Button {
-  constructor(instance, app) {
+  constructor(instance) {
     this.instance = instance;
-    this.app = app;
 
     // this.textParent = this.instance.querySelector('.btn_text')
     // this.text = this.textParent.children[0]
@@ -12,8 +14,8 @@ export default class Button {
     this.enterPlayed = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {

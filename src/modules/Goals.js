@@ -1,9 +1,11 @@
 import { def } from "@utils/GSAP.js";
+import App from "@app";
+
+const app = App.getInstance();
 
 export default class Goals {
-  constructor(instance, app) {
+  constructor(instance) {
     this.instance = instance;
-    this.app = app;
 
     this.list = this.instance.querySelector(".goals_list");
     this.items = this.list.querySelectorAll(".goals_item");
@@ -11,8 +13,8 @@ export default class Goals {
     this.destroyed = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {

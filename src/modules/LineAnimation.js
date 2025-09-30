@@ -1,14 +1,17 @@
 import { CSS } from "@utils/Easings.js";
 import BaseAnimation from "@utils/BaseAnimation.js";
+import App from "@app";
+
+const app = App.getInstance();
 
 export default class LineAnimation extends BaseAnimation {
-  constructor(instance, app) {
-    super(instance, app);
+  constructor(instance) {
+    super(instance);
 
     this.destroyed = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
+    app.on("resize", () => this.resize());
   }
 
   init() {

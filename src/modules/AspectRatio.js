@@ -1,14 +1,16 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class AspectRatio {
-  constructor(element, main, app) {
+  constructor(element, main) {
     this.element = element; // The element with data-module
     this.main = main; // The main container
-    this.app = app; // The app instance
 
     this.destroyed = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {

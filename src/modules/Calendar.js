@@ -1,7 +1,9 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Calendar {
-  constructor(instance, app) {
+  constructor(instance) {
     this.instance = instance;
-    this.app = app;
     this.destroyed = false;
 
     // Check if Cal.com script is already loaded
@@ -17,12 +19,12 @@ export default class Calendar {
     this.config = this.getConfigFromAttributes();
 
     this.init();
-    this.app.on("destroy", () => this.destroy());
-    this.app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
 
     // Listen for page transition events
-    this.app.on("pageEnter", () => this.onPageTransition());
-    this.app.on("pageReady", () => this.onPageTransition());
+    app.on("pageEnter", () => this.onPageTransition());
+    app.on("pageReady", () => this.onPageTransition());
   }
 
   generateNamespace() {
@@ -200,7 +202,7 @@ export default class Calendar {
     this.startHeightMonitoring();
 
     // You can trigger custom events here if needed
-    // this.app.trigger('calendarLoaded')
+    // app.trigger('calendarLoaded')
     setTimeout(() => ScrollTrigger.refresh(), 100); // Refresh ScrollTrigger if needed
   }
 

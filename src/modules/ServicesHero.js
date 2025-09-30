@@ -1,7 +1,9 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class ServicesHero {
-  constructor(instance, app) {
+  constructor(instance) {
     this.instance = instance;
-    this.app = app;
 
     this.destroyed = false;
     this.isMobile = window.innerWidth < 992;
@@ -12,8 +14,8 @@ export default class ServicesHero {
     this.bg = this.instance.querySelector(".h-services_bg");
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {
@@ -93,9 +95,8 @@ export default class ServicesHero {
       animation: this.tl,
       scrub: true,
       onUpdate: (self) => {
-        if (this.app.gl?.world?.hero?.material?.uniforms?.uScroll) {
-          this.app.gl.world.hero.material.uniforms.uScroll.value =
-            self.progress;
+        if (app.gl?.world?.hero?.material?.uniforms?.uScroll) {
+          app.gl.world.hero.material.uniforms.uScroll.value = self.progress;
         }
         this.bg.style.setProperty("--progress", self.progress);
       },

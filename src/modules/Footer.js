@@ -1,8 +1,11 @@
 import BaseAnimation from "@utils/BaseAnimation.js";
+import App from "@app";
+
+const app = App.getInstance();
 
 export default class Footer extends BaseAnimation {
-  constructor(instance, app, main) {
-    super(instance, app);
+  constructor(instance, main) {
+    super(instance);
     this.main = main;
 
     this.init();
@@ -13,7 +16,7 @@ export default class Footer extends BaseAnimation {
     this.clockLines = this.instance.querySelectorAll(".footer_clock-lines");
 
     this.links = this.instance.querySelectorAll(".footer_link");
-    // this.links.forEach((link) => new LinkAnimation(link, this.app));
+    // this.links.forEach((link) => new LinkAnimation(link, app));
 
     // Store clock data for later use
     this.clockData = [];

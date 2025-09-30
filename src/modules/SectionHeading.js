@@ -1,9 +1,10 @@
 import { def } from "@utils/GSAP.js";
+import App from "@app";
+const app = App.getInstance();
 
 export default class SectionHeading {
-  constructor(instance, app) {
+  constructor(instance) {
     this.instance = instance;
-    this.app = app;
 
     this.divider = this.instance.querySelector(".section-heading_line");
     this.dot = this.instance.querySelector(".section-heading_circle");
@@ -13,8 +14,8 @@ export default class SectionHeading {
     this.played = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {

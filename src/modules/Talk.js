@@ -1,7 +1,9 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Talk {
-  constructor(instance, app) {
+  constructor(instance) {
     this.instance = instance;
-    this.app = app;
 
     this.title = this.instance.querySelector(".talk_title");
     this.list = this.instance.querySelector(".talk_item");
@@ -11,8 +13,8 @@ export default class Talk {
     this.titleHidden = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {
@@ -127,8 +129,8 @@ export default class Talk {
 
         if (window.innerWidth >= 991) {
           // Desktop: 3D WebGL videos - control via uAlpha uniform
-          if (this.app.gl?.world?.video?.meshs) {
-            this.app.gl.world.video.meshs.forEach((meshData, index) => {
+          if (app.gl?.world?.video?.meshs) {
+            app.gl.world.video.meshs.forEach((meshData, index) => {
               // Check if this is a .talk_full mesh
               if (meshData.item?.classList.contains("talk_full")) {
                 if (meshData.material?.uniforms?.uAlpha) {

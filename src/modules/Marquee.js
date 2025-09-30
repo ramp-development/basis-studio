@@ -1,13 +1,15 @@
+import App from "@app";
 import { LoadImages } from "@utils/LoadImages.js";
 import VideoLoader from "@modules/VideoLoader.js";
 
+const app = App.getInstance();
+
 export default class Marquee {
-  constructor(instance, app, main) {
+  constructor(instance, main) {
     this.instance = instance;
-    this.app = app;
     this.main = main;
-    this.scroll = this.app.scroll.lenis;
-    this.observer = this.app.observer.instance;
+    this.scroll = app.scroll.lenis;
+    this.observer = app.observer.instance;
 
     this.destroyed = false;
 
@@ -166,9 +168,9 @@ export default class Marquee {
       },
     });
 
-    this.app.on("tick", () => this.tick());
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("tick", () => this.tick());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   duplicateMarqueeWrappers() {
@@ -243,9 +245,9 @@ export default class Marquee {
       this.draggableMove.value / 10;
 
     // COMMENTED OUT - Removing 3D testimonials connection for testing
-    // if(this.instance.querySelector('.testimonials') && this.app.gl?.world?.testimonialsMesh) {
+    // if(this.instance.querySelector('.testimonials') && app.gl?.world?.testimonialsMesh) {
     //     const speed = Math.abs(this.move - oldMove) * 5 // Amplify movement for distortion effect
-    //     this.app.gl.world.testimonialsMesh.setCarouselPosition(speed)
+    //     app.gl.world.testimonialsMesh.setCarouselPosition(speed)
     // }
 
     this.draggbleQuick(0);

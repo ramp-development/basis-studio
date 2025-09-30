@@ -1,7 +1,9 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class PageScrollProgress {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     this.destroyed = false;
 
@@ -9,8 +11,8 @@ export default class PageScrollProgress {
     this.nav.style.setProperty("--progress", 0);
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {
