@@ -1,48 +1,49 @@
-import { PerspectiveCamera } from "three"
+import App from "@app";
+import { PerspectiveCamera } from "three";
 
-export default class Camera
-{
-    constructor(app, gl, scene)
-    {
-        this.app = app
-        this.gl = gl
-        this.sizes = this.app.sizes
-        this.scene = scene
-        this.canvas = this.gl.canvas
+const app = App.getInstance();
 
-        this.setInstance()
-        // this.orbitControls()
-    }
+export default class Camera {
+  constructor(oldApp, gl, scene) {
+    this.gl = gl;
+    this.sizes = app.sizes;
+    this.scene = scene;
+    this.canvas = this.gl.canvas;
 
-    setInstance()
-    {
-        this.fovNum = 1200
+    this.setInstance();
+    // this.orbitControls()
+  }
 
-        this.fov = Math.atan((this.sizes.height / 2) / this.fovNum) * 2 * (180 / Math.PI)
-        this.instance = new PerspectiveCamera(this.fov, this.sizes.width / this.sizes.height, 1, 2000)
-        this.instance.position.z = this.fovNum
-        this.instance.frustumCulled = true
+  setInstance() {
+    this.fovNum = 1200;
 
-        this.scene.add(this.instance)
-    }
+    this.fov =
+      Math.atan(this.sizes.height / 2 / this.fovNum) * 2 * (180 / Math.PI);
+    this.instance = new PerspectiveCamera(
+      this.fov,
+      this.sizes.width / this.sizes.height,
+      1,
+      2000
+    );
+    this.instance.position.z = this.fovNum;
+    this.instance.frustumCulled = true;
 
-    resize()
-    {
-        this.fov = Math.atan((this.sizes.height / 2) / this.fovNum) * 2 * (180 / Math.PI)
-        this.instance.fov = this.fov
+    this.scene.add(this.instance);
+  }
 
-        this.instance.aspect = this.sizes.width / this.sizes.height
-        this.instance.updateProjectionMatrix()
-    }
+  resize() {
+    this.fov =
+      Math.atan(this.sizes.height / 2 / this.fovNum) * 2 * (180 / Math.PI);
+    this.instance.fov = this.fov;
 
-    orbitControls()
-    {
-        this.controls = new OrbitControls(this.instance, this.canvas)
-        this.controls.enableDamping = true
-    }
+    this.instance.aspect = this.sizes.width / this.sizes.height;
+    this.instance.updateProjectionMatrix();
+  }
 
-    update()
-    {
+  orbitControls() {
+    this.controls = new OrbitControls(this.instance, this.canvas);
+    this.controls.enableDamping = true;
+  }
 
-    }
+  update() {}
 }

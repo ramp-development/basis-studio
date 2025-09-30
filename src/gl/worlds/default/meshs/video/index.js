@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -13,15 +14,16 @@ import VideoLoader from "@modules/VideoLoader.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+
 export default class index {
-  constructor(app, gl, scene, main) {
-    this.app = app;
+  constructor(oldApp, gl, scene, main) {
     this.gl = gl;
     this.scene = scene;
     this.main = main;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.items = this.main.querySelectorAll(".double-video, .cases_video");
 
@@ -35,9 +37,9 @@ export default class index {
   }
 
   debug() {
-    if (!this.app.debug.active) return;
+    if (!app.debug.active) return;
 
-    const gui = this.app.debug.gui;
+    const gui = app.debug.gui;
     this.folder = gui.addFolder("Home/Video");
 
     this.folder
@@ -200,7 +202,7 @@ export default class index {
 
       this.scene.add(mesh);
 
-      this.app.observer.instance.observe(item);
+      app.observer.instance.observe(item);
 
       const tl = gsap.timeline({
         paused: true,

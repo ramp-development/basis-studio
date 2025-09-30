@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -13,15 +14,16 @@ import VideoLoader from "@modules/VideoLoader.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+
 export default class index {
-  constructor(app, gl, scene, main) {
-    this.app = app;
+  constructor(oldApp, gl, scene, main) {
     this.gl = gl;
     this.scene = scene;
     this.main = main;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.items = this.main.querySelectorAll(".full_item");
 
@@ -107,7 +109,7 @@ export default class index {
 
       this.scene.add(mesh);
 
-      this.app.observer.instance.observe(item);
+      app.observer.instance.observe(item);
 
       // OLD ANIMATION - commented for easy rollback
       // const tl = gsap.timeline({

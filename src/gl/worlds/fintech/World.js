@@ -1,17 +1,19 @@
+import App from "@app";
 import Resources from "@utils/Resources";
 import FluidMask from "@gl/utils/fluidMask/index.js";
 
 import Hero from "./meshs/hero/index.js";
 import Items from "./meshs/items/index.js";
 
+const app = App.getInstance();
+
 export default class World {
-  constructor(gl, app, scene, main) {
+  constructor(gl, oldApp, scene, main) {
     this.gl = gl;
-    this.app = app;
     this.scene = scene;
     this.main = main;
 
-    this.sizes = this.app.sizes;
+    this.sizes = app.sizes;
     this.renderer = this.gl.renderer.instance;
     this.camera = this.gl.camera.instance;
     this.scene = scene;
@@ -45,15 +47,9 @@ export default class World {
   init() {
     this.gl.loaded = true;
 
-    this.hero = new Hero(
-      this.app,
-      this.gl,
-      this.scene,
-      this.main,
-      this.heroItem
-    );
+    this.hero = new Hero(app, this.gl, this.scene, this.main, this.heroItem);
 
-    this.items = new Items(this.app, this.gl, this.scene, this.main);
+    this.items = new Items(app, this.gl, this.scene, this.main);
 
     this.footerMeshs = [];
     const textures = this.getTextureAttributes(this.footerLogo);
@@ -63,7 +59,7 @@ export default class World {
     });
     this.footerTextures.forEach((texture, index) => {
       this.footerMeshs[index] = new FluidMask(
-        this.app,
+        app,
         this.gl,
         this.scene,
         this.footerLogo,
@@ -72,11 +68,11 @@ export default class World {
       );
     });
 
-    this.app.trigger("loadedWorld");
+    app.trigger("loadedWorld");
 
-    if (!this.app.onceLoaded) {
-      this.app.globalLoader.tl.play();
-      this.app.page.triggerLoad();
+    if (!app.onceLoaded) {
+      app.globalLoader.tl.play();
+      app.page.triggerLoad();
     }
   }
 

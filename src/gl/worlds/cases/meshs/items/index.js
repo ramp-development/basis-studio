@@ -1,10 +1,10 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
   ShaderMaterial,
   Mesh,
   Vector2,
-  VideoTexture,
   Color,
 } from "three";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
@@ -12,9 +12,10 @@ import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+
 export default class index {
-  constructor(app, gl, scene, main, resources, videoTextures, items) {
-    this.app = app;
+  constructor(oldApp, gl, scene, main, resources, videoTextures, items) {
     this.gl = gl;
     this.scene = scene;
     this.main = main;
@@ -22,8 +23,8 @@ export default class index {
     this.videoTextures = videoTextures;
     this.items = items;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
     this.velocity = { value: 0 };
     this.quick = gsap.quickTo(this.velocity, "value", {
       duration: 0.5,
@@ -40,9 +41,9 @@ export default class index {
   }
 
   debug() {
-    if (!this.app.debug.active) return;
+    if (!app.debug.active) return;
 
-    const gui = this.app.debug.gui;
+    const gui = app.debug.gui;
     const folder = gui.addFolder("Home/Video");
 
     folder

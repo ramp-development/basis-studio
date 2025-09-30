@@ -7,22 +7,24 @@ import {
   VideoTexture,
   Color,
 } from "three";
+import App from "@app";
 import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import VideoLoader from "@modules/VideoLoader.js";
 
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+
 export default class index {
-  constructor(app, gl, scene, main, item) {
-    this.app = app;
+  constructor(oldApp, gl, scene, main, item) {
     this.gl = gl;
     this.scene = scene;
     this.main = main;
     this.item = item;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.rect = this.item.getBoundingClientRect();
 
@@ -80,7 +82,7 @@ export default class index {
     // Use existing VideoLoader instance if available (from data-module)
     if (video._videoLoaderInstance) {
       const videoLoader = video._videoLoaderInstance;
-      
+
       if (videoLoader.isLoaded) {
         const texture = new VideoTexture(video);
         this.material.uniforms.uTexture.value = texture;

@@ -1,21 +1,21 @@
+import App from "@app";
 import Resources from "@utils/Resources";
 import FluidMask from "@gl/utils/fluidMask/index.js";
 
 import Hero from "./meshs/hero/index.js";
 import Video from "./meshs/video/index.js";
 import Full from "./meshs/full/index.js";
-// COMMENTED OUT - Removing 3D testimonials for testing
-// import Testimonials from "./meshs/testimonials/index.js";
+
+const app = App.getInstance();
 
 export default class World {
-  constructor(gl, app, scene, main, index) {
+  constructor(gl, oldApp, scene, main, index) {
     this.gl = gl;
-    this.app = app;
     this.scene = scene;
     this.main = main;
     this.index = index;
 
-    this.sizes = this.app.sizes;
+    this.sizes = app.sizes;
     this.renderer = this.gl.renderer.instance;
     this.camera = this.gl.camera.instance;
     this.scene = scene;
@@ -69,18 +69,12 @@ export default class World {
   init() {
     this.gl.loaded = true;
 
-    this.video = new Video(this.app, this.gl, this.scene, this.main);
-    this.full = new Full(this.app, this.gl, this.scene, this.main);
-    this.hero = new Hero(
-      this.app,
-      this.gl,
-      this.scene,
-      this.main,
-      this.resources
-    );
+    this.video = new Video(app, this.gl, this.scene, this.main);
+    this.full = new Full(app, this.gl, this.scene, this.main);
+    this.hero = new Hero(app, this.gl, this.scene, this.main, this.resources);
     // COMMENTED OUT - Removing 3D testimonials for testing
     // this.testimonialsMesh = new Testimonials(
-    //   this.app,
+    //   app,
     //   this.gl,
     //   this.scene,
     //   this.main,
@@ -96,7 +90,7 @@ export default class World {
       });
       this.footerTextures.forEach((texture, index) => {
         this.footerMeshs[index] = new FluidMask(
-          this.app,
+          app,
           this.gl,
           this.scene,
           this.footerLogo,
@@ -115,7 +109,7 @@ export default class World {
       });
       this.nowTextTextures.forEach((texture, index) => {
         this.nowMeshs[index] = new FluidMask(
-          this.app,
+          app,
           this.gl,
           this.scene,
           this.nowText,
@@ -125,11 +119,11 @@ export default class World {
       });
     }
 
-    this.app.trigger("loadedWorld");
+    app.trigger("loadedWorld");
 
-    if (!this.app.onceLoaded) {
-      this.app.globalLoader.tl.play();
-      this.app.page.triggerLoad();
+    if (!app.onceLoaded) {
+      app.globalLoader.tl.play();
+      app.page.triggerLoad();
     }
   }
 

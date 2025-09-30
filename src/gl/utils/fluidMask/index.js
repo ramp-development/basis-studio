@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -11,17 +12,18 @@ import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+
 export default class index {
-  constructor(app, gl, scene, item, texture, index) {
-    this.app = app;
+  constructor(oldApp, gl, scene, item, texture, index) {
     this.gl = gl;
     this.scene = scene;
     this.item = item;
     this.texture = texture;
     this.index = index;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.init();
   }
