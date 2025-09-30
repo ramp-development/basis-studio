@@ -1,8 +1,10 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Leave {
-  constructor(data, done, app) {
-    this.app = app;
+  constructor(data, done) {
     this.container = data.current.container;
-    this.scroll = this.app.scroll.lenis;
+    this.scroll = app.scroll.lenis;
 
     this.loader = document.querySelector(".loader");
     this.loader.classList.remove("hidden");
@@ -23,15 +25,15 @@ export default class Leave {
       {
         "--leftClip": 0,
         onComplete: () => {
-          this.app.trigger("destroy");
-          this.app.gl.loaded = false;
+          app.trigger("destroy");
+          app.gl.loaded = false;
 
           ScrollTrigger.killAll();
           done();
 
-          this.app.onceLoaded = true;
+          app.onceLoaded = true;
 
-          this.app.scroll.destroy();
+          app.scroll.destroy();
           window.scrollTo(0, 0);
         },
       },

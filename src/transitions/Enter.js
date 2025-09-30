@@ -1,6 +1,8 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Enter {
-  constructor(data, checkPages, app) {
-    this.app = app;
+  constructor(data, checkPages) {
     this.container = data.next.container;
     this.checkPages = checkPages;
     this.data = data;
@@ -13,7 +15,7 @@ export default class Enter {
       defaults: { duration: 0.8, ease: "power2.inOut" },
     });
 
-    this.app.enterPage = this;
+    app.enterPage = this;
 
     this.tl.to(this.loader, {
       "--clip": 100,
@@ -28,7 +30,7 @@ export default class Enter {
   }
 
   start() {
-    this.app.trigger("barbaEnterStart");
+    app.trigger("barbaEnterStart");
     gsap.set(this.container, { autoAlpha: 1 });
 
     document.documentElement.style.scrollBehavior = "instant";
@@ -49,33 +51,33 @@ export default class Enter {
     // }, 200)
 
     if (window.innerWidth > 992) {
-      this.app.gl.loadWorld(this.container);
+      app.gl.loadWorld(this.container);
 
-      this.app.on("loadedWorld", async () => {
+      app.on("loadedWorld", async () => {
         if (this.once) return;
 
-        this.checkPages(this.app, this.container);
-        await this.app.moduleLoader.loadModules(this.container);
+        this.checkPages(app, this.container);
+        await app.moduleLoader.loadModules(this.container);
 
         // Small delay to ensure all initial states are set
         await new Promise((resolve) => setTimeout(resolve, 50));
 
-        this.app.scroll.init();
-        this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
+        app.scroll.init();
+        app.scroll.lenis.on("scroll", (e) => app.gl.setScroll(e));
         this.tl.play();
 
         this.once = true;
       });
     } else {
       (async () => {
-        this.checkPages(this.app, this.container);
-        await this.app.moduleLoader.loadModules(this.container);
+        this.checkPages(app, this.container);
+        await app.moduleLoader.loadModules(this.container);
 
         // Small delay to ensure all initial states are set
         await new Promise((resolve) => setTimeout(resolve, 50));
 
-        this.app.scroll.init();
-        this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
+        app.scroll.init();
+        app.scroll.lenis.on("scroll", (e) => app.gl.setScroll(e));
         this.tl.play();
       })();
     }
