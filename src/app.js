@@ -27,9 +27,7 @@ export default class App extends EventEmitter {
   }
 
   static getInstance() {
-    if (!instance) {
-      instance = new App();
-    }
+    if (!instance) instance = new App();
     return instance;
   }
 
@@ -78,10 +76,6 @@ export default class App extends EventEmitter {
 
   async loadMainComponentsOnce(main) {
     const app = App.getInstance();
-    console.trace("loadMainComponentsOnce", {
-      app: app,
-      main,
-    });
     if (app.initialized) {
       console.warn(
         "App already initialized, skipping duplicate initialization"
