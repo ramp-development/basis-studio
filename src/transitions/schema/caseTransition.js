@@ -1,5 +1,3 @@
-import { customTrigger } from "./customTrigger";
-
 export const caseTransition = (app, CheckPages) => {
   return {
     name: "case-transition",
