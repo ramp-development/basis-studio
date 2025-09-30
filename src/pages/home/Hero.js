@@ -1,9 +1,10 @@
 import { isSafari } from "@utils/isSafari";
+import App from "@app";
+const app = App.getInstance();
 
 export default class Hero {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     this.hero = this.main.querySelector(".hero");
     this.images = this.hero.querySelectorAll(".hero_image, .hero_video");
@@ -23,8 +24,8 @@ export default class Hero {
         onUpdate: () => {
           if (index !== 0 || this.destroyed) return;
 
-          if (this.app.gl?.world?.hero?.setPosition) {
-            this.app.gl.world.hero.setPosition();
+          if (app.gl?.world?.hero?.setPosition) {
+            app.gl.world.hero.setPosition();
           }
         },
       });
@@ -41,12 +42,12 @@ export default class Hero {
     this.main.addEventListener("mousemove", (e) => this.mouseMove(e));
 
     // Play videos once home animation is static
-    this.app.on("homeAnimationStatic", () => {
+    app.on("homeAnimationStatic", () => {
       this.playHeroVideos();
     });
 
     // Enable mouse interactions after home animation completes
-    this.app.on("homeAnimationStatic", () => {
+    app.on("homeAnimationStatic", () => {
       this.mouseEnabled = true;
     });
 
@@ -56,8 +57,8 @@ export default class Hero {
     }
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   mouseMove(e) {
@@ -102,7 +103,7 @@ export default class Hero {
     e.preventDefault();
     const target = document.querySelector("#work_with");
 
-    this.app.scroll.lenis.scrollTo(target, {
+    app.scroll.lenis.scrollTo(target, {
       offset: window.innerHeight * 0.35,
       lerp: 0.1,
       duration: 1.5,

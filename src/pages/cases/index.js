@@ -1,23 +1,23 @@
-import Loader from './Loader.js'
-import Hero from './Hero.js'
+import App from "@app";
 
-export default class index
-{
-    constructor(main, app)
-    {
-        this.main = main
-        this.app = app
-        this.once = false
+import Loader from "./Loader.js";
+import Hero from "./Hero.js";
 
-        this.triggerLoad = async () => this.load()
-        if(this.app.onceLoaded) this.load()
-    }
+const app = App.getInstance();
 
-    load()
-    {
-        this.loader = new Loader(this.main, this.app)
-        this.hero = new Hero(this.main, this.app)
+export default class index {
+  constructor(main) {
+    this.main = main;
+    this.once = false;
 
-        this.once = true
-    }
+    this.triggerLoad = async () => this.load();
+    if (app.onceLoaded) this.load();
+  }
+
+  load() {
+    this.loader = new Loader(this.main);
+    this.hero = new Hero(this.main);
+
+    this.once = true;
+  }
 }

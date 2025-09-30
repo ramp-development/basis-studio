@@ -1,23 +1,23 @@
-import Loader from './Loader.js'
+import App from "@app";
 
-export default class index
-{
-    constructor(main, app)
-    {
-        this.main = main
-        this.app = app
+import Loader from "./Loader.js";
 
-        this.once = false
+const app = App.getInstance();
 
-        this.triggerLoad = async () => this.load()
-        if(this.app.onceLoaded) this.load()
-    }
+export default class index {
+  constructor(main) {
+    this.main = main;
 
-    load()
-    {
-        if(this.once) return
-        this.loader = new Loader(this.main, this.app)
+    this.once = false;
 
-        this.once = true
-    }
+    this.triggerLoad = async () => this.load();
+    if (app.onceLoaded) this.load();
+  }
+
+  load() {
+    if (this.once) return;
+    this.loader = new Loader(this.main);
+
+    this.once = true;
+  }
 }

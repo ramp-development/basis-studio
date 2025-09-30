@@ -1,13 +1,14 @@
 import { def } from "@utils/GSAP.js";
+import App from "@app";
+const app = App.getInstance();
 
 export default class Loader {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     this.hero = this.main.querySelector(".cases");
     this.items = this.main.querySelectorAll(".cases_item");
-    this.meshs = this.app.gl?.world?.items?.meshs || [];
+    this.meshs = app.gl?.world?.items?.meshs || [];
     this.title = this.hero.querySelector("h1");
     this.wrapperText = this.hero.querySelectorAll(".cases_text_wrapper");
 
@@ -35,8 +36,8 @@ export default class Loader {
 
     this.init();
     this.handleMobileWrapperText();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {
@@ -85,7 +86,7 @@ export default class Loader {
         {
           yPercent: 0,
           opacity: 1,
-          onUpdate: () => this.app.gl?.world?.items?.setPosition?.(),
+          onUpdate: () => app.gl?.world?.items?.setPosition?.(),
         },
         "<0.2"
       );

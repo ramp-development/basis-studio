@@ -1,9 +1,10 @@
 import { def } from "@utils/GSAP.js";
+import App from "@app";
+const app = App.getInstance();
 
 export default class Loader {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     this.hero = this.main.querySelector(".inner-hero");
     this.title = this.hero.querySelector("h1");
@@ -24,8 +25,8 @@ export default class Loader {
     this.destroyed = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {
