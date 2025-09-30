@@ -10,14 +10,10 @@ import FontFaceObserver from "fontfaceobserver";
 
 let instance = null;
 
-export default class app extends EventEmitter {
+export default class App extends EventEmitter {
   constructor() {
-    if (instance) return instance;
-
     super();
 
-    instance = this;
-    this.app = null;
     this.initialized = false;
     this.pagesLoaded = new Set();
 
@@ -28,6 +24,13 @@ export default class app extends EventEmitter {
       () => this.init(),
       () => this.init()
     );
+  }
+
+  static getInstance() {
+    if (!instance) {
+      instance = new App();
+    }
+    return instance;
   }
 
   init() {
@@ -114,7 +117,7 @@ export default class app extends EventEmitter {
     app.observer = new Observer.default();
     app.animationObserver = new AnimationObserver.default();
     app.debug = new Debug.default();
-    app.nav = new Nav.default(app);
+    app.nav = new Nav.default();
 
     await CheckPages(app, main);
     app.gl = new GL.default(document.querySelector(".canvas"), app, main);
@@ -134,5 +137,3 @@ export default class app extends EventEmitter {
     );
   }
 }
-
-const appInstance = new app();
