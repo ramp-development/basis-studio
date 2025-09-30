@@ -1,1 +1,0 @@
-import{_ as t}from"./app.js";class a{constructor(){this.active=window.location.hash==="#debug",this.gui=null,this.active&&this.loadGui()}async loadGui(){this.gui=await t(()=>import("./lil-gui.esm-DFUWXXp-.js"),[]),this.gui=new this.gui.default,document.querySelector(".lil-gui.autoPlace").style.setProperty("left","0")}}export{a as default};
