@@ -17,10 +17,11 @@ import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class index {
-  constructor(oldApp, gl, scene, main, resources) {
-    this.gl = gl;
+  constructor(gl, scene, main, resources) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
     this.resources = resources.items;
@@ -250,7 +251,7 @@ export default class index {
 
   update() {
     this.meshs.forEach(({ mesh, material }) => {
-      material.uniforms.uFluid.value = this.gl.fluidTexture;
+      material.uniforms.uFluid.value = glInstance.fluidTexture;
     });
 
     this.offsetQuicks.x(0);

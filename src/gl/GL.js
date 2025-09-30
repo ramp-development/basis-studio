@@ -34,7 +34,7 @@ export default class GL extends EventEmitter {
     this.scene = new Scene();
 
     // Setup
-    this.camera = new Camera(app, this, this.scene);
+    this.camera = new Camera(this, this.scene);
     this.renderer = new Renderer(this);
 
     this.loadWorld(this.main);
@@ -54,7 +54,7 @@ export default class GL extends EventEmitter {
     app.on("resize", () => this.resize());
     app.on("destroy", () => this.destroy());
 
-    this.fluid = new FluidSimulation(app, this);
+    this.fluid = new FluidSimulation(this);
 
     this.mouse = new Vector2();
     window.addEventListener("mousemove", (e) => this.onMouseMove(e));
@@ -123,36 +123,31 @@ export default class GL extends EventEmitter {
     switch (page) {
       case "home":
         await import("@gl/worlds/home/World.js").then(
-          (module) =>
-            (this.world = new module.default(this, app, this.scene, main))
+          (module) => (this.world = new module.default(this, this.scene, main))
         );
         break;
 
       case "cases":
         await import("@gl/worlds/cases/World.js").then(
-          (module) =>
-            (this.world = new module.default(this, app, this.scene, main))
+          (module) => (this.world = new module.default(this, this.scene, main))
         );
         break;
 
       case "services":
         await import("@gl/worlds/services/World.js").then(
-          (module) =>
-            (this.world = new module.default(this, app, this.scene, main))
+          (module) => (this.world = new module.default(this, this.scene, main))
         );
         break;
 
       case "fintech":
         await import("@gl/worlds/fintech/World.js").then(
-          (module) =>
-            (this.world = new module.default(this, app, this.scene, main))
+          (module) => (this.world = new module.default(this, this.scene, main))
         );
         break;
 
       default:
         await import("@gl/worlds/default/World.js").then(
-          (module) =>
-            (this.world = new module.default(this, app, this.scene, main))
+          (module) => (this.world = new module.default(this, this.scene, main))
         );
     }
   }

@@ -13,10 +13,11 @@ import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class index {
-  constructor(oldApp, gl, scene, main, section) {
-    this.gl = gl;
+  constructor(gl, scene, main, section) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
     this.section = section;

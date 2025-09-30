@@ -15,10 +15,11 @@ import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class index {
-  constructor(oldApp, gl, scene, main) {
-    this.gl = gl;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
 
@@ -66,7 +67,7 @@ export default class index {
       const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
       const material = this.material.clone();
       material.uniforms.uSize.value.set(rect.width, rect.height);
-      material.uniforms.uTexture.value = this.gl.gradientTexture;
+      material.uniforms.uTexture.value = glInstance.gradientTexture;
       const mesh = new Mesh(geometry, material);
 
       const video = item.querySelector("video");
@@ -172,7 +173,7 @@ export default class index {
 
   update() {
     this.meshs.forEach(({ mesh, material }) => {
-      material.uniforms.uFluid.value = this.gl.fluidTexture;
+      material.uniforms.uFluid.value = glInstance.fluidTexture;
     });
   }
 

@@ -22,14 +22,15 @@ import pressureShader from "./pressureShader.glsl";
 import gradientSubtractShader from "./gradientSubtractShader.glsl";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class FluidSimulation {
-  constructor(oldApp, gl) {
-    this.gl = gl;
+  constructor(gl) {
+    glInstance = gl;
 
-    this.renderer = this.gl.renderer.instance;
-    this.camera = this.gl.camera.instance;
-    this.scene = this.gl.scene;
+    this.renderer = glInstance.renderer.instance;
+    this.camera = glInstance.camera.instance;
+    this.scene = glInstance.scene;
     this.sizes = app.sizes;
 
     // Mouse tracking
@@ -303,7 +304,7 @@ export default class FluidSimulation {
     this.renderer.setRenderTarget(null);
     this.density.swap();
 
-    this.gl.fluidTexture = this.density.read.texture;
+    glInstance.fluidTexture = this.density.read.texture;
   }
 
   resize() {

@@ -5,16 +5,17 @@ import FluidMask from "@gl/utils/fluidMask/index.js";
 import Hero from "./meshs/hero/index.js";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class World {
-  constructor(gl, oldApp, scene, main) {
-    this.gl = gl;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
 
     this.sizes = app.sizes;
-    this.renderer = this.gl.renderer.instance;
-    this.camera = this.gl.camera.instance;
+    this.renderer = glInstance.renderer.instance;
+    this.camera = glInstance.camera.instance;
     this.scene = scene;
 
     this.load();
@@ -23,16 +24,9 @@ export default class World {
   load() {
     this.hero = this.main.querySelector(".h-services");
     this.item = this.hero.querySelector(".h-services_bg");
-    // .querySelector("img");
     this.footerLogo = this.main.querySelector(".footer_logo");
 
-    this.sources = [
-      // {
-      //   type: "textureLoader",
-      //   url: this.texture.getAttribute("src"),
-      //   name: "hero",
-      // },
-    ];
+    this.sources = [];
     if (this.footerLogo) {
       const textures = this.getTextureAttributes(this.footerLogo);
       textures.forEach(({ value }, index) => {
@@ -51,9 +45,9 @@ export default class World {
   }
 
   init() {
-    this.gl.loaded = true;
+    glInstance.loaded = true;
 
-    this.hero = new Hero(app, this.gl, this.scene, this.main, this.item);
+    this.hero = new Hero(glInstance, this.scene, this.main, this.item);
 
     if (this.footerLogo) {
       this.footerMeshs = [];
@@ -64,8 +58,7 @@ export default class World {
       });
       this.footerTextures.forEach((texture, index) => {
         this.footerMeshs[index] = new FluidMask(
-          app,
-          this.gl,
+          glInstance,
           this.scene,
           this.footerLogo,
           texture,

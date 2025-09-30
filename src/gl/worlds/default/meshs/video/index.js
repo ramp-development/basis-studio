@@ -15,10 +15,11 @@ import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class index {
-  constructor(oldApp, gl, scene, main) {
-    this.gl = gl;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
 
@@ -133,7 +134,7 @@ export default class index {
       const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
       const material = this.material.clone();
       material.uniforms.uSize.value.set(rect.width, rect.height);
-      // material.uniforms.uTexture.value = this.gl.gradientTexture
+      // material.uniforms.uTexture.value = glInstance.gradientTexture
       material.uniforms.uBorder.value = parseFloat(roots[0]);
 
       // Set zoom based on class:
@@ -353,8 +354,8 @@ export default class index {
 
   update() {
     this.meshs.forEach(({ material }) => {
-      material.uniforms.uFluid.value = this.gl.fluidTexture;
-      // material.uniforms.uTexture.value = this.gl.gradientTexture
+      material.uniforms.uFluid.value = glInstance.fluidTexture;
+      // material.uniforms.uTexture.value = glInstance.gradientTexture
     });
   }
 

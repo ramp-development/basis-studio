@@ -3,13 +3,15 @@ import { WebGLRenderer, ACESFilmicToneMapping } from "three";
 import { isSafari } from "@utils/isSafari";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class Renderer {
   constructor(gl) {
-    this.canvas = gl.canvas;
+    glInstance = gl;
+    this.canvas = glInstance.canvas;
     this.sizes = app.sizes;
-    this.scene = gl.scene;
-    this.camera = gl.camera.instance;
+    this.scene = glInstance.scene;
+    this.camera = glInstance.camera.instance;
 
     this.setInstance();
   }

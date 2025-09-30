@@ -6,16 +6,17 @@ import Hero from "./meshs/hero/index.js";
 import Video from "./meshs/video/index.js";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class World {
-  constructor(gl, oldApp, scene, main) {
-    this.gl = gl;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
 
     this.sizes = app.sizes;
-    this.renderer = this.gl.renderer.instance;
-    this.camera = this.gl.camera.instance;
+    this.renderer = glInstance.renderer.instance;
+    this.camera = glInstance.camera.instance;
     this.scene = scene;
 
     this.load();
@@ -47,9 +48,9 @@ export default class World {
   }
 
   init() {
-    this.gl.loaded = true;
+    glInstance.loaded = true;
 
-    this.video = new Video(app, this.gl, this.scene, this.main);
+    this.video = new Video(glInstance, this.scene, this.main);
 
     if (this.footerLogo) {
       this.footerMeshs = [];
@@ -60,8 +61,7 @@ export default class World {
       });
       this.footerTextures.forEach((texture, index) => {
         this.footerMeshs[index] = new FluidMask(
-          app,
-          this.gl,
+          glInstance,
           this.scene,
           this.footerLogo,
           texture,
@@ -71,7 +71,7 @@ export default class World {
     }
 
     if (this.isCasesPage) {
-      this.hero = new Hero(app, this.gl, this.scene, this.main, this.heroItem);
+      this.hero = new Hero(glInstance, this.scene, this.main, this.heroItem);
     }
 
     app.trigger("loadedWorld");

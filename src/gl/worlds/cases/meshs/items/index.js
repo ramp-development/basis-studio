@@ -13,10 +13,11 @@ import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class index {
-  constructor(oldApp, gl, scene, main, resources, videoTextures, items) {
-    this.gl = gl;
+  constructor(gl, scene, main, resources, videoTextures, items) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
     this.resources = resources;
@@ -222,7 +223,7 @@ export default class index {
     if (this.destroyed) return;
 
     this.meshs.forEach(({ mesh, material }) => {
-      material.uniforms.uFluid.value = this.gl.fluidTexture;
+      material.uniforms.uFluid.value = glInstance.fluidTexture;
     });
   }
 

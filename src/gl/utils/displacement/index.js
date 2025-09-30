@@ -2,10 +2,11 @@ import App from "@app";
 import { CanvasTexture, Vector2 } from "three";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class index {
-  constructor(oldApp, gl) {
-    this.gl = gl;
+  constructor(gl) {
+    glInstance = gl;
 
     this.sizes = app.sizes;
 
@@ -17,9 +18,9 @@ export default class index {
     this.canvas = document.createElement("canvas");
     this.canvas.width = 128;
     this.canvas.height = 128;
-    this.glowSize = this.canvas.width * 0.25;
+    glInstanceowSize = this.canvas.width * 0.25;
     this.texture = new CanvasTexture(this.canvas);
-    this.gl.displacementTexture = this.texture;
+    glInstance.displacementTexture = this.texture;
 
     // this.addToBody()
 
@@ -59,15 +60,15 @@ export default class index {
     const alpha = Math.min(distance * 0.1, 1);
     this.cursorPrev.copy(this.canvasCursor);
 
-    this.glowSize = this.canvas.width * 0.25;
+    glInstanceowSize = this.canvas.width * 0.25;
     this.ctx.globalCompositeOperation = "lighten";
     this.ctx.globalAlpha = alpha;
     this.ctx.drawImage(
       this.img,
-      this.canvasCursor.x - this.glowSize / 2,
-      this.canvasCursor.y - this.glowSize / 2,
-      this.glowSize,
-      this.glowSize
+      this.canvasCursor.x - glInstanceowSize / 2,
+      this.canvasCursor.y - glInstanceowSize / 2,
+      glInstanceowSize,
+      glInstanceowSize
     );
 
     this.texture.needsUpdate = true;

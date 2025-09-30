@@ -7,17 +7,17 @@ import Video from "./meshs/video/index.js";
 import Full from "./meshs/full/index.js";
 
 const app = App.getInstance();
+let glInstance = null;
 
 export default class World {
-  constructor(gl, oldApp, scene, main, index) {
-    this.gl = gl;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
-    this.index = index;
 
     this.sizes = app.sizes;
-    this.renderer = this.gl.renderer.instance;
-    this.camera = this.gl.camera.instance;
+    this.renderer = glInstance.renderer.instance;
+    this.camera = glInstance.camera.instance;
     this.scene = scene;
 
     this.load();
@@ -67,19 +67,11 @@ export default class World {
   }
 
   init() {
-    this.gl.loaded = true;
+    glInstance.loaded = true;
 
-    this.video = new Video(app, this.gl, this.scene, this.main);
-    this.full = new Full(app, this.gl, this.scene, this.main);
-    this.hero = new Hero(app, this.gl, this.scene, this.main, this.resources);
-    // COMMENTED OUT - Removing 3D testimonials for testing
-    // this.testimonialsMesh = new Testimonials(
-    //   app,
-    //   this.gl,
-    //   this.scene,
-    //   this.main,
-    //   this.testimonials
-    // );
+    this.video = new Video(glInstance, this.scene, this.main);
+    this.full = new Full(glInstance, this.scene, this.main);
+    this.hero = new Hero(glInstance, this.scene, this.main, this.resources);
 
     if (this.footerLogo) {
       this.footerMeshs = [];
@@ -90,8 +82,7 @@ export default class World {
       });
       this.footerTextures.forEach((texture, index) => {
         this.footerMeshs[index] = new FluidMask(
-          app,
-          this.gl,
+          glInstance,
           this.scene,
           this.footerLogo,
           texture,
@@ -109,8 +100,7 @@ export default class World {
       });
       this.nowTextTextures.forEach((texture, index) => {
         this.nowMeshs[index] = new FluidMask(
-          app,
-          this.gl,
+          glInstance,
           this.scene,
           this.nowText,
           texture,
@@ -175,8 +165,6 @@ export default class World {
     this.hero?.destroy();
     this.footerMeshs?.forEach((mesh) => mesh.destroy());
     this.nowMeshs?.forEach((mesh) => mesh.destroy());
-    // COMMENTED OUT - Removing 3D testimonials for testing
-    // this.testimonialsMesh?.destroy();
   }
 
   getTextureAttributes(element) {

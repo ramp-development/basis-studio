@@ -4,11 +4,10 @@ import { PerspectiveCamera } from "three";
 const app = App.getInstance();
 
 export default class Camera {
-  constructor(oldApp, gl, scene) {
-    this.gl = gl;
+  constructor(gl, scene) {
     this.sizes = app.sizes;
     this.scene = scene;
-    this.canvas = this.gl.canvas;
+    this.canvas = gl.canvas;
 
     this.setInstance();
     // this.orbitControls()
