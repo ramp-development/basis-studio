@@ -6,11 +6,10 @@ const app = App.getInstance();
 
 export default class Renderer {
   constructor(gl) {
-    this.gl = gl;
-    this.canvas = this.gl.canvas;
+    this.canvas = gl.canvas;
     this.sizes = app.sizes;
-    this.scene = this.gl.scene;
-    this.camera = this.gl.camera.instance;
+    this.scene = gl.scene;
+    this.camera = gl.camera.instance;
 
     this.setInstance();
   }
