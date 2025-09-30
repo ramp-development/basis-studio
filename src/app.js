@@ -76,7 +76,12 @@ export default class App extends EventEmitter {
     });
   }
 
-  async loadMainComponentsOnce(main, app) {
+  async loadMainComponentsOnce(main) {
+    const app = App.getInstance();
+    console.trace("loadMainComponentsOnce", {
+      app: app,
+      main,
+    });
     if (app.initialized) {
       console.warn(
         "App already initialized, skipping duplicate initialization"
