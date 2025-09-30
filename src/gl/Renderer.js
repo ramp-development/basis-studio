@@ -1,12 +1,14 @@
+import App from "@app";
 import { WebGLRenderer, ACESFilmicToneMapping } from "three";
 import { isSafari } from "@utils/isSafari";
 
+const app = App.getInstance();
+
 export default class Renderer {
-  constructor(app, gl) {
-    this.app = app;
+  constructor(gl) {
     this.gl = gl;
     this.canvas = this.gl.canvas;
-    this.sizes = this.app.sizes;
+    this.sizes = app.sizes;
     this.scene = this.gl.scene;
     this.camera = this.gl.camera.instance;
 

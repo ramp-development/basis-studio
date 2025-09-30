@@ -119,7 +119,7 @@ export default class App extends EventEmitter {
     app.nav = new Nav.default();
 
     await CheckPages(app, main);
-    app.gl = new GL.default(document.querySelector(".canvas"), app, main);
+    app.gl = new GL.default(document.querySelector(".canvas"), main);
     await app.moduleLoader.loadModules(main);
 
     app.moduleLoader.on("loaded", () => {

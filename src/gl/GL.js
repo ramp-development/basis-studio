@@ -1,26 +1,27 @@
 import { Scene, Vector2 } from "three";
 import Stats from "stats-gl";
 import EventEmitter from "@utils/EventEmitter.js";
-import { isSafari } from "@utils/isSafari";
+import App from "@app";
 
 import Camera from "./Camera.js";
 import Renderer from "./Renderer.js";
 import FluidSimulation from "./fluid";
 
+const app = App.getInstance();
+
 export default class GL extends EventEmitter {
-  constructor(canvas, app, main) {
+  constructor(canvas, main) {
     super();
 
-    this.app = app;
     this.main = main;
-    this.scroll = this.app.scroll.lenis;
-    this.sizes = this.app.sizes;
+    this.scroll = app.scroll.lenis;
+    this.sizes = app.sizes;
 
     if (window.innerWidth < 991) {
       // Only trigger page load if not already loaded
-      if (!this.app.onceLoaded) {
-        this.app.page.triggerLoad();
-        this.app.globalLoader.tl.play();
+      if (!app.onceLoaded) {
+        app.page.triggerLoad();
+        app.globalLoader.tl.play();
       }
 
       return;
@@ -33,12 +34,12 @@ export default class GL extends EventEmitter {
     this.scene = new Scene();
 
     // Setup
-    this.camera = new Camera(this.app, this, this.scene);
-    this.renderer = new Renderer(this.app, this);
+    this.camera = new Camera(app, this, this.scene);
+    this.renderer = new Renderer(this);
 
     this.loadWorld(this.main);
 
-    if (this.app.debug.active) {
+    if (app.debug.active) {
       this.stats = new Stats({ trackGPU: true });
       this.stats.init(this.renderer.instance);
       document.body.appendChild(this.stats.dom);
@@ -49,11 +50,11 @@ export default class GL extends EventEmitter {
 
     this.initWidth = window.innerWidth;
 
-    this.app.on("tick", () => this.update());
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("tick", () => this.update());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
 
-    this.fluid = new FluidSimulation(this.app, this);
+    this.fluid = new FluidSimulation(app, this);
 
     this.mouse = new Vector2();
     window.addEventListener("mousemove", (e) => this.onMouseMove(e));
@@ -123,35 +124,35 @@ export default class GL extends EventEmitter {
       case "home":
         await import("@gl/worlds/home/World.js").then(
           (module) =>
-            (this.world = new module.default(this, this.app, this.scene, main))
+            (this.world = new module.default(this, app, this.scene, main))
         );
         break;
 
       case "cases":
         await import("@gl/worlds/cases/World.js").then(
           (module) =>
-            (this.world = new module.default(this, this.app, this.scene, main))
+            (this.world = new module.default(this, app, this.scene, main))
         );
         break;
 
       case "services":
         await import("@gl/worlds/services/World.js").then(
           (module) =>
-            (this.world = new module.default(this, this.app, this.scene, main))
+            (this.world = new module.default(this, app, this.scene, main))
         );
         break;
 
       case "fintech":
         await import("@gl/worlds/fintech/World.js").then(
           (module) =>
-            (this.world = new module.default(this, this.app, this.scene, main))
+            (this.world = new module.default(this, app, this.scene, main))
         );
         break;
 
       default:
         await import("@gl/worlds/default/World.js").then(
           (module) =>
-            (this.world = new module.default(this, this.app, this.scene, main))
+            (this.world = new module.default(this, app, this.scene, main))
         );
     }
   }
