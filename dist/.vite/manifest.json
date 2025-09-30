@@ -1,10 +1,13 @@
 {
-  "_BaseAnimation-DRDS06CE.js": {
-    "file": "BaseAnimation-DRDS06CE.js",
-    "name": "BaseAnimation"
+  "_BaseAnimation-CxELLeAg.js": {
+    "file": "BaseAnimation-CxELLeAg.js",
+    "name": "BaseAnimation",
+    "imports": [
+      "index.html"
+    ]
   },
-  "_GL-CTAjpCr0.js": {
-    "file": "GL-CTAjpCr0.js",
+  "_GL-CwnTLKxe.js": {
+    "file": "GL-CwnTLKxe.js",
     "name": "GL",
     "isDynamicEntry": true,
     "imports": [
@@ -23,22 +26,23 @@
     "file": "GSAP-BxWzQY2p.js",
     "name": "GSAP"
   },
-  "_Resources-DY05VFTb.js": {
-    "file": "Resources-DY05VFTb.js",
+  "_Resources-DHkIOdgU.js": {
+    "file": "Resources-DHkIOdgU.js",
     "name": "Resources",
     "imports": [
       "index.html",
-      "_GL-CTAjpCr0.js"
+      "_GL-CwnTLKxe.js"
     ],
     "dynamicImports": [
-      "_GL-CTAjpCr0.js"
+      "_GL-CwnTLKxe.js"
     ]
   },
-  "_index-C4XYYAKK.js": {
-    "file": "index-C4XYYAKK.js",
+  "_index-NK-7UVPs.js": {
+    "file": "index-NK-7UVPs.js",
     "name": "index",
     "imports": [
-      "_GL-CTAjpCr0.js"
+      "index.html",
+      "_GL-CwnTLKxe.js"
     ]
   },
   "_isSafari-DYs6RIMp.js": {
@@ -58,11 +62,11 @@
       "src/transitions/Leave.js",
       "src/transitions/Enter.js",
       "src/transitions/HomeToCase.js",
-      "src/pages/home/index.js",
-      "src/pages/cases/index.js",
       "src/pages/case-inner/index.js",
-      "src/pages/services/index.js",
+      "src/pages/cases/index.js",
       "src/pages/fintech/index.js",
+      "src/pages/home/index.js",
+      "src/pages/services/index.js",
       "src/utils/Scroll.js",
       "src/utils/Sizes.js",
       "src/utils/Tick.js",
@@ -70,7 +74,7 @@
       "src/utils/Observer.js",
       "src/utils/AnimationObserver.js",
       "src/utils/Debug.js",
-      "_GL-CTAjpCr0.js",
+      "_GL-CwnTLKxe.js",
       "src/utils/Nav.js",
       "src/transitions/GlobalLoader.js"
     ],
@@ -85,221 +89,264 @@
     "isDynamicEntry": true
   },
   "src/gl/worlds/cases/World.js": {
-    "file": "World-B7iLjACy.js",
+    "file": "World-DhThN0NO.js",
     "name": "World",
     "src": "src/gl/worlds/cases/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources-DY05VFTb.js",
-      "src/modules/VideoLoader.js",
-      "_GL-CTAjpCr0.js",
       "index.html",
+      "_Resources-DHkIOdgU.js",
+      "src/modules/VideoLoader.js",
+      "_GL-CwnTLKxe.js",
       "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/gl/worlds/default/World.js": {
-    "file": "World-CVhSwnnS.js",
+    "file": "World-BgqlWYea.js",
     "name": "World",
     "src": "src/gl/worlds/default/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources-DY05VFTb.js",
-      "_index-C4XYYAKK.js",
-      "_GL-CTAjpCr0.js",
-      "src/modules/VideoLoader.js",
       "index.html",
+      "_Resources-DHkIOdgU.js",
+      "_index-NK-7UVPs.js",
+      "_GL-CwnTLKxe.js",
+      "src/modules/VideoLoader.js",
       "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/gl/worlds/fintech/World.js": {
-    "file": "World-DWcBCl0u.js",
+    "file": "World-CWVdkVbI.js",
     "name": "World",
     "src": "src/gl/worlds/fintech/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources-DY05VFTb.js",
-      "_index-C4XYYAKK.js",
-      "_GL-CTAjpCr0.js",
-      "src/modules/VideoLoader.js",
       "index.html",
+      "_Resources-DHkIOdgU.js",
+      "_index-NK-7UVPs.js",
+      "_GL-CwnTLKxe.js",
+      "src/modules/VideoLoader.js",
       "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/gl/worlds/home/World.js": {
-    "file": "World-Dp9N0LHZ.js",
+    "file": "World-h4LsNTgw.js",
     "name": "World",
     "src": "src/gl/worlds/home/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources-DY05VFTb.js",
-      "_index-C4XYYAKK.js",
-      "_GL-CTAjpCr0.js",
+      "index.html",
+      "_Resources-DHkIOdgU.js",
+      "_index-NK-7UVPs.js",
+      "_GL-CwnTLKxe.js",
       "src/modules/VideoLoader.js",
-      "_isSafari-DYs6RIMp.js",
-      "index.html"
+      "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/gl/worlds/services/World.js": {
-    "file": "World-DAGMmfOl.js",
+    "file": "World-D0NJIS0O.js",
     "name": "World",
     "src": "src/gl/worlds/services/World.js",
     "isDynamicEntry": true,
     "imports": [
-      "_Resources-DY05VFTb.js",
-      "_index-C4XYYAKK.js",
-      "_GL-CTAjpCr0.js",
-      "src/modules/VideoLoader.js",
       "index.html",
+      "_Resources-DHkIOdgU.js",
+      "_index-NK-7UVPs.js",
+      "_GL-CwnTLKxe.js",
+      "src/modules/VideoLoader.js",
       "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/modules/AspectRatio.js": {
-    "file": "AspectRatio-D28hfx4m.js",
+    "file": "AspectRatio-D3o4JM5m.js",
     "name": "AspectRatio",
     "src": "src/modules/AspectRatio.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/AssetReveal.js": {
-    "file": "AssetReveal-BoBgtrBI.js",
+    "file": "AssetReveal-C7k7gyEU.js",
     "name": "AssetReveal",
     "src": "src/modules/AssetReveal.js",
     "isDynamicEntry": true,
     "imports": [
-      "_BaseAnimation-DRDS06CE.js"
+      "_BaseAnimation-CxELLeAg.js",
+      "index.html"
     ]
   },
   "src/modules/Button.js": {
-    "file": "Button-CpslhX00.js",
+    "file": "Button-jZRLLNIc.js",
     "name": "Button",
     "src": "src/modules/Button.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/Calendar.js": {
-    "file": "Calendar-BTs9WyY2.js",
+    "file": "Calendar-Bcg8kWAx.js",
     "name": "Calendar",
     "src": "src/modules/Calendar.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/CaseReveal.js": {
-    "file": "CaseReveal-CBcjq-8F.js",
+    "file": "CaseReveal-_1Brh5v1.js",
     "name": "CaseReveal",
     "src": "src/modules/CaseReveal.js",
     "isDynamicEntry": true,
     "imports": [
-      "_BaseAnimation-DRDS06CE.js"
+      "_BaseAnimation-CxELLeAg.js",
+      "index.html"
     ]
   },
   "src/modules/CharAnimation.js": {
-    "file": "CharAnimation-LlPRu6sg.js",
+    "file": "CharAnimation-Cdp5G_2z.js",
     "name": "CharAnimation",
     "src": "src/modules/CharAnimation.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/Cursor.js": {
-    "file": "Cursor-GxXxXgZJ.js",
+    "file": "Cursor-Bq50LYfB.js",
     "name": "Cursor",
     "src": "src/modules/Cursor.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/Footer.js": {
-    "file": "Footer-rm7eFrP1.js",
+    "file": "Footer-Djpr5IHO.js",
     "name": "Footer",
     "src": "src/modules/Footer.js",
     "isDynamicEntry": true,
     "imports": [
-      "_BaseAnimation-DRDS06CE.js"
+      "_BaseAnimation-CxELLeAg.js",
+      "index.html"
     ]
   },
   "src/modules/FullBleed.js": {
-    "file": "FullBleed-Bq2oVXJE.js",
+    "file": "FullBleed-Df0Y5F8F.js",
     "name": "FullBleed",
     "src": "src/modules/FullBleed.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/Goals.js": {
-    "file": "Goals-DwnkIFu0.js",
+    "file": "Goals-D_Ay2n7c.js",
     "name": "Goals",
     "src": "src/modules/Goals.js",
     "isDynamicEntry": true,
     "imports": [
-      "_GSAP-BxWzQY2p.js"
+      "_GSAP-BxWzQY2p.js",
+      "index.html"
     ]
   },
   "src/modules/HomeCta.js": {
-    "file": "HomeCta-Cw9k-Q_Q.js",
+    "file": "HomeCta-CP0yRehz.js",
     "name": "HomeCta",
     "src": "src/modules/HomeCta.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/LineAnimation.js": {
-    "file": "LineAnimation-DiUgbWqF.js",
+    "file": "LineAnimation-DjitFTxM.js",
     "name": "LineAnimation",
     "src": "src/modules/LineAnimation.js",
     "isDynamicEntry": true,
     "imports": [
-      "_BaseAnimation-DRDS06CE.js"
+      "_BaseAnimation-CxELLeAg.js",
+      "index.html"
     ]
   },
   "src/modules/Marquee.js": {
-    "file": "Marquee-D8a8XNbr.js",
+    "file": "Marquee-ioL7ijDw.js",
     "name": "Marquee",
     "src": "src/modules/Marquee.js",
     "isDynamicEntry": true,
     "imports": [
-      "src/modules/VideoLoader.js",
-      "index.html"
+      "index.html",
+      "src/modules/VideoLoader.js"
     ]
   },
   "src/modules/MobFade.js": {
-    "file": "MobFade-BzcskHkG.js",
+    "file": "MobFade-CqxS0Q2Z.js",
     "name": "MobFade",
     "src": "src/modules/MobFade.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/ParagraphAnimation.js": {
-    "file": "ParagraphAnimation-0tUOT23a.js",
+    "file": "ParagraphAnimation-DwjTtVHM.js",
     "name": "ParagraphAnimation",
     "src": "src/modules/ParagraphAnimation.js",
     "isDynamicEntry": true,
     "imports": [
-      "_BaseAnimation-DRDS06CE.js"
+      "_BaseAnimation-CxELLeAg.js",
+      "index.html"
     ]
   },
   "src/modules/Popup.js": {
-    "file": "Popup-DWnOCAqR.js",
+    "file": "Popup-DWywyekg.js",
     "name": "Popup",
     "src": "src/modules/Popup.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/SectionHeading.js": {
-    "file": "SectionHeading-CSHT6Eyq.js",
+    "file": "SectionHeading-qrg_upKv.js",
     "name": "SectionHeading",
     "src": "src/modules/SectionHeading.js",
     "isDynamicEntry": true,
     "imports": [
-      "_GSAP-BxWzQY2p.js"
+      "_GSAP-BxWzQY2p.js",
+      "index.html"
     ]
   },
   "src/modules/ServicesHero.js": {
-    "file": "ServicesHero-DsGLxPZb.js",
+    "file": "ServicesHero-B7WYLnER.js",
     "name": "ServicesHero",
     "src": "src/modules/ServicesHero.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/StaggerAnimation.js": {
-    "file": "StaggerAnimation-bm2DgyRZ.js",
+    "file": "StaggerAnimation-B-qHKUNH.js",
     "name": "StaggerAnimation",
     "src": "src/modules/StaggerAnimation.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/Talk.js": {
-    "file": "Talk-BWgnabSo.js",
+    "file": "Talk-DnANjdj-.js",
     "name": "Talk",
     "src": "src/modules/Talk.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/VideoLoader.js": {
-    "file": "VideoLoader-K1Zmm6xk.js",
+    "file": "VideoLoader-DY3BupWB.js",
     "name": "VideoLoader",
     "src": "src/modules/VideoLoader.js",
     "isDynamicEntry": true,
@@ -308,10 +355,13 @@
     ]
   },
   "src/modules/WordAnimation.js": {
-    "file": "WordAnimation-BXvKpheM.js",
+    "file": "WordAnimation-CNMKQE_1.js",
     "name": "WordAnimation",
     "src": "src/modules/WordAnimation.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/modules/Year.js": {
     "file": "Year-BTWqyB1T.js",
@@ -320,74 +370,91 @@
     "isDynamicEntry": true
   },
   "src/pages/case-inner/index.js": {
-    "file": "index-Bg1gmhHh.js",
+    "file": "index-BxbQEVpd.js",
     "name": "index",
     "src": "src/pages/case-inner/index.js",
     "isDynamicEntry": true,
     "imports": [
+      "index.html",
       "_GSAP-BxWzQY2p.js"
     ]
   },
   "src/pages/cases/index.js": {
-    "file": "index-D8wlhYsa.js",
+    "file": "index-BtYaeoI5.js",
     "name": "index",
     "src": "src/pages/cases/index.js",
     "isDynamicEntry": true,
     "imports": [
+      "index.html",
       "_GSAP-BxWzQY2p.js"
     ]
   },
   "src/pages/fintech/index.js": {
-    "file": "index-D-QeAHMl.js",
+    "file": "index-ChRAobaK.js",
     "name": "index",
     "src": "src/pages/fintech/index.js",
     "isDynamicEntry": true,
     "imports": [
+      "index.html",
       "_GSAP-BxWzQY2p.js"
     ]
   },
   "src/pages/home/index.js": {
-    "file": "index-DKJUNYPa.js",
+    "file": "index-DlYx4uHp.js",
     "name": "index",
     "src": "src/pages/home/index.js",
     "isDynamicEntry": true,
     "imports": [
+      "index.html",
       "_GSAP-BxWzQY2p.js",
       "_isSafari-DYs6RIMp.js"
     ]
   },
   "src/pages/services/index.js": {
-    "file": "index-MbfZjBrj.js",
+    "file": "index-Ck4fKvmX.js",
     "name": "index",
     "src": "src/pages/services/index.js",
     "isDynamicEntry": true,
     "imports": [
+      "index.html",
       "_GSAP-BxWzQY2p.js"
     ]
   },
   "src/transitions/Enter.js": {
-    "file": "Enter-D04UsgnW.js",
+    "file": "Enter-FHTYxz6g.js",
     "name": "Enter",
     "src": "src/transitions/Enter.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/transitions/GlobalLoader.js": {
-    "file": "GlobalLoader-CUyBEIqA.js",
+    "file": "GlobalLoader-BaQu_dNk.js",
     "name": "GlobalLoader",
     "src": "src/transitions/GlobalLoader.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/transitions/HomeToCase.js": {
-    "file": "HomeToCase-32j5ZUUl.js",
+    "file": "HomeToCase-Cf5uqlTE.js",
     "name": "HomeToCase",
     "src": "src/transitions/HomeToCase.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/transitions/Leave.js": {
-    "file": "Leave-CgzqUZDl.js",
+    "file": "Leave-DNrH6W0U.js",
     "name": "Leave",
     "src": "src/transitions/Leave.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/utils/AnimationObserver.js": {
     "file": "AnimationObserver-DaQgRWeH.js",
@@ -408,7 +475,7 @@
     ]
   },
   "src/utils/ModuleLoader.js": {
-    "file": "ModuleLoader-CPglKQu-.js",
+    "file": "ModuleLoader-CDjCJE6v.js",
     "name": "ModuleLoader",
     "src": "src/utils/ModuleLoader.js",
     "isDynamicEntry": true,
@@ -443,10 +510,13 @@
     ]
   },
   "src/utils/Nav.js": {
-    "file": "Nav-BBQZ17Ao.js",
+    "file": "Nav-3r6aD6Uj.js",
     "name": "Nav",
     "src": "src/utils/Nav.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/utils/Observer.js": {
     "file": "Observer-DqFrNqf-.js",
@@ -455,10 +525,13 @@
     "isDynamicEntry": true
   },
   "src/utils/PageScrollProgress.js": {
-    "file": "PageScrollProgress-DwfCtEOc.js",
+    "file": "PageScrollProgress-BHzMNnYc.js",
     "name": "PageScrollProgress",
     "src": "src/utils/PageScrollProgress.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
   },
   "src/utils/Scroll.js": {
     "file": "Scroll-DWfqIHFh.js",

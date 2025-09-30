@@ -1,9 +1,12 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Cursor {
-  constructor(instance, app, main) {
+  constructor(instance, main) {
     this.instance = instance;
-    this.app = app;
     this.main = main;
-    this.app.cursor = this;
+
+    app.cursor = this;
 
     this.instance.classList.add("loaded");
 
@@ -83,7 +86,7 @@ export default class Cursor {
       });
     });
 
-    this.app.on("destroy", () => this.destroy());
+    app.on("destroy", () => this.destroy());
   }
 
   destroy() {

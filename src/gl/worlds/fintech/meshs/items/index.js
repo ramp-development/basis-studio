@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -13,15 +14,17 @@ import VideoLoader from "@modules/VideoLoader.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+let glInstance = null;
+
 export default class index {
-  constructor(app, gl, scene, main) {
-    this.app = app;
-    this.gl = gl;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.items = this.main.querySelectorAll(".cases_video, .double-video");
 
@@ -35,9 +38,9 @@ export default class index {
   }
 
   debug() {
-    if (!this.app.debug.active) return;
+    if (!app.debug.active) return;
 
-    const gui = this.app.debug.gui;
+    const gui = app.debug.gui;
     this.folder = gui.addFolder("Fintech/Video");
 
     this.folder
@@ -131,7 +134,7 @@ export default class index {
       const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
       const material = this.material.clone();
       material.uniforms.uSize.value.set(rect.width, rect.height);
-      // material.uniforms.uTexture.value = this.gl.gradientTexture
+      // material.uniforms.uTexture.value = glInstance.gradientTexture
       material.uniforms.uBorder.value = parseFloat(roots[0]);
 
       // Set different zoom for .double-video elements (no zoom = 1.0, default zoom = 0.9)
@@ -182,7 +185,7 @@ export default class index {
 
       this.scene.add(mesh);
 
-      this.app.observer.instance.observe(item);
+      app.observer.instance.observe(item);
 
       const tl = gsap.timeline({
         paused: true,
@@ -264,8 +267,8 @@ export default class index {
 
   update() {
     this.meshs.forEach(({ mesh, material }) => {
-      material.uniforms.uFluid.value = this.gl.fluidTexture;
-      // material.uniforms.uTexture.value = this.gl.gradientTexture
+      material.uniforms.uFluid.value = glInstance.fluidTexture;
+      // material.uniforms.uTexture.value = glInstance.gradientTexture
     });
   }
 

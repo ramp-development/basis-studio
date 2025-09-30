@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -11,16 +12,18 @@ import { UpdateGeometry } from "@gl/UpdateGeometry.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+let glInstance = null;
+
 export default class index {
-  constructor(app, gl, scene, main, section) {
-    this.app = app;
-    this.gl = gl;
+  constructor(gl, scene, main, section) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
     this.section = section;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     // OLD SELECTOR - wrong for HTML structure
     // this.items = this.section.querySelectorAll('.testimonials_item')
@@ -64,9 +67,9 @@ export default class index {
   }
 
   debug() {
-    if (!this.app.debug.active) return;
+    if (!app.debug.active) return;
 
-    const gui = this.app.debug.gui;
+    const gui = app.debug.gui;
     const folder = gui.addFolder("Home/Hero");
 
     // folder.add(this.material.uniforms.uOffset, 'value', -100, 100, 1).name('uOffset').onChange((value) =>
@@ -134,7 +137,7 @@ export default class index {
 
       this.scene.add(mesh);
 
-      this.app.observer.instance.observe(item);
+      app.observer.instance.observe(item);
 
       return { mesh, item, material, hoverTl, revealTl };
     });

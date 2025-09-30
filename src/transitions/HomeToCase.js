@@ -1,11 +1,13 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class HomeToCase {
-  constructor(data, done, checkPages, app) {
-    this.app = app;
+  constructor(data, done, checkPages) {
     this.data = data;
     this.checkPages = checkPages;
     this.done = done;
     this.container = data.next.container;
-    this.scroll = this.app.scroll.lenis;
+    this.scroll = app.scroll.lenis;
 
     this.loader = document.querySelector(".loader");
     this.nav = document.querySelector(".nav");
@@ -117,14 +119,14 @@ export default class HomeToCase {
 
   leave() {
     // Trigger destroy and proceed to enter phase
-    this.app.trigger("destroy");
-    this.app.gl.loaded = false;
+    app.trigger("destroy");
+    app.gl.loaded = false;
 
     ScrollTrigger.killAll();
     this.done();
 
-    this.app.onceLoaded = true;
-    this.app.scroll.destroy();
+    app.onceLoaded = true;
+    app.scroll.destroy();
     window.scrollTo(0, 0);
 
     // Start enter phase
@@ -165,22 +167,22 @@ export default class HomeToCase {
     }
 
     if (window.innerWidth > 992) {
-      this.app.gl.loadWorld(this.container);
-      this.app.on("loadedWorld", () => this.complete());
+      app.gl.loadWorld(this.container);
+      app.on("loadedWorld", () => this.complete());
     } else {
       this.complete();
     }
   }
 
   async complete() {
-    this.checkPages(this.app, this.container);
-    await this.app.moduleLoader.loadModules(this.container);
+    this.checkPages(app, this.container);
+    await app.moduleLoader.loadModules(this.container);
 
     // Small delay to ensure all initial states are set
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    this.app.scroll.init();
-    this.app.scroll.lenis.on("scroll", (e) => this.app.gl.setScroll(e));
+    app.scroll.init();
+    app.scroll.lenis.on("scroll", (e) => app.gl.setScroll(e));
 
     // Mirror normal Enter.js: animate topClip 0→100 (like normal clip 0→100)
     // Also animate SVG from y: 120 to y: 0 (entrance), then y: 0 to y: -120 (exit)

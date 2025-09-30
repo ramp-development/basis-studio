@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -15,16 +16,18 @@ import { isSafari } from "@utils/isSafari";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+let glInstance = null;
+
 export default class index {
-  constructor(app, gl, scene, main, resources) {
-    this.app = app;
-    this.gl = gl;
+  constructor(gl, scene, main, resources) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
     this.resources = resources.items;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.items = this.main.querySelectorAll(".hero_image, .hero_video");
     this.mouse = new Vector2(0, 0);
@@ -53,7 +56,7 @@ export default class index {
     };
 
     // Enable mouse interactions after home animation completes
-    this.app.on("homeAnimationStatic", () => {
+    app.on("homeAnimationStatic", () => {
       this.mouseEnabled = true;
     });
 
@@ -67,9 +70,9 @@ export default class index {
   }
 
   debug() {
-    if (!this.app.debug.active) return;
+    if (!app.debug.active) return;
 
-    const gui = this.app.debug.gui;
+    const gui = app.debug.gui;
     const folder = gui.addFolder("Home/Hero");
 
     // folder.add(this.material.uniforms.uOffset, 'value', -100, 100, 1).name('uOffset').onChange((value) =>
@@ -186,7 +189,7 @@ export default class index {
       this.group.add(mesh);
 
       item.style.setProperty("opacity", "0");
-      this.app.observer.instance.observe(item);
+      app.observer.instance.observe(item);
 
       return { mesh, item, material, tl };
     });
@@ -248,7 +251,7 @@ export default class index {
 
   update() {
     this.meshs.forEach(({ mesh, material }) => {
-      material.uniforms.uFluid.value = this.gl.fluidTexture;
+      material.uniforms.uFluid.value = glInstance.fluidTexture;
     });
 
     this.offsetQuicks.x(0);

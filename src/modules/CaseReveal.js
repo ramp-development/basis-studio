@@ -1,8 +1,11 @@
 import BaseAnimation from "@utils/BaseAnimation.js";
+import App from "@app";
+
+const app = App.getInstance();
 
 export default class CaseReveal extends BaseAnimation {
-  constructor(instance, app) {
-    super(instance, app);
+  constructor(instance) {
+    super(instance);
     this.splits = [];
     this.tl = null;
 

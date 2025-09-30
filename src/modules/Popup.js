@@ -1,9 +1,11 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Popup {
-  constructor(instance, app, main) {
+  constructor(instance, main) {
     this.instance = instance;
-    this.app = app;
     this.main = main;
-    this.scroll = this.app.scroll.lenis;
+    this.scroll = app.scroll.lenis;
 
     this.bodyMain = document.body;
     this.close = this.instance.querySelector(".btn");

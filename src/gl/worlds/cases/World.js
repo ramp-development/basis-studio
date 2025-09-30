@@ -1,24 +1,22 @@
-import {
-  WebGLRenderTarget,
-  Box3,
-  VideoTexture,
-  TorusKnotGeometry,
-} from "three";
+import App from "@app";
+import { VideoTexture } from "three";
 import Resources from "@utils/Resources";
 import VideoLoader from "@modules/VideoLoader.js";
 
 import Items from "./meshs/items/index.js";
 
+const app = App.getInstance();
+let glInstance = null;
+
 export default class World {
-  constructor(gl, app, scene, main) {
-    this.gl = gl;
-    this.app = app;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
 
-    this.sizes = this.app.sizes;
-    this.renderer = this.gl.renderer.instance;
-    this.camera = this.gl.camera.instance;
+    this.sizes = app.sizes;
+    this.renderer = glInstance.renderer.instance;
+    this.camera = glInstance.camera.instance;
     this.scene = scene;
 
     this.load();
@@ -149,11 +147,10 @@ export default class World {
   }
 
   init() {
-    this.gl.loaded = true;
+    glInstance.loaded = true;
 
     this.items = new Items(
-      this.app,
-      this.gl,
+      glInstance,
       this.scene,
       this.main,
       this.resources.items,
@@ -161,11 +158,11 @@ export default class World {
       this.itemElements
     );
 
-    this.app.trigger("loadedWorld");
+    app.trigger("loadedWorld");
 
-    if (!this.app.onceLoaded) {
-      this.app.globalLoader.tl.play();
-      this.app.page.triggerLoad();
+    if (!app.onceLoaded) {
+      app.globalLoader.tl.play();
+      app.page.triggerLoad();
     }
   }
 

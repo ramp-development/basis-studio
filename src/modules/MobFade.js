@@ -1,15 +1,17 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class MobFade {
-  constructor(instance, app) {
+  constructor(instance) {
     this.instance = instance;
-    this.app = app;
 
     this.destroyed = false;
 
     this.init();
 
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
-    this.app.on("barbaEnterStart", () => this.resize());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
+    app.on("barbaEnterStart", () => this.resize());
   }
 
   init() {

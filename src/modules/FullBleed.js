@@ -1,18 +1,20 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class FullBleed {
-  constructor(instance, app, main) {
+  constructor(instance, main) {
     this.instance = instance;
-    this.app = app;
     this.main = main;
 
-    // this.world = this.app.gl.world
+    // this.world = app.gl.world
     this.destroyed = false;
 
     this.wrapper = this.instance.querySelector(".full_wrapper");
     this.items = this.instance.querySelectorAll(".full_item");
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {
@@ -211,8 +213,8 @@ export default class FullBleed {
           }
 
           // Desktop: play video and text simultaneously
-          if (this.app.gl?.world?.full?.meshs?.[index]?.tl) {
-            this.app.gl.world.full.meshs[index].tl.play();
+          if (app.gl?.world?.full?.meshs?.[index]?.tl) {
+            app.gl.world.full.meshs[index].tl.play();
           }
           if (item.textTl) {
             item.textTl.play();
@@ -265,8 +267,8 @@ export default class FullBleed {
             }
             return;
           }
-          if (this.app.gl?.world?.full?.meshs?.[index]?.tl) {
-            this.app.gl.world.full.meshs[index].tl.reverse();
+          if (app.gl?.world?.full?.meshs?.[index]?.tl) {
+            app.gl.world.full.meshs[index].tl.reverse();
           }
         },
       });

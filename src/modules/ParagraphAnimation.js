@@ -1,8 +1,10 @@
 import BaseAnimation from "@utils/BaseAnimation.js";
+import App from "@app";
+const app = App.getInstance();
 
 export default class ParagraphAnimation extends BaseAnimation {
-  constructor(instance, app) {
-    super(instance, app);
+  constructor(instance) {
+    super(instance);
     this.splits = [];
     this.animationTargets = [];
     this.tl = null;

@@ -1,6 +1,4 @@
-// Enhanced fluid implementation
-// src/js/world/meshs/fluid/index.js
-
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -23,15 +21,17 @@ import vorticityShader from "./vorticityShader.glsl";
 import pressureShader from "./pressureShader.glsl";
 import gradientSubtractShader from "./gradientSubtractShader.glsl";
 
-export default class FluidSimulation {
-  constructor(app, gl) {
-    this.app = app;
-    this.gl = gl;
+const app = App.getInstance();
+let glInstance = null;
 
-    this.renderer = this.gl.renderer.instance;
-    this.camera = this.gl.camera.instance;
-    this.scene = this.gl.scene;
-    this.sizes = this.app.sizes;
+export default class FluidSimulation {
+  constructor(gl) {
+    glInstance = gl;
+
+    this.renderer = glInstance.renderer.instance;
+    this.camera = glInstance.camera.instance;
+    this.scene = glInstance.scene;
+    this.sizes = app.sizes;
 
     // Mouse tracking
     this.mouse = new Vector2();
@@ -304,7 +304,7 @@ export default class FluidSimulation {
     this.renderer.setRenderTarget(null);
     this.density.swap();
 
-    this.gl.fluidTexture = this.density.read.texture;
+    glInstance.fluidTexture = this.density.read.texture;
   }
 
   resize() {

@@ -1,7 +1,8 @@
-export default class Nav {
-  constructor(app) {
-    this.app = app;
+import App from "@app";
+const app = App.getInstance();
 
+export default class Nav {
+  constructor() {
     this.instance = document.querySelector("nav");
     this.top = this.instance.querySelector(".nav_top");
     this.items = this.instance.querySelectorAll(".nav_item");
@@ -16,7 +17,7 @@ export default class Nav {
     this.setupEventListeners();
 
     this.resize();
-    this.app.on("resize", () => this.resize());
+    app.on("resize", () => this.resize());
   }
 
   setupEventListeners() {

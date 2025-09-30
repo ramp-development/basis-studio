@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -13,15 +14,17 @@ import VideoLoader from "@modules/VideoLoader.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+let glInstance = null;
+
 export default class index {
-  constructor(app, gl, scene, main) {
-    this.app = app;
-    this.gl = gl;
+  constructor(gl, scene, main) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.items = this.main.querySelectorAll(".full_item");
 
@@ -64,7 +67,7 @@ export default class index {
       const geometry = new PlaneGeometry(rect.width, rect.height, 1, 1);
       const material = this.material.clone();
       material.uniforms.uSize.value.set(rect.width, rect.height);
-      material.uniforms.uTexture.value = this.gl.gradientTexture;
+      material.uniforms.uTexture.value = glInstance.gradientTexture;
       const mesh = new Mesh(geometry, material);
 
       const video = item.querySelector("video");
@@ -107,7 +110,7 @@ export default class index {
 
       this.scene.add(mesh);
 
-      this.app.observer.instance.observe(item);
+      app.observer.instance.observe(item);
 
       // OLD ANIMATION - commented for easy rollback
       // const tl = gsap.timeline({
@@ -170,7 +173,7 @@ export default class index {
 
   update() {
     this.meshs.forEach(({ mesh, material }) => {
-      material.uniforms.uFluid.value = this.gl.fluidTexture;
+      material.uniforms.uFluid.value = glInstance.fluidTexture;
     });
   }
 

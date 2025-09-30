@@ -1,12 +1,14 @@
+import App from "@app";
 import { def } from "@utils/GSAP.js";
 
+const app = App.getInstance();
+
 export default class Loader {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     this.hero = this.main.querySelector(".h-services");
-    // // this.meshs = this.app.gl.world.items.meshs
+    // // this.meshs = app.gl.world.items.meshs
     this.title = this.hero.querySelector("h1");
 
     this.titleSplit = new SplitText(this.title, { type: "lines" });
@@ -27,8 +29,8 @@ export default class Loader {
     this.destroyed = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {

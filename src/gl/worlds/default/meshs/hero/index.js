@@ -1,3 +1,4 @@
+import App from "@app";
 import {
   Uniform,
   PlaneGeometry,
@@ -13,17 +14,19 @@ import VideoLoader from "@modules/VideoLoader.js";
 import vertex from "./vertex.glsl";
 import fragment from "./fragment.glsl";
 
+const app = App.getInstance();
+let glInstance = null;
+
 export default class index {
-  constructor(app, gl, scene, main, item, resources) {
-    this.app = app;
-    this.gl = gl;
+  constructor(gl, scene, main, item, resources) {
+    glInstance = gl;
     this.scene = scene;
     this.main = main;
     this.item = item;
     this.resources = resources?.items || null;
 
-    this.sizes = this.app.sizes;
-    this.time = this.app.time;
+    this.sizes = app.sizes;
+    this.time = app.time;
 
     this.rect = this.item.getBoundingClientRect();
 
@@ -132,7 +135,7 @@ export default class index {
   }
 
   update() {
-    this.material.uniforms.uFluid.value = this.gl.fluidTexture;
+    this.material.uniforms.uFluid.value = glInstance.fluidTexture;
   }
 
   destroy() {

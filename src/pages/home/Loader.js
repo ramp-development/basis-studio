@@ -1,9 +1,10 @@
 import { def } from "@utils/GSAP.js";
+import App from "@app";
+const app = App.getInstance();
 
 export default class Loader {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     this.hero = this.main.querySelector(".hero");
     this.title = this.hero.querySelector("h1");
@@ -37,8 +38,8 @@ export default class Loader {
     this.setInitialStates();
 
     this.checkInit();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   setInitialStates() {
@@ -92,8 +93,8 @@ export default class Loader {
   }
 
   init() {
-    this.meshs = this.app.gl.world.hero.meshs;
-    this.group = this.app.gl.world.hero.group;
+    this.meshs = app.gl.world.hero.meshs;
+    this.group = app.gl.world.hero.group;
 
     this.tl = gsap.timeline({
       defaults: { ease: def.ease, duration: 1.4 },
@@ -103,14 +104,14 @@ export default class Loader {
         const staticMultiplier = 0.85;
         const timeout = duration * staticMultiplier * 1000;
         setTimeout(() => {
-          this.app.trigger("homeAnimationStatic");
+          app.trigger("homeAnimationStatic");
         }, timeout);
       },
       onComplete: () => {
         this.titleSplit.revert();
         this.descrSplit.revert();
         // Enable mouse interactions after animation completes
-        this.app.trigger("homeAnimationComplete");
+        app.trigger("homeAnimationComplete");
       },
     });
 
@@ -172,14 +173,14 @@ export default class Loader {
         const staticMultiplier = 0.85;
         const timeout = duration * staticMultiplier * 1000;
         setTimeout(() => {
-          this.app.trigger("homeAnimationStatic");
+          app.trigger("homeAnimationStatic");
         }, timeout);
       },
       onComplete: () => {
         this.titleSplit.revert();
         this.descrSplit.revert();
         // Enable mouse interactions after animation completes
-        this.app.trigger("homeAnimationComplete");
+        app.trigger("homeAnimationComplete");
       },
     });
 

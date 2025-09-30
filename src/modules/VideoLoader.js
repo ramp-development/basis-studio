@@ -1,7 +1,9 @@
+import App from "@app";
 import EventEmitter from "@utils/EventEmitter.js";
+const app = App.getInstance();
 
 export default class VideoLoader extends EventEmitter {
-  constructor(videoElement, app, options = {}) {
+  constructor(videoElement, options = {}) {
     super();
 
     // Handle both old signature (videoElement, options) and new (videoElement, app, options)
@@ -27,7 +29,6 @@ export default class VideoLoader extends EventEmitter {
         ? videoElement
         : videoElement.querySelector("video");
     this.instance = videoElement; // Keep reference to original element passed by ModuleLoader
-    this.app = app;
     this.options = {
       timeout: options.timeout || 15000,
       lazyLoad: options.lazyLoad !== false, // Default to true

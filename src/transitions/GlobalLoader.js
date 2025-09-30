@@ -1,11 +1,13 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class GlobalLoader {
-  constructor(container, toLoad, app) {
-    this.app = app;
+  constructor(container, toLoad) {
     this.toLoad = toLoad;
     this.main = container.container;
     this.container = container;
 
-    this.app.globalLoader = this;
+    app.globalLoader = this;
 
     this.loader = document.querySelector(".loader");
     this.nav = document.querySelector(".nav");
@@ -23,7 +25,7 @@ export default class GlobalLoader {
         this.loader.classList.add("loaded");
         this.loader.classList.add("hidden");
         gsap.to(this.nav, { autoAlpha: 1 });
-        this.app.onceLoaded = true;
+        app.onceLoaded = true;
       },
     });
 
@@ -71,6 +73,6 @@ export default class GlobalLoader {
 
   async load() {
     gsap.to([this.main], { autoAlpha: 1 });
-    await this.toLoad(this.main, this.app);
+    await this.toLoad(this.main, app);
   }
 }

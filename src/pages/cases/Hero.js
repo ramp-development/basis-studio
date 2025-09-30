@@ -1,7 +1,9 @@
+import App from "@app";
+const app = App.getInstance();
+
 export default class Hero {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     if (window.innerWidth < 991) return;
 
@@ -17,14 +19,14 @@ export default class Hero {
     this.quicks = [];
 
     const setupParallax = () => {
-      if (!this.app.gl?.world?.items?.meshs) {
+      if (!app.gl?.world?.items?.meshs) {
         console.warn("GL world items not ready, skipping parallax setup");
         return;
       }
 
       this.quicks = [...this.items]
         .map((item, index) => {
-          const mesh = this.app.gl.world.items.meshs[index]?.mesh;
+          const mesh = app.gl.world.items.meshs[index]?.mesh;
           if (!mesh) return null;
 
           return gsap.quickTo(mesh.material.uniforms.uParallax, "value", {
@@ -39,15 +41,15 @@ export default class Hero {
     setupParallax();
 
     // Also listen for world load event if not ready yet
-    if (!this.app.gl?.world?.items?.meshs) {
-      this.app.once("loadedWorld", () => {
+    if (!app.gl?.world?.items?.meshs) {
+      app.once("loadedWorld", () => {
         setupParallax();
       });
     }
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
 
   init() {
@@ -79,7 +81,7 @@ export default class Hero {
     this.enterInnerTls = [];
 
     this.items.forEach((item, index) => {
-      const mesh = this.app.gl?.world?.items?.meshs?.[index]?.mesh;
+      const mesh = app.gl?.world?.items?.meshs?.[index]?.mesh;
       if (!mesh) return;
 
       // Size calculation moved to constructor with requestAnimationFrame

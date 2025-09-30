@@ -9,6 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@src": path.resolve(__dirname, "src"),
+      "@app": path.resolve(__dirname, "src/app"),
       "@comp": path.resolve(__dirname, "src/components"),
       "@modules": path.resolve(__dirname, "src/modules"),
       "@gl": path.resolve(__dirname, "src/gl"),

@@ -1,17 +1,16 @@
 import EventEmitter from "./EventEmitter.js";
 
 export default class ModuleLoader extends EventEmitter {
-  constructor(app) {
+  constructor() {
     super();
 
-    this.app = app;
     this.loadedModules = new WeakMap();
   }
 
   async loadModules(main) {
     try {
-      const test = await import("./PageScrollProgress.js").then(
-        (module) => new module.default(main, this.app)
+      await import("./PageScrollProgress.js").then(
+        (module) => new module.default(main)
       );
 
       const elements = main.querySelectorAll("[data-module]");
@@ -47,7 +46,7 @@ export default class ModuleLoader extends EventEmitter {
 
           try {
             const module = await import(`@modules/${value}.js`);
-            const moduleInstance = new module.default(element, this.app, main);
+            const moduleInstance = new module.default(element, main);
             moduleSet.add(moduleInstance);
 
             count++;

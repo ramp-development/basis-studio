@@ -1,12 +1,13 @@
 import { def } from "@utils/GSAP.js";
+import App from "@app";
+const app = App.getInstance();
 
 export default class Loader {
-  constructor(main, app) {
+  constructor(main) {
     this.main = main;
-    this.app = app;
 
     this.hero = this.main.querySelector(".inner-hero");
-    // this.meshs = this.app.gl.world.items.meshs
+    // this.meshs = app.gl.world.items.meshs
     this.title = this.hero.querySelector("h1");
     this.scrollBtn = this.hero.querySelector(".btn_scroll");
 
@@ -25,8 +26,8 @@ export default class Loader {
     this.destroyed = false;
 
     this.init();
-    this.app.on("resize", () => this.resize());
-    this.app.on("destroy", () => this.destroy());
+    app.on("resize", () => this.resize());
+    app.on("destroy", () => this.destroy());
   }
   init() {
     // Set initial state for scroll button if it exists
