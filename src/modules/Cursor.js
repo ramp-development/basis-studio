@@ -6,7 +6,6 @@ export default class Cursor {
     this.instance = instance;
     this.main = main;
 
-    console.log("Cursor:", this, instance, main, app);
     app.cursor = this;
 
     this.instance.classList.add("loaded");
