@@ -12,6 +12,8 @@ export default class CharAnimation {
 
     this.destroyed = false;
 
+    if (!this.text.textContent) return;
+
     this.init();
     app.on("resize", () => this.resize());
     app.on("destroy", () => this.destroy());
