@@ -18,42 +18,29 @@ export default class Goals {
   }
 
   init() {
-    this.sectionHeight = this.instance.offsetHeight - window.innerHeight * 0.8;
+    this.sectionHeight = this.instance.offsetHeight - window.innerHeight;
     this.itemPart = this.sectionHeight / this.items.length;
 
     this.splits = [...this.items].map((item) => {
-      const left = item.querySelector(".v-flex-left-center");
-      const right = item.querySelector(".v-flex-right-center");
+      const left = item.querySelector(".v-flex-left-center p");
+      const right = item.querySelector(".v-flex-right-center p");
 
-      const titleSplit = new SplitText(left.querySelector("p"), {
+      const titleSplit = new SplitText(left, {
         type: "lines",
-        linesClass: "line",
-      });
-      const titleSplitParent = new SplitText(left.querySelector("p"), {
-        type: "lines",
-        linesClass: "line-parent",
-      });
-      const descrSplit = new SplitText(right.querySelector("p"), {
-        type: "lines",
-        linesClass: "line",
-      });
-      const descrSplitParent = new SplitText(right.querySelector("p"), {
-        type: "lines",
-        linesClass: "line-parent",
+        mask: "lines",
       });
 
-      // Set up parent lines with overflow hidden and perspective
-      const lineParents = [
-        ...titleSplitParent.lines,
-        ...descrSplitParent.lines,
-      ];
-      gsap.set(lineParents, {
-        overflow: "hidden",
+      const descrSplit = new SplitText(right, {
+        type: "lines",
+        mask: "lines",
+      });
+
+      gsap.set([left, right], {
         perspective: 1000,
         perspectiveOrigin: "center center",
       });
 
-      // Set up child lines with initial 3D state
+      // Set up child lines with initial 3D state and perspective
       const lines = [...titleSplit.lines, ...descrSplit.lines];
       gsap.set(lines, {
         y: "120%",
@@ -77,22 +64,6 @@ export default class Goals {
           stagger: { from: "center", each: def.stagger },
         },
       });
-
-      // OLD BLUR EFFECT - COMMENTED FOR ROLLBACK
-      // if(index > 0)
-      // {
-      //     tl.to(this.splits[index - 1].title.words, {opacity: 0, filter: 'blur(10px)', overwrite: 'auto', stagger: {each: 0.01, from: 'random'}, duration: 0.8}, 0)
-      //     .to(this.splits[index - 1].descr.words, {opacity: 0, filter: 'blur(10px)', overwrite: 'auto', stagger: {each: 0.01, from: 'random'}, duration: 0.8}, 0)
-      //     .to(this.items[index - 1].querySelector('.goals_number'), {opacity: 0, filter: 'blur(10px)', overwrite: 'auto'}, 0)
-      // }
-      //
-      // tl.fromTo(split.title.words,
-      //     { autoAlpha: 0, filter: 'blur(10px)' },
-      //     { autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.01, from: 'random'}, overwrite: 'auto' }, '<50%')
-      // .fromTo(split.descr.words,
-      //     { autoAlpha: 0, filter: 'blur(10px)' },
-      //     { autoAlpha: 1, filter: 'blur(0px)', stagger: {each: 0.05, from: 'random'}, overwrite: 'auto' }, '<0.1')
-      // .fromTo(item.querySelector('.goals_number'), { autoAlpha: 0, filter: 'blur(10px)' }, { autoAlpha: 1, filter: 'blur(0px)', overwrite: 'auto' }, '<0.1')
 
       // NEW 3D REVEAL EFFECT - ADAPTED FROM HOMECTA
       if (index > 0) {
@@ -136,68 +107,53 @@ export default class Goals {
           );
       }
 
-      tl.fromTo(
+      tl.from(
         split.title.lines,
-        { y: "120%" },
-        { y: "0%", stagger: 0.1, ease: "power3" },
+        { y: "120%", stagger: 0.1, ease: "power3" },
         "<50%"
       )
-        .fromTo(
+        .from(
           split.title.lines,
           {
             rotateX: "-35deg",
             z: "-1rem",
             transformStyle: "preserve-3d",
             transformOrigin: "50% 0",
-          },
-          {
-            rotateX: "0deg",
-            z: "0rem",
             stagger: 0.1,
             ease: "power2",
           },
           "<0.2"
         )
-        .fromTo(
+        .from(
           split.descr.lines,
-          { y: "120%" },
-          { y: "0%", stagger: 0.1, ease: "power3" },
+          { y: "120%", stagger: 0.1, ease: "power3" },
           "<0.1"
         )
-        .fromTo(
+        .from(
           split.descr.lines,
           {
             rotateX: "-35deg",
             z: "-1rem",
             transformStyle: "preserve-3d",
             transformOrigin: "50% 0",
-          },
-          {
-            rotateX: "0deg",
-            z: "0rem",
             stagger: 0.1,
             ease: "power2",
           },
           "<0.2"
         )
         // Add slower number animations back to main timeline
-        .fromTo(
+        .from(
           item.querySelector(".goals_number"),
-          { y: "120%" },
-          { y: "0%", ease: "power3", duration: 2 }, // Slower duration for numbers
+          { y: "120%", ease: "power3", duration: 2 }, // Slower duration for numbers
           "<0.2"
         )
-        .fromTo(
+        .from(
           item.querySelector(".goals_number"),
           {
             rotateX: "-15deg",
             z: "-1rem",
             transformStyle: "preserve-3d",
             transformOrigin: "50% 0",
-          },
-          {
-            rotateX: "0deg",
-            z: "0rem",
             ease: "power2",
             duration: 2, // Slower duration for numbers
           },
@@ -211,18 +167,11 @@ export default class Goals {
       return tl;
     });
 
-    // this.mastelTL.fromTo(
-    //   this.instance.querySelectorAll(".goals_number"),
-    //   { scale: 1 },
-    //   { scale: 1.4, stagger: 0, duration: this.mastelTL.duration() },
-    //   0
-    // );
-
     // Main scroll trigger for everything - slower speed
     this.scroll = ScrollTrigger.create({
       trigger: this.instance,
       start: "top top",
-      end: "bottom bottom+=150%", // Longer scroll distance for slower animation
+      end: "bottom bottom", // Longer scroll distance for slower animation
       scrub: 2, // Slower scrub value (higher = slower)
       animation: this.mastelTL,
     });
