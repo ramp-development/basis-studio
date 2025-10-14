@@ -34,8 +34,19 @@ export default class App extends EventEmitter {
 
   init() {
     if (isInstagram()) {
-      document.body.style.setProperty("--size--100svh", "100vh");
-      document.body.style.setProperty("--size--100dvh", "100vh");
+      const updateVH = () => {
+        document.body.style.setProperty(
+          "--size--100svh",
+          `${window.innerHeight}px`
+        );
+        document.body.style.setProperty(
+          "--size--100dvh",
+          `${window.innerHeight}px`
+        );
+      };
+
+      updateVH();
+      window.addEventListener("resize", updateVH);
     }
 
     // Only enable prefetch on desktop where hover states exist
