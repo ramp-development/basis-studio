@@ -8,6 +8,8 @@ import { caseTransition } from "@transitions/schema/caseTransition.js";
 import { CheckPages } from "@transitions/CheckPages.js";
 import FontFaceObserver from "fontfaceobserver";
 
+import { isInstagram } from "./utils/isInstagram";
+
 let instance = null;
 
 export default class App extends EventEmitter {
@@ -31,6 +33,11 @@ export default class App extends EventEmitter {
   }
 
   init() {
+    if (isInstagram()) {
+      document.body.style.setProperty("--100svh", "100vh");
+      document.body.style.setProperty("--100dvh", "100vh");
+    }
+
     // Only enable prefetch on desktop where hover states exist
     // Mobile devices don't benefit from prefetch and it can cause memory pressure
     if (window.innerWidth >= 991) {
