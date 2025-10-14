@@ -20,7 +20,8 @@ export default class App extends EventEmitter {
     history.scrollRestoration = "manual";
 
     this.font = new FontFaceObserver("Saans");
-    this.font.load(null, 8000).then(
+    // Reduced timeout for faster initialization in constrained browsers
+    this.font.load(null, 3000).then(
       () => this.init(),
       () => this.init()
     );
