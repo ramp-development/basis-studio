@@ -33,23 +33,6 @@ export default class Enter {
     app.trigger("barbaEnterStart");
     gsap.set(this.container, { autoAlpha: 1 });
 
-    document.documentElement.style.scrollBehavior = "instant";
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-        document.documentElement.style.scrollBehavior = "";
-      });
-    });
-
-    // setTimeout(async () =>
-    // {
-
-    // }, 200)
-
     if (window.innerWidth > 992) {
       app.gl.loadWorld(this.container);
 
