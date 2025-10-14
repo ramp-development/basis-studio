@@ -17,10 +17,9 @@ export default class App extends EventEmitter {
     this.initialized = false;
     this.pagesLoaded = new Set();
 
-    history.scrollRestoration = "manual";
-
     this.font = new FontFaceObserver("Saans");
-    this.font.load(null, 8000).then(
+    // Reduced timeout for faster initialization in constrained browsers
+    this.font.load(null, 3000).then(
       () => this.init(),
       () => this.init()
     );
@@ -32,7 +31,11 @@ export default class App extends EventEmitter {
   }
 
   init() {
-    barba.use(barbaPrefetch);
+    // Only enable prefetch on desktop where hover states exist
+    // Mobile devices don't benefit from prefetch and it can cause memory pressure
+    if (window.innerWidth >= 991) {
+      barba.use(barbaPrefetch);
+    }
 
     barba.init({
       schema: {

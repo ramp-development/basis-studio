@@ -39,10 +39,14 @@ export default class Sizes extends EventEmitter
         function debounce(func)
         {
             let timer
+            // Faster debounce on mobile for better orientation change responsiveness
+            const isMobile = window.innerWidth < 991
+            const delay = isMobile ? 150 : 300
+
             return function (event)
             {
                 if (timer) clearTimeout(timer)
-                timer = setTimeout(func, 300, event)
+                timer = setTimeout(func, delay, event)
             }
         }
 
