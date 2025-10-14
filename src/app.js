@@ -33,7 +33,11 @@ export default class App extends EventEmitter {
   }
 
   init() {
-    barba.use(barbaPrefetch);
+    // Only enable prefetch on desktop where hover states exist
+    // Mobile devices don't benefit from prefetch and it can cause memory pressure
+    if (window.innerWidth >= 991) {
+      barba.use(barbaPrefetch);
+    }
 
     barba.init({
       schema: {
