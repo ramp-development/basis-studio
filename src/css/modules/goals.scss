@@ -1,9 +1,9 @@
 .goals {
-  height: calc(var(--100svh) * 3);
+  height: calc(var(--size--100svh) * 3);
 }
 
 .goals_sticky {
-  height: var(--100svh);
+  height: var(--size--100svh);
 }
 
 .goals_item {

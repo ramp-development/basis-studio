@@ -34,8 +34,8 @@ export default class App extends EventEmitter {
 
   init() {
     if (isInstagram()) {
-      document.body.style.setProperty("--100svh", "100vh");
-      document.body.style.setProperty("--100dvh", "100vh");
+      document.body.style.setProperty("--size--100svh", "100vh");
+      document.body.style.setProperty("--size--100dvh", "100vh");
     }
 
     // Only enable prefetch on desktop where hover states exist
