@@ -1,4 +1,4 @@
-import{A as R}from"./app.js";import{R as A}from"./Resources-DHkIOdgU.js";import L from"./VideoLoader-DY3BupWB.js";import{S as P,U as s,C as S,V as f,P as w,M as T,b as z,a as v}from"./GL-CwnTLKxe.js";import"./isSafari-DYs6RIMp.js";var E=`uniform float uOffset;
+import{A as R}from"./app.js";import{R as A}from"./Resources-DGiz5Izq.js";import L from"./VideoLoader-CTtbx0ai.js";import{S as P,U as s,C as S,V as f,P as w,M as T,b as z,a as v}from"./GL-D_VvO4-c.js";import"./isSafari-DYs6RIMp.js";var E=`uniform float uOffset;
 
 varying vec2 vUv;
 varying vec2 screenUv;
