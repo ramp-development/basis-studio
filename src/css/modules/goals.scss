@@ -1,3 +1,11 @@
+.goals {
+  height: calc(var(--100svh) * 3);
+}
+
+.goals_sticky {
+  height: var(--100svh);
+}
+
 .goals_item {
   .custom-descr {
     width: calc(var(--max-w) + 2ch);
